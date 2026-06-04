@@ -6,6 +6,18 @@ const poems = await getCollection("poems");
 const sorted = poems
   .filter((poem) => poem.data.published)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const collections = Array.from(
+  new Set(sorted.map((poem) => poem.data.collection).filter(Boolean))
+).sort();
+
+const moods = Array.from(
+  new Set(sorted.map((poem) => poem.data.mood).filter(Boolean))
+).sort();
+
+const totalPoems = sorted.length;
+const bookPoems = sorted.filter((poem) => poem.data.showInBook).length;
+const latestDate = sorted[0]?.data.date.toLocaleDateString("vi-VN") ?? "chưa có";
 ---
 
 <!doctype html>
@@ -31,7 +43,7 @@ const sorted = poems
       </header>
 
       <main>
-        <section class="archive glow-surface">
+        <section class="archive glow-surface poem-studio">
           <p class="eyebrow">archive</p>
           <h1 class="page-title">Thơ</h1>
 
@@ -40,17 +52,66 @@ const sorted = poems
             hoặc một cách để sống sót qua đêm.
           </p>
 
-          <div class="poem-list">
+          <div class="studio-stats" aria-label="Thống kê nhanh">
+            <div><strong>{totalPoems}</strong><span>bài thơ</span></div>
+            <div><strong>{bookPoems}</strong><span>trong tập thơ</span></div>
+            <div><strong>{latestDate}</strong><span>mới cập nhật</span></div>
+          </div>
+
+          <div class="studio-controls glow-card" data-poem-controls>
+            <label class="search-field">
+              <span>Tìm trong kho thơ</span>
+              <input type="search" placeholder="Nhập tên bài, trích đoạn, tâm trạng..." data-poem-search />
+            </label>
+
+            <div class="filter-row" aria-label="Bộ lọc thơ">
+              <button class="filter-chip is-active" type="button" data-filter="all" data-value="all">Tất cả</button>
+              {collections.map((collection) => (
+                <button class="filter-chip" type="button" data-filter="collection" data-value={collection}>{collection}</button>
+              ))}
+              {moods.map((mood) => (
+                <button class="filter-chip" type="button" data-filter="mood" data-value={mood}>{mood}</button>
+              ))}
+            </div>
+          </div>
+
+          <div class="poem-list" data-poem-list>
             {
               sorted.map((poem) => (
-                <a class="poem-item glow-card" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
+                <a
+                  class="poem-item glow-card"
+                  href={`/tho/${poem.id.replace(/\.md$/, "")}`}
+                  data-title={poem.data.title.toLowerCase()}
+                  data-excerpt={(poem.data.excerpt ?? "").toLowerCase()}
+                  data-collection={poem.data.collection ?? ""}
+                  data-mood={poem.data.mood ?? ""}
+                >
                   <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
-                  <h2>{poem.data.title}</h2>
-                  {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+                  <div>
+                    <h2>{poem.data.title}</h2>
+                    <div class="poem-tags">
+                      {poem.data.collection && <small>{poem.data.collection}</small>}
+                      {poem.data.mood && <small>{poem.data.mood}</small>}
+                    </div>
+                    {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+                  </div>
                 </a>
               ))
             }
           </div>
+
+          <p class="empty-state" data-empty-state hidden>
+            Chưa tìm thấy bài thơ phù hợp. Thử một từ khóa khác nhẹ hơn nhé.
+          </p>
+
+          <aside class="writing-note glow-card">
+            <p class="eyebrow">góc vận hành</p>
+            <h2>Muốn đăng bài mới?</h2>
+            <p>
+              Tạo một file Markdown trong <code>src/content/poems</code>, điền tiêu đề,
+              ngày đăng, trích đoạn, tâm trạng, rồi viết thơ bên dưới phần thông tin đầu bài.
+            </p>
+          </aside>
         </section>
       </main>
 
@@ -60,5 +121,6 @@ const sorted = poems
     </div>
 
     <script is:inline src="/glow.js"></script>
+    <script is:inline src="/poem-filters.js"></script>
   </body>
 </html>
