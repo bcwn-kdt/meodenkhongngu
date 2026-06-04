@@ -1,18 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
 
 :root {
-  --bg: #07070a;
-  --bg-soft: #111118;
-  --card: rgba(255, 255, 255, 0.035);
-  --text: #eee6dc;
-  --text-soft: #d8cbbb;
-  --muted: #9e9386;
-  --accent: #b8895b;
-  --accent-soft: rgba(184, 137, 91, 0.16);
-  --line: rgba(255, 255, 255, 0.1);
-  --paper: #efe3cf;
+  --bg: #000000;
+  --bg-soft: #07070a;
+  --card: rgba(255, 255, 255, 0.045);
+  --text: #ffffff;
+  --text-soft: rgba(255, 255, 255, 0.84);
+  --muted: rgba(255, 255, 255, 0.58);
+  --accent: #ffffff;
+  --accent-warm: #c9a06d;
+  --line: rgba(255, 255, 255, 0.14);
+  --paper: #f3eadc;
   --paper-deep: #d7c3a4;
-  --ink: #17120f;
+  --ink: #121212;
   --font-ui: "Be Vietnam Pro", Arial, sans-serif;
   --font-serif: "Noto Serif", Georgia, serif;
 }
@@ -29,14 +29,16 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 18% 6%, rgba(184, 137, 91, 0.16), transparent 30%),
-    radial-gradient(circle at 88% 74%, rgba(94, 44, 36, 0.16), transparent 34%),
-    linear-gradient(180deg, #08080c 0%, #050506 100%);
   color: var(--text);
   font-family: var(--font-ui);
   line-height: 1.75;
   letter-spacing: 0.002em;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(201, 160, 109, 0.16), transparent 25%),
+    radial-gradient(circle at 50% 92%, rgba(90, 90, 120, 0.22), transparent 32%),
+    linear-gradient(135deg, #000000 0%, #050507 42%, #0c0b0f 100%);
+  background-attachment: fixed;
   font-feature-settings: "kern";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -47,11 +49,50 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.06) 45%, transparent 70%),
+    radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.68) 78%);
+  opacity: 0.55;
+  animation: slowLight 18s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, black, transparent 78%);
+  background-size: 46px 46px;
+  opacity: 0.34;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+  z-index: -1;
+}
+
+@keyframes slowLight {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+    opacity: 0.42;
+  }
+
+  to {
+    transform: translate3d(2%, 2%, 0) scale(1.08);
+    opacity: 0.72;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 a {
@@ -60,8 +101,8 @@ a {
 }
 
 ::selection {
-  background: var(--accent);
-  color: #08080b;
+  background: #ffffff;
+  color: #000000;
 }
 
 .site-shell {
@@ -70,25 +111,26 @@ a {
 }
 
 .site-header {
-  min-height: 86px;
-  padding: 26px 0;
+  min-height: 88px;
+  padding: 28px 0;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 28px;
+  animation: fadeUp 700ms ease both;
 }
 
 .logo {
   font-family: var(--font-serif);
   font-size: clamp(25px, 3vw, 34px);
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  font-weight: 700;
+  letter-spacing: -0.028em;
   line-height: 1.15;
 }
 
 .logo:hover {
-  color: var(--accent);
+  color: var(--accent-warm);
 }
 
 .nav {
@@ -98,7 +140,7 @@ a {
   color: var(--muted);
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -115,7 +157,7 @@ a {
   bottom: 0;
   width: 0;
   height: 1px;
-  background: var(--accent);
+  background: var(--text);
   transition: width 180ms ease;
 }
 
@@ -137,39 +179,42 @@ a {
 }
 
 .eyebrow {
-  color: var(--accent);
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0 0 14px;
+  opacity: 0.78;
 }
 
 .hero {
-  min-height: 70vh;
+  min-height: 72vh;
   display: grid;
   align-content: center;
-  max-width: 840px;
-  padding: 92px 0;
+  max-width: 860px;
+  padding: 96px 0;
+  animation: fadeUp 850ms ease 120ms both;
 }
 
 .hero h1,
 .page-title {
   font-family: var(--font-serif);
-  font-size: clamp(54px, 9vw, 118px);
-  font-weight: 600;
+  font-size: clamp(54px, 9vw, 120px);
+  font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.06em;
   margin: 14px 0 28px;
   color: var(--text);
+  text-shadow: 0 0 42px rgba(255, 255, 255, 0.12);
 }
 
 .intro {
-  color: var(--muted);
+  color: var(--text-soft);
   font-family: var(--font-ui);
   font-size: clamp(16px, 1.8vw, 19px);
-  line-height: 1.85;
-  max-width: 690px;
+  line-height: 1.9;
+  max-width: 700px;
 }
 
 .button-row {
@@ -183,45 +228,47 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(184, 137, 91, 0.68);
-  color: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  color: var(--text);
   padding: 12px 20px;
   border-radius: 999px;
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
 }
 
 .button:hover {
-  background: var(--accent);
-  color: #08080b;
-  border-color: var(--accent);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  transform: translateY(-2px);
 }
 
 .button.secondary {
-  border-color: var(--line);
+  border-color: rgba(255, 255, 255, 0.22);
   color: var(--text-soft);
 }
 
 .button.secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   color: var(--text);
 }
 
 .archive {
-  max-width: 900px;
+  max-width: 920px;
   margin: 82px auto 0;
+  animation: fadeUp 850ms ease 180ms both;
 }
 
 .section-title {
   font-family: var(--font-serif);
   font-size: clamp(38px, 6vw, 56px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.05;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
   margin: 8px 0 0;
 }
 
@@ -234,12 +281,13 @@ a {
   display: grid;
   grid-template-columns: 120px 1fr;
   gap: 28px;
-  padding: 32px 0;
+  padding: 34px 0;
   border-bottom: 1px solid var(--line);
+  transition: transform 180ms ease, border-color 180ms ease;
 }
 
 .poem-item span {
-  color: var(--accent);
+  color: rgba(255, 255, 255, 0.66);
   font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 500;
@@ -250,9 +298,9 @@ a {
 .poem-item h2 {
   font-family: var(--font-serif);
   font-size: clamp(30px, 4vw, 46px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.08;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
   margin: 0 0 12px;
 }
 
@@ -260,31 +308,37 @@ a {
   color: var(--muted);
   font-family: var(--font-ui);
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.85;
   max-width: 650px;
   margin: 0;
 }
 
+.poem-item:hover {
+  transform: translateX(8px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
 .poem-item:hover h2 {
-  color: var(--accent);
+  color: #ffffff;
 }
 
 .poem-page {
   max-width: 780px;
-  margin: 86px auto 0;
+  margin: 88px auto 0;
+  animation: fadeUp 850ms ease both;
 }
 
 .poem-header {
   text-align: center;
-  margin-bottom: 58px;
+  margin-bottom: 60px;
 }
 
 .poem-header h1 {
   font-family: var(--font-serif);
   font-size: clamp(42px, 7vw, 84px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.02;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.05em;
   margin: 14px 0 20px;
 }
 
@@ -299,8 +353,8 @@ a {
   font-family: var(--font-serif);
   font-size: clamp(19px, 2vw, 23px);
   font-weight: 400;
-  line-height: 2.12;
-  letter-spacing: -0.005em;
+  line-height: 2.16;
+  letter-spacing: -0.004em;
   color: var(--text-soft);
 }
 
@@ -310,18 +364,19 @@ a {
 }
 
 .poem-content p:first-child::first-letter {
-  color: var(--accent);
+  color: #ffffff;
 }
 
 .about {
   max-width: 780px;
   margin: 90px auto 0;
+  animation: fadeUp 850ms ease both;
 }
 
 .about-content {
   font-family: var(--font-serif);
   font-size: clamp(20px, 2vw, 24px);
-  line-height: 2.05;
+  line-height: 2.08;
   color: var(--text-soft);
 }
 
@@ -377,6 +432,10 @@ a {
     gap: 8px;
   }
 
+  .poem-item:hover {
+    transform: none;
+  }
+
   .poem-item span {
     padding-top: 0;
   }
@@ -395,6 +454,6 @@ a {
 
   .poem-content {
     font-size: 19px;
-    line-height: 2.05;
+    line-height: 2.08;
   }
 }
