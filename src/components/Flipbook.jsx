@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
 const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
@@ -117,13 +118,7 @@ const chapters = [
     subtitle: "Thơ như một nơi trú ẩn",
     description:
       "Những bài thơ viết về chính thơ: nơi nỗi đau được đặt xuống, được đọc lại, và đôi khi được tha thứ.",
-    poems: [
-      "Thơ em",
-      "Nếu anh đọc thơ em",
-      "Những bài thơ",
-      "Vần thơ em",
-      "Anh biết không?",
-    ],
+    poems: ["Thơ em", "Nếu anh đọc thơ em", "Những bài thơ", "Vần thơ em", "Anh biết không?"],
   },
   {
     title: "Chương VI",
@@ -164,15 +159,15 @@ function normalize(text = "") {
 
 function getChapterIndex(poem) {
   const title = normalize(poem.title || "");
-
   const index = chapters.findIndex((chapter) =>
     chapter.poems.some((chapterPoem) => normalize(chapterPoem) === title)
   );
-
   return index >= 0 ? index : chapters.length - 1;
 }
 
 export default function FlipBook({ poems }) {
+  const bookRef = useRef(null);
+  const [page, setPage] = useState(0);
   const groupedChapters = chapters
     .map((chapter, chapterIndex) => ({
       ...chapter,
@@ -181,6 +176,9 @@ export default function FlipBook({ poems }) {
     .filter((chapter) => chapter.poems.length > 0);
 
   let pageNumber = 1;
+
+  const goPrev = () => bookRef.current?.pageFlip()?.flipPrev();
+  const goNext = () => bookRef.current?.pageFlip()?.flipNext();
 
   return (
     <section className="book-section">
@@ -193,123 +191,148 @@ export default function FlipBook({ poems }) {
       </div>
 
       <div className="book-wrap">
-        <HTMLFlipBook
-          width={420}
-          height={620}
-          size="stretch"
-          minWidth={290}
-          maxWidth={480}
-          minHeight={440}
-          maxHeight={720}
-          showCover={true}
-          mobileScrollSupport={true}
-          className="flip-book"
-        >
-          <div className="book-page cover-page">
-            <div className="cover-art" aria-hidden="true">
-              <span className="moon" />
-              <span className="cat-silhouette" />
-            </div>
+        <div className="book-stage">
+          <button className="book-nav book-nav-prev" type="button" onClick={goPrev} aria-label="Lật về trang trước">
+            ‹
+          </button>
 
-            <div className="cover-content">
-              <p className="cover-author">Mèo Đen Không Ngủ</p>
-              <h2>
-                Va Vào
-                <br />
-                Lần Yêu Cuối
-              </h2>
-              <small>Tập thơ | Ấn bản điện tử</small>
-            </div>
-          </div>
+          <HTMLFlipBook
+            ref={bookRef}
+            width={420}
+            height={620}
+            size="stretch"
+            minWidth={290}
+            maxWidth={480}
+            minHeight={440}
+            maxHeight={720}
+            showCover={true}
+            drawShadow={true}
+            flippingTime={1180}
+            usePortrait={true}
+            startZIndex={30}
+            maxShadowOpacity={0.42}
+            mobileScrollSupport={true}
+            clickEventForward={true}
+            useMouseEvents={true}
+            swipeDistance={28}
+            className="flip-book"
+            onFlip={(event) => setPage(event.data)}
+          >
+            <div className="book-page cover-page hard-page">
+              <div className="cover-art" aria-hidden="true">
+                <span className="moon" />
+                <span className="cat-silhouette" />
+              </div>
 
-          <div className="book-page intro-page decorated-page botanical-rose">
-            <div className="botanical botanical-top" aria-hidden="true" />
-            <div className="botanical botanical-bottom" aria-hidden="true" />
-
-            <div className="intro-inner">
-              <span>Lời mở</span>
-              <p>
-                Có những bài thơ được viết ra không phải để níu một người ở lại,
-                mà để một nỗi buồn có nơi được gọi tên.
-              </p>
-              <p>
-                <em>Va Vào Lần Yêu Cuối</em> là cách Mèo cất lại những mùa yêu đã qua:
-                không còn trách móc, không còn cầu xin, chỉ còn một khoảng lặng
-                đủ mềm để ký ức thôi làm đau.
-              </p>
-              <p>
-                Nếu có một phiên bản cũ của mình từng khóc trong những trang này,
-                mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.
-              </p>
-            </div>
-          </div>
-
-          <div className="book-page toc-page decorated-page botanical-branch">
-            <div className="botanical botanical-top" aria-hidden="true" />
-            <div className="botanical botanical-bottom" aria-hidden="true" />
-            <div className="toc-inner">
-              <span>Mục lục</span>
-              <h2>Các chương</h2>
-              <div className="toc-list">
-                {groupedChapters.map((chapter) => (
-                  <div className="toc-item" key={`toc-${chapter.title}`}>
-                    <small>{chapter.title}</small>
-                    <strong>{chapter.subtitle}</strong>
-                  </div>
-                ))}
+              <div className="cover-content">
+                <p className="cover-author">Mèo Đen Không Ngủ</p>
+                <h2>
+                  Va Vào
+                  <br />
+                  Lần Yêu Cuối
+                </h2>
+                <small>Tập thơ | Ấn bản điện tử</small>
               </div>
             </div>
-          </div>
 
-          {groupedChapters.flatMap((chapter, chapterIndex) => {
-            const chapterPage = (
-              <div
-                className={`book-page chapter-page decorated-page botanical-${botanicalStyles[chapterIndex % botanicalStyles.length]}`}
-                key={`chapter-${chapterIndex}`}
-              >
-                <div className="botanical botanical-top" aria-hidden="true" />
-                <div className="botanical botanical-bottom" aria-hidden="true" />
-                <div className="chapter-inner">
-                  <span>{chapter.title}</span>
-                  <h2>{chapter.subtitle}</h2>
-                  <p>{chapter.description}</p>
+            <div className="book-page intro-page decorated-page botanical-rose">
+              <div className="botanical botanical-top" aria-hidden="true" />
+              <div className="botanical botanical-bottom" aria-hidden="true" />
+
+              <div className="intro-inner">
+                <span>Lời mở</span>
+                <p>
+                  Có những bài thơ được viết ra không phải để níu một người ở lại,
+                  mà để một nỗi buồn có nơi được gọi tên.
+                </p>
+                <p>
+                  <em>Va Vào Lần Yêu Cuối</em> là cách Mèo cất lại những mùa yêu đã qua:
+                  không còn trách móc, không còn cầu xin, chỉ còn một khoảng lặng
+                  đủ mềm để ký ức thôi làm đau.
+                </p>
+                <p>
+                  Nếu có một phiên bản cũ của mình từng khóc trong những trang này,
+                  mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.
+                </p>
+              </div>
+            </div>
+
+            <div className="book-page toc-page decorated-page botanical-branch">
+              <div className="botanical botanical-top" aria-hidden="true" />
+              <div className="botanical botanical-bottom" aria-hidden="true" />
+              <div className="toc-inner">
+                <span>Mục lục</span>
+                <h2>Các chương</h2>
+                <div className="toc-list">
+                  {groupedChapters.map((chapter) => (
+                    <div className="toc-item" key={`toc-${chapter.title}`}>
+                      <small>{chapter.title}</small>
+                      <strong>{chapter.subtitle}</strong>
+                    </div>
+                  ))}
                 </div>
               </div>
-            );
+            </div>
 
-            const poemPages = chapter.poems.map((poem) => {
-              const botanical = botanicalStyles[(pageNumber - 1) % botanicalStyles.length];
-              const currentPage = pageNumber++;
-
-              return (
+            {groupedChapters.flatMap((chapter, chapterIndex) => {
+              const chapterPage = (
                 <div
-                  className={`book-page poem-book-page decorated-page botanical-${botanical}`}
-                  key={poem.slug}
+                  className={`book-page chapter-page decorated-page botanical-${botanicalStyles[chapterIndex % botanicalStyles.length]}`}
+                  key={`chapter-${chapterIndex}`}
                 >
                   <div className="botanical botanical-top" aria-hidden="true" />
                   <div className="botanical botanical-bottom" aria-hidden="true" />
-                  <div className="book-page-number">{String(currentPage).padStart(2, "0")}</div>
-                  <h2>{poem.title}</h2>
-                  <div
-                    className="book-poem-body"
-                    dangerouslySetInnerHTML={{ __html: poem.html }}
-                  />
+                  <div className="chapter-inner">
+                    <span>{chapter.title}</span>
+                    <h2>{chapter.subtitle}</h2>
+                    <p>{chapter.description}</p>
+                  </div>
                 </div>
               );
-            });
 
-            return [chapterPage, ...poemPages];
-          })}
+              const poemPages = chapter.poems.map((poem) => {
+                const botanical = botanicalStyles[(pageNumber - 1) % botanicalStyles.length];
+                const currentPage = pageNumber++;
 
-          <div className="book-page end-page decorated-page botanical-ginkgo">
-            <div className="botanical botanical-top" aria-hidden="true" />
-            <div className="botanical botanical-bottom" aria-hidden="true" />
-            <div>
-              <p>Hết.</p>
-              <small>Mèo Đen Không Ngủ</small>
+                return (
+                  <div
+                    className={`book-page poem-book-page decorated-page botanical-${botanical}`}
+                    key={poem.slug}
+                  >
+                    <div className="botanical botanical-top" aria-hidden="true" />
+                    <div className="botanical botanical-bottom" aria-hidden="true" />
+                    <div className="book-page-number">{String(currentPage).padStart(2, "0")}</div>
+                    <h2>{poem.title}</h2>
+                    <div
+                      className="book-poem-body"
+                      dangerouslySetInnerHTML={{ __html: poem.html }}
+                    />
+                  </div>
+                );
+              });
+
+              return [chapterPage, ...poemPages];
+            })}
+
+            <div className="book-page end-page decorated-page botanical-ginkgo hard-page">
+              <div className="botanical botanical-top" aria-hidden="true" />
+              <div className="botanical botanical-bottom" aria-hidden="true" />
+              <div>
+                <p>Hết.</p>
+                <small>Mèo Đen Không Ngủ</small>
+              </div>
             </div>
-          </div>
-        </HTMLFlipBook>
+          </HTMLFlipBook>
+
+          <button className="book-nav book-nav-next" type="button" onClick={goNext} aria-label="Lật sang trang sau">
+            ›
+          </button>
+        </div>
+
+        <div className="book-status" aria-live="polite">
+          <span>Trang {page + 1}</span>
+          <span>kéo góc giấy hoặc bấm hai bên để lật trang</span>
+        </div>
       </div>
 
       <p className="mobile-note">
