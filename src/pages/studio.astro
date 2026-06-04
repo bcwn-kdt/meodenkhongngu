@@ -1,0 +1,221 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Book Studio | Mèo Đen Không Ngủ</title>
+  </head>
+
+  <body class="studio-body">
+    <main class="studio-lock" id="studio-lock">
+      <div>
+        <p>Private Studio</p>
+        <h1>Mèo Đen Không Ngủ</h1>
+        <span>Thêm <code>?key=meoden</code> vào cuối đường dẫn để mở studio.</span>
+      </div>
+    </main>
+
+    <main class="studio-app" id="studio-app" hidden>
+      <aside class="studio-panel">
+        <a class="studio-back" href="/tap-tho/va-vao-lan-yeu-cuoi">← về flipbook</a>
+        <h1>Book Studio</h1>
+        <p class="studio-note">Canvas thử nghiệm để tự layout trang sách. Bản nháp lưu trong trình duyệt của bạn.</p>
+
+        <section>
+          <h2>Thêm layer</h2>
+          <button data-add="text">Text</button>
+          <label class="file-button">
+            Image
+            <input id="image-input" type="file" accept="image/*" />
+          </label>
+          <button id="add-decor">Decor line</button>
+        </section>
+
+        <section>
+          <h2>Trang sách</h2>
+          <label>Màu giấy <input id="paper-color" type="color" value="#efe3cf" /></label>
+          <label>Texture <input id="paper-texture" type="range" min="0" max="100" value="24" /></label>
+          <label>Padding <input id="page-padding" type="range" min="18" max="90" value="44" /></label>
+        </section>
+
+        <section>
+          <h2>Layer đang chọn</h2>
+          <label>Font
+            <select id="font-family">
+              <option value="var(--font-serif)">Serif</option>
+              <option value='"Courier Prime", "Courier New", monospace'>Typewriter</option>
+              <option value='"Be Vietnam Pro", Arial, sans-serif'>Sans</option>
+            </select>
+          </label>
+          <label>Cỡ chữ <input id="font-size" type="range" min="8" max="56" value="18" /></label>
+          <label>Line height <input id="line-height" type="range" min="1" max="2.4" step="0.05" value="1.55" /></label>
+          <label>Opacity <input id="opacity" type="range" min="0" max="1" step="0.01" value="1" /></label>
+          <label>Rotate <input id="rotate" type="range" min="-45" max="45" value="0" /></label>
+          <button id="delete-layer">Xóa layer</button>
+        </section>
+
+        <section>
+          <h2>Lưu / xuất</h2>
+          <button id="save-design">Lưu draft</button>
+          <button id="reset-design">Reset</button>
+          <button id="export-design">Export JSON</button>
+          <textarea id="export-output" readonly placeholder="JSON sẽ hiện ở đây"></textarea>
+        </section>
+      </aside>
+
+      <section class="studio-workspace">
+        <div class="studio-toolbar">Kéo layer để di chuyển · Double click text để sửa nội dung · Kéo góc phải dưới để resize</div>
+        <div class="studio-canvas" id="studio-canvas">
+          <div class="studio-page" id="studio-page">
+            <div class="studio-layer text selected" data-type="text" contenteditable="true" style="left:44px;top:44px;width:300px;font-size:22px;line-height:1.2;font-family:var(--font-serif);">Tên bài thơ</div>
+            <div class="studio-layer text" data-type="text" contenteditable="true" style="left:44px;top:112px;width:300px;font-size:12px;line-height:1.65;font-family:'Courier Prime','Courier New',monospace;">Em viết những dòng này\nnhư người đặt tay lên một cánh cửa cũ.\nBên kia là đêm,\nvà một mùa yêu đã khép lại.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script is:inline>
+      const key = new URLSearchParams(location.search).get("key");
+      const app = document.getElementById("studio-app");
+      const lock = document.getElementById("studio-lock");
+      if (key === "meoden") { app.hidden = false; lock.hidden = true; }
+
+      const page = document.getElementById("studio-page");
+      const canvas = document.getElementById("studio-canvas");
+      const controls = {
+        fontFamily: document.getElementById("font-family"),
+        fontSize: document.getElementById("font-size"),
+        lineHeight: document.getElementById("line-height"),
+        opacity: document.getElementById("opacity"),
+        rotate: document.getElementById("rotate"),
+      };
+      let selected = page.querySelector(".selected");
+
+      function selectLayer(layer) {
+        page.querySelectorAll(".studio-layer").forEach(el => el.classList.remove("selected"));
+        selected = layer;
+        selected.classList.add("selected");
+        controls.fontSize.value = parseFloat(selected.style.fontSize) || 18;
+        controls.lineHeight.value = parseFloat(selected.style.lineHeight) || 1.55;
+        controls.opacity.value = parseFloat(selected.style.opacity) || 1;
+        const match = (selected.style.transform || "").match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+        controls.rotate.value = match ? match[1] : 0;
+      }
+
+      function makeLayer(el) {
+        el.classList.add("studio-layer");
+        el.addEventListener("pointerdown", (e) => {
+          selectLayer(el);
+          if (e.target !== el || el.isContentEditable && e.detail > 1) return;
+          const startX = e.clientX, startY = e.clientY;
+          const startLeft = parseFloat(el.style.left) || 0;
+          const startTop = parseFloat(el.style.top) || 0;
+          el.setPointerCapture(e.pointerId);
+          const move = (ev) => {
+            el.style.left = `${startLeft + ev.clientX - startX}px`;
+            el.style.top = `${startTop + ev.clientY - startY}px`;
+          };
+          const up = () => { el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); };
+          el.addEventListener("pointermove", move);
+          el.addEventListener("pointerup", up);
+        });
+      }
+      page.querySelectorAll(".studio-layer").forEach(makeLayer);
+
+      document.querySelector('[data-add="text"]').onclick = () => {
+        const el = document.createElement("div");
+        el.className = "studio-layer text";
+        el.dataset.type = "text";
+        el.contentEditable = "true";
+        el.textContent = "Text mới";
+        el.style.cssText = "left:60px;top:180px;width:240px;font-size:16px;line-height:1.5;font-family:var(--font-serif);";
+        page.appendChild(el); makeLayer(el); selectLayer(el);
+      };
+
+      document.getElementById("image-input").onchange = (e) => {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = document.createElement("img");
+          img.src = reader.result;
+          img.className = "studio-layer image";
+          img.dataset.type = "image";
+          img.style.cssText = "left:80px;top:220px;width:160px;opacity:.85;";
+          page.appendChild(img); makeLayer(img); selectLayer(img);
+        };
+        reader.readAsDataURL(file);
+      };
+
+      document.getElementById("add-decor").onclick = () => {
+        const el = document.createElement("div");
+        el.className = "studio-layer decor";
+        el.dataset.type = "decor";
+        el.style.cssText = "left:245px;top:30px;width:120px;height:120px;opacity:.18;";
+        page.appendChild(el); makeLayer(el); selectLayer(el);
+      };
+
+      document.getElementById("paper-color").oninput = e => page.style.backgroundColor = e.target.value;
+      document.getElementById("paper-texture").oninput = e => page.style.setProperty("--studio-texture", e.target.value / 100);
+      document.getElementById("page-padding").oninput = e => page.style.setProperty("--studio-padding", `${e.target.value}px`);
+
+      Object.entries(controls).forEach(([key, input]) => {
+        input.addEventListener("input", () => {
+          if (!selected) return;
+          if (key === "fontFamily") selected.style.fontFamily = input.value;
+          if (key === "fontSize") selected.style.fontSize = `${input.value}px`;
+          if (key === "lineHeight") selected.style.lineHeight = input.value;
+          if (key === "opacity") selected.style.opacity = input.value;
+          if (key === "rotate") selected.style.transform = `rotate(${input.value}deg)`;
+        });
+      });
+
+      document.getElementById("delete-layer").onclick = () => { if (selected) { selected.remove(); selected = null; } };
+      function getDesign() {
+        return {
+          paper: { color: page.style.backgroundColor || "#efe3cf" },
+          layers: [...page.querySelectorAll(".studio-layer")].map(el => ({ type: el.dataset.type, text: el.dataset.type === "text" ? el.innerText : null, src: el.tagName === "IMG" ? el.src : null, style: el.getAttribute("style") }))
+        };
+      }
+      document.getElementById("save-design").onclick = () => localStorage.setItem("meoden-book-studio", JSON.stringify(getDesign()));
+      document.getElementById("export-design").onclick = () => document.getElementById("export-output").value = JSON.stringify(getDesign(), null, 2);
+      document.getElementById("reset-design").onclick = () => { localStorage.removeItem("meoden-book-studio"); location.reload(); };
+    </script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
+      .studio-body { background:#050505; }
+      .studio-lock { min-height:100vh; display:grid; place-items:center; text-align:center; padding:24px; }
+      .studio-lock h1 { font-family:var(--font-serif); font-size:clamp(42px,8vw,84px); margin:0 0 12px; }
+      .studio-lock p { text-transform:uppercase; letter-spacing:.18em; color:var(--muted); }
+      .studio-lock span { color:var(--text-soft); }
+      .studio-app { min-height:100vh; display:grid; grid-template-columns:320px 1fr; }
+      .studio-panel { border-right:1px solid rgba(255,255,255,.12); padding:22px; background:rgba(255,255,255,.045); backdrop-filter:blur(18px); overflow:auto; max-height:100vh; }
+      .studio-back { color:var(--muted); font-size:13px; }
+      .studio-panel h1 { font-family:var(--font-serif); font-size:34px; margin:18px 0 6px; }
+      .studio-note { color:var(--muted); font-size:13px; line-height:1.6; }
+      .studio-panel section { border-top:1px solid rgba(255,255,255,.12); padding-top:18px; margin-top:18px; display:grid; gap:12px; }
+      .studio-panel h2 { font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:0; }
+      .studio-panel label { display:grid; gap:6px; color:var(--text-soft); font-size:13px; }
+      .studio-panel input, .studio-panel select, .studio-panel button, .file-button, textarea { width:100%; border:1px solid rgba(255,255,255,.14); border-radius:12px; background:rgba(0,0,0,.34); color:white; padding:10px 12px; font:inherit; }
+      .studio-panel button, .file-button { cursor:pointer; text-align:center; }
+      .file-button input { display:none; }
+      textarea { min-height:160px; font-size:11px; font-family:monospace; }
+      .studio-workspace { min-width:0; display:grid; grid-template-rows:auto 1fr; }
+      .studio-toolbar { padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.1); color:var(--muted); font-size:13px; }
+      .studio-canvas { overflow:auto; display:grid; place-items:center; padding:46px; }
+      .studio-page { --studio-texture:.24; width:420px; height:620px; position:relative; overflow:hidden; background-color:#efe3cf; color:#17120f; box-shadow:0 38px 120px rgba(0,0,0,.65); border:1px solid rgba(0,0,0,.18); background-image:radial-gradient(circle at top left, rgba(255,255,255,.55), transparent 28%), repeating-linear-gradient(0deg, rgba(0,0,0,calc(var(--studio-texture)*.05)) 0 1px, transparent 1px 6px); }
+      .studio-layer { position:absolute; min-width:32px; min-height:24px; outline:1px solid transparent; resize:both; overflow:auto; padding:2px; touch-action:none; }
+      .studio-layer.selected { outline:1px solid rgba(94,213,255,.75); box-shadow:0 0 0 4px rgba(94,213,255,.12); }
+      .studio-layer.text { white-space:pre-line; }
+      .studio-layer.image { height:auto; padding:0; }
+      .studio-layer.decor::before { content:""; position:absolute; inset:0; border:1.5px solid currentColor; border-radius:58% 42% 50% 46%; transform:rotate(-18deg); }
+      .studio-layer.decor::after { content:""; position:absolute; left:55%; top:52%; width:1px; height:72px; background:currentColor; transform:rotate(28deg); }
+      @media(max-width:900px){ .studio-app{grid-template-columns:1fr}.studio-panel{max-height:none;border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}.studio-canvas{padding:24px;place-items:start center}.studio-page{transform:scale(.82);transform-origin:top center}.studio-canvas{min-height:560px} }
+    </style>
+  </body>
+</html>
