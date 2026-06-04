@@ -41,19 +41,32 @@ export default function FlipBook({ poems }) {
             </div>
           </div>
 
-          <div className="book-page intro-page">
+          <div className="book-page intro-page decorated-page">
+            <div className="botanical botanical-top" aria-hidden="true" />
+            <div className="botanical botanical-bottom" aria-hidden="true" />
+
             <div className="intro-inner">
               <span>Lời mở</span>
-              <p>Có những bài thơ không được viết ra để giữ một người ở lại.</p>
               <p>
-                Chúng được viết ra để một phiên bản cũ của mình
-                có nơi mà nằm xuống.
+                Có những bài thơ được viết ra không phải để níu một người ở lại,
+                mà để một nỗi buồn có nơi được gọi tên.
+              </p>
+              <p>
+                <em>Va Vào Lần Yêu Cuối</em> là cách Mèo cất lại những mùa yêu đã qua:
+                không còn trách móc, không còn cầu xin, chỉ còn một khoảng lặng
+                đủ mềm để ký ức thôi làm đau.
+              </p>
+              <p>
+                Nếu có một phiên bản cũ của mình từng khóc trong những trang này,
+                mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.
               </p>
             </div>
           </div>
 
           {poems.map((poem, index) => (
-            <div className="book-page poem-book-page" key={poem.slug}>
+            <div className="book-page poem-book-page decorated-page" key={poem.slug}>
+              <div className="botanical botanical-top" aria-hidden="true" />
+              <div className="botanical botanical-bottom" aria-hidden="true" />
               <div className="book-page-number">{String(index + 1).padStart(2, "0")}</div>
               <p className="book-date">{poem.date}</p>
               <h2>{poem.title}</h2>
@@ -65,7 +78,9 @@ export default function FlipBook({ poems }) {
             </div>
           ))}
 
-          <div className="book-page end-page">
+          <div className="book-page end-page decorated-page">
+            <div className="botanical botanical-top" aria-hidden="true" />
+            <div className="botanical botanical-bottom" aria-hidden="true" />
             <div>
               <p>Hết.</p>
               <small>Mèo Đen Không Ngủ</small>
