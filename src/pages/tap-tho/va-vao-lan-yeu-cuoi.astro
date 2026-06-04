@@ -279,7 +279,7 @@ const poems = sorted.map((entry) => ({
 
       .intro-inner {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         max-width: 300px;
         margin: 0 auto;
       }
@@ -301,6 +301,113 @@ const poems = sorted.map((entry) => ({
         margin: 0 0 18px;
       }
 
+      .decorated-page .botanical {
+        position: absolute;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.11;
+        filter: sepia(0.25);
+      }
+
+      .botanical-top {
+        top: 18px;
+        left: 18px;
+        width: 150px;
+        height: 150px;
+      }
+
+      .botanical-bottom {
+        right: 18px;
+        bottom: 18px;
+        width: 170px;
+        height: 170px;
+        transform: rotate(180deg);
+      }
+
+      .botanical::before,
+      .botanical::after {
+        content: "";
+        position: absolute;
+        border-color: rgba(24, 18, 14, 0.74);
+      }
+
+      .botanical-rose .botanical::before {
+        width: 82px;
+        height: 82px;
+        border: 1px solid rgba(24, 18, 14, 0.72);
+        border-radius: 50% 46% 52% 44%;
+        transform: rotate(-18deg);
+      }
+
+      .botanical-rose .botanical::after {
+        left: 54px;
+        top: 70px;
+        width: 82px;
+        height: 96px;
+        border-left: 1px solid rgba(24, 18, 14, 0.72);
+        border-bottom: 1px solid rgba(24, 18, 14, 0.36);
+        border-radius: 0 0 0 70%;
+        transform: rotate(-22deg);
+      }
+
+      .botanical-branch .botanical::before {
+        left: 54px;
+        top: 4px;
+        width: 1px;
+        height: 142px;
+        background: rgba(24, 18, 14, 0.7);
+        transform: rotate(28deg);
+      }
+
+      .botanical-branch .botanical::after {
+        left: 42px;
+        top: 22px;
+        width: 92px;
+        height: 114px;
+        background:
+          radial-gradient(ellipse at 22px 18px, transparent 0 10px, rgba(24, 18, 14, 0.62) 11px 12px, transparent 13px),
+          radial-gradient(ellipse at 66px 44px, transparent 0 10px, rgba(24, 18, 14, 0.62) 11px 12px, transparent 13px),
+          radial-gradient(ellipse at 28px 78px, transparent 0 10px, rgba(24, 18, 14, 0.62) 11px 12px, transparent 13px);
+        transform: rotate(22deg);
+      }
+
+      .botanical-ginkgo .botanical::before {
+        width: 118px;
+        height: 82px;
+        border-top: 1px solid rgba(24, 18, 14, 0.72);
+        border-radius: 80% 80% 12% 12%;
+        transform: rotate(-18deg);
+      }
+
+      .botanical-ginkgo .botanical::after {
+        left: 56px;
+        top: 72px;
+        width: 1px;
+        height: 82px;
+        background: rgba(24, 18, 14, 0.62);
+        transform: rotate(-8deg);
+      }
+
+      .botanical-wildflower .botanical::before {
+        left: 70px;
+        top: 6px;
+        width: 1px;
+        height: 142px;
+        background: rgba(24, 18, 14, 0.62);
+        transform: rotate(-16deg);
+      }
+
+      .botanical-wildflower .botanical::after {
+        left: 26px;
+        top: 18px;
+        width: 108px;
+        height: 108px;
+        background:
+          radial-gradient(circle at 30px 24px, transparent 0 8px, rgba(24, 18, 14, 0.68) 9px 10px, transparent 11px),
+          radial-gradient(circle at 72px 48px, transparent 0 8px, rgba(24, 18, 14, 0.68) 9px 10px, transparent 11px),
+          radial-gradient(circle at 48px 82px, transparent 0 8px, rgba(24, 18, 14, 0.68) 9px 10px, transparent 11px);
+      }
+
       .poem-book-page {
         display: grid;
         align-content: start;
@@ -314,11 +421,12 @@ const poems = sorted.map((entry) => ({
         font-family: var(--font-ui);
         font-size: 10px;
         letter-spacing: 0.16em;
+        z-index: 2;
       }
 
       .poem-book-page h2 {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         font-family: var(--font-serif);
         font-size: 25px;
         font-weight: 700;
@@ -329,7 +437,7 @@ const poems = sorted.map((entry) => ({
 
       .book-date {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         color: rgba(0, 0, 0, 0.48);
         font-family: var(--font-ui);
         font-size: 10px;
@@ -340,7 +448,7 @@ const poems = sorted.map((entry) => ({
 
       .book-excerpt {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         color: rgba(0, 0, 0, 0.62);
         font-family: var(--font-serif);
         font-size: 13px;
@@ -351,7 +459,7 @@ const poems = sorted.map((entry) => ({
 
       .book-poem-body {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         font-family: var(--font-serif);
         font-size: 13px;
         line-height: 1.72;
@@ -372,7 +480,7 @@ const poems = sorted.map((entry) => ({
 
       .end-page div {
         position: relative;
-        z-index: 1;
+        z-index: 2;
       }
 
       .end-page small {
@@ -403,6 +511,12 @@ const poems = sorted.map((entry) => ({
 
         .book-page {
           padding: 32px;
+        }
+
+        .botanical-top,
+        .botanical-bottom {
+          opacity: 0.07;
+          transform: scale(0.82);
         }
 
         .poem-book-page h2 {
