@@ -18,19 +18,21 @@ const latest = poems
   </head>
 
   <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
+
     <div class="site-shell">
-      <header class="site-header">
-        <a class="logo" href="/">Mèo Đen Không Ngủ</a>
+      <header class="site-header glow-surface">
+        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
 
         <nav class="nav">
-          <a href="/tho">Thơ</a>
-          <a href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a href="/ve-meo">Về Mèo</a>
+          <a class="glow-link" href="/tho">Thơ</a>
+          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
+          <a class="glow-link" href="/ve-meo">Về Mèo</a>
         </nav>
       </header>
 
       <main>
-        <section class="hero">
+        <section class="hero glow-surface">
           <p class="eyebrow">kho lưu trữ thơ cá nhân</p>
 
           <h1>Mèo Đen Không Ngủ</h1>
@@ -41,21 +43,21 @@ const latest = poems
           </p>
 
           <div class="button-row">
-            <a class="button" href="/tho">Đọc thơ</a>
-            <a class="button secondary" href="/tap-tho/va-vao-lan-yeu-cuoi">
+            <a class="button glow-button" href="/tho">Đọc thơ</a>
+            <a class="button secondary glow-button" href="/tap-tho/va-vao-lan-yeu-cuoi">
               Mở tập thơ
             </a>
           </div>
         </section>
 
-        <section class="archive">
+        <section class="archive glow-surface">
           <p class="eyebrow">những bài thơ mới</p>
           <h2 class="section-title">Thơ mới nhất</h2>
 
           <div class="poem-list">
             {
               latest.map((poem) => (
-                <a class="poem-item" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
+                <a class="poem-item glow-card" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
                   <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
                   <h2>{poem.data.title}</h2>
                   {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
@@ -70,6 +72,31 @@ const latest = poems
         <p>© Mèo Đen Không Ngủ</p>
       </footer>
     </div>
+
+    <script is:inline>
+      const cursorGlow = document.querySelector(".cursor-glow");
+      const interactiveElements = document.querySelectorAll(".glow-surface, .glow-card, .glow-button, .glow-link");
+
+      window.addEventListener("pointermove", (event) => {
+        document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
+        document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
+
+        if (cursorGlow) {
+          cursorGlow.style.opacity = "1";
+          cursorGlow.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+        }
+
+        interactiveElements.forEach((element) => {
+          const rect = element.getBoundingClientRect();
+          element.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+          element.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+        });
+      });
+
+      window.addEventListener("pointerleave", () => {
+        if (cursorGlow) cursorGlow.style.opacity = "0";
+      });
+    </script>
   </body>
 </html>
 
