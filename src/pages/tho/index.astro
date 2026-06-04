@@ -17,19 +17,21 @@ const sorted = poems
   </head>
 
   <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
+
     <div class="site-shell">
-      <header class="site-header">
-        <a class="logo" href="/">Mèo Đen Không Ngủ</a>
+      <header class="site-header glow-surface">
+        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
 
         <nav class="nav">
-          <a href="/tho">Thơ</a>
-          <a href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a href="/ve-meo">Về Mèo</a>
+          <a class="glow-link" href="/tho">Thơ</a>
+          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
+          <a class="glow-link" href="/ve-meo">Về Mèo</a>
         </nav>
       </header>
 
       <main>
-        <section class="archive">
+        <section class="archive glow-surface">
           <p class="eyebrow">archive</p>
           <h1 class="page-title">Thơ</h1>
 
@@ -41,7 +43,7 @@ const sorted = poems
           <div class="poem-list">
             {
               sorted.map((poem) => (
-                <a class="poem-item" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
+                <a class="poem-item glow-card" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
                   <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
                   <h2>{poem.data.title}</h2>
                   {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
@@ -56,5 +58,7 @@ const sorted = poems
         <p>© Mèo Đen Không Ngủ</p>
       </footer>
     </div>
+
+    <script is:inline src="/glow.js"></script>
   </body>
 </html>
