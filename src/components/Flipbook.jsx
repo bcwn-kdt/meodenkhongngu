@@ -34,9 +34,7 @@ export default function FlipBook({ poems }) {
           </div>
 
           <div className="book-page intro-page">
-            <p>
-              Có những bài thơ không được viết ra để giữ một người ở lại.
-            </p>
+            <p>Có những bài thơ không được viết ra để giữ một người ở lại.</p>
             <p>
               Chúng được viết ra để một phiên bản cũ của mình
               có nơi mà nằm xuống.
