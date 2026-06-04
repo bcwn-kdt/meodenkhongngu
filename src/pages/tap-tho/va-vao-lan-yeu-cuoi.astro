@@ -35,19 +35,23 @@ const poems = sorted.map((entry) => ({
   </head>
 
   <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
+
     <div class="site-shell">
-      <header class="site-header">
-        <a class="logo" href="/">Mèo Đen Không Ngủ</a>
+      <header class="site-header glow-surface">
+        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
 
         <nav class="nav">
-          <a href="/tho">Thơ</a>
-          <a href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a href="/ve-meo">Về Mèo</a>
+          <a class="glow-link" href="/tho">Thơ</a>
+          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
+          <a class="glow-link" href="/ve-meo">Về Mèo</a>
         </nav>
       </header>
     </div>
 
     <FlipBook client:only="react" poems={poems} />
+
+    <script is:inline src="/glow.js"></script>
 
     <style is:global>
       .book-section { position: relative; padding: 72px 20px 26px; overflow: hidden; perspective: 1800px; }
