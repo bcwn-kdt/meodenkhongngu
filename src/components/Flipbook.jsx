@@ -4,7 +4,6 @@ export default function FlipBook({ poems }) {
   return (
     <section className="book-section">
       <div className="book-top">
-        <p className="book-eyebrow">digital poetry book</p>
         <h1>Va Vào Lần Yêu Cuối</h1>
         <p>
           Một tập thơ về những điều từng làm mình không ngủ —
