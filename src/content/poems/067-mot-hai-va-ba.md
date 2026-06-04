@@ -1,0 +1,19 @@
+---
+title: "Một, hai và ba…"
+date: 2026-06-04
+excerpt: "Một…..."
+published: true
+showInBook: true
+collection: "Va Vào Lần Yêu Cuối"
+order: 67
+---
+
+Một…  
+Hai…  
+Ba!  
+Ta vỡ ra…  
+Một…  
+Hai…  
+Và ba!  
+Kí ức kia…  
+Ta xoá.
