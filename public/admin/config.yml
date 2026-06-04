@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: bcwn-kdt/meodenkhongngu
   branch: main
   
 media_folder: "public/uploads"
