@@ -1,13 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
+
 :root {
-  --bg: #08080b;
+  --bg: #07070a;
   --bg-soft: #111118;
   --card: rgba(255, 255, 255, 0.035);
-  --text: #eee5d8;
-  --muted: #9e9488;
-  --accent: #b68a5b;
+  --text: #eee6dc;
+  --text-soft: #d8cbbb;
+  --muted: #9e9386;
+  --accent: #b8895b;
+  --accent-soft: rgba(184, 137, 91, 0.16);
   --line: rgba(255, 255, 255, 0.1);
-  --paper: #efe5d1;
+  --paper: #efe3cf;
+  --paper-deep: #d7c3a4;
   --ink: #17120f;
+  --font-ui: "Be Vietnam Pro", Arial, sans-serif;
+  --font-serif: "Noto Serif", Georgia, serif;
 }
 
 * {
@@ -16,22 +23,45 @@
 
 html {
   background: var(--bg);
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
+  min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(182, 138, 91, 0.16), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(120, 55, 45, 0.12), transparent 32%),
-    var(--bg);
+    radial-gradient(circle at 18% 6%, rgba(184, 137, 91, 0.16), transparent 30%),
+    radial-gradient(circle at 88% 74%, rgba(94, 44, 36, 0.16), transparent 34%),
+    linear-gradient(180deg, #08080c 0%, #050506 100%);
   color: var(--text);
-  font-family: Inter, Arial, sans-serif;
-  line-height: 1.7;
+  font-family: var(--font-ui);
+  line-height: 1.75;
+  letter-spacing: 0.002em;
+  font-feature-settings: "kern";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: #08080b;
 }
 
 .site-shell {
@@ -40,92 +70,159 @@ a {
 }
 
 .site-header {
-  padding: 28px 0;
+  min-height: 86px;
+  padding: 26px 0;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 28px;
 }
 
 .logo {
-  font-family: Georgia, serif;
-  font-size: 32px;
-  letter-spacing: 0.02em;
+  font-family: var(--font-serif);
+  font-size: clamp(25px, 3vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.logo:hover {
+  color: var(--accent);
 }
 
 .nav {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   flex-wrap: wrap;
   color: var(--muted);
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav a {
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 180ms ease;
 }
 
 .nav a:hover {
-  color: var(--accent);
+  color: var(--text);
+}
+
+.nav a:hover::after {
+  width: 100%;
 }
 
 .site-footer {
-  margin-top: 90px;
-  padding: 34px 0;
+  margin-top: 110px;
+  padding: 34px 0 44px;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
 }
 
 .eyebrow {
   color: var(--accent);
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-size: 12px;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0 0 14px;
 }
 
 .hero {
-  min-height: 68vh;
+  min-height: 70vh;
   display: grid;
-  place-content: center;
-  max-width: 780px;
-  padding: 86px 0;
+  align-content: center;
+  max-width: 840px;
+  padding: 92px 0;
 }
 
 .hero h1,
 .page-title {
-  font-family: Georgia, serif;
-  font-size: clamp(56px, 10vw, 118px);
-  line-height: 0.9;
-  margin: 14px 0 24px;
+  font-family: var(--font-serif);
+  font-size: clamp(54px, 9vw, 118px);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  margin: 14px 0 28px;
+  color: var(--text);
 }
 
 .intro {
   color: var(--muted);
-  font-size: 18px;
-  max-width: 650px;
+  font-family: var(--font-ui);
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.85;
+  max-width: 690px;
 }
 
 .button-row {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  margin-top: 30px;
+  margin-top: 34px;
 }
 
 .button {
-  border: 1px solid var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(184, 137, 91, 0.68);
   color: var(--accent);
-  padding: 12px 18px;
+  padding: 12px 20px;
   border-radius: 999px;
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.button:hover {
+  background: var(--accent);
+  color: #08080b;
+  border-color: var(--accent);
 }
 
 .button.secondary {
   border-color: var(--line);
+  color: var(--text-soft);
+}
+
+.button.secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text);
 }
 
 .archive {
-  max-width: 880px;
-  margin: 76px auto 0;
+  max-width: 900px;
+  margin: 82px auto 0;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 6vw, 56px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  margin: 8px 0 0;
 }
 
 .poem-list {
@@ -134,25 +231,37 @@ a {
 }
 
 .poem-item {
-  display: block;
-  padding: 30px 0;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 28px;
+  padding: 32px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .poem-item span {
   color: var(--accent);
-  font-size: 13px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding-top: 7px;
 }
 
 .poem-item h2 {
-  font-family: Georgia, serif;
-  font-size: 40px;
-  line-height: 1;
-  margin: 10px 0;
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0 0 12px;
 }
 
 .poem-item p {
   color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 650px;
   margin: 0;
 }
 
@@ -162,60 +271,130 @@ a {
 
 .poem-page {
   max-width: 780px;
-  margin: 76px auto 0;
+  margin: 86px auto 0;
 }
 
 .poem-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 58px;
 }
 
 .poem-header h1 {
-  font-family: Georgia, serif;
-  font-size: clamp(46px, 8vw, 88px);
-  line-height: 0.95;
-  margin: 14px 0 18px;
+  font-family: var(--font-serif);
+  font-size: clamp(42px, 7vw, 84px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  margin: 14px 0 20px;
 }
 
 .meta {
   color: var(--muted);
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .poem-content {
-  font-family: Georgia, serif;
-  font-size: clamp(20px, 2vw, 24px);
-  line-height: 2.05;
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 2vw, 23px);
+  font-weight: 400;
+  line-height: 2.12;
+  letter-spacing: -0.005em;
+  color: var(--text-soft);
 }
 
 .poem-content p {
-  margin: 0 0 32px;
+  margin: 0 0 34px;
   white-space: pre-line;
 }
 
+.poem-content p:first-child::first-letter {
+  color: var(--accent);
+}
+
 .about {
-  max-width: 760px;
-  margin: 86px auto 0;
+  max-width: 780px;
+  margin: 90px auto 0;
 }
 
 .about-content {
-  font-family: Georgia, serif;
-  font-size: 22px;
-  line-height: 2;
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 2.05;
+  color: var(--text-soft);
 }
 
 .about-content p {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
+}
+
+.book-section {
+  font-family: var(--font-ui);
+}
+
+.book-page,
+.cover-page h2,
+.intro-page,
+.poem-book-page h2,
+.end-page {
+  font-family: var(--font-serif) !important;
 }
 
 @media (max-width: 760px) {
+  .site-shell {
+    width: min(100% - 28px, 1120px);
+  }
+
   .site-header {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .nav {
+    gap: 14px;
+    font-size: 11px;
+  }
+
+  .hero {
+    min-height: 62vh;
+    padding: 70px 0;
   }
 
   .hero h1,
   .page-title {
-    font-size: clamp(52px, 16vw, 78px);
+    font-size: clamp(48px, 15vw, 76px);
+    line-height: 1;
+  }
+
+  .intro {
+    font-size: 16px;
+  }
+
+  .poem-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .poem-item span {
+    padding-top: 0;
+  }
+
+  .poem-page {
+    margin-top: 64px;
+  }
+
+  .poem-header {
+    text-align: left;
+  }
+
+  .poem-header h1 {
+    font-size: clamp(38px, 12vw, 58px);
+  }
+
+  .poem-content {
+    font-size: 19px;
+    line-height: 2.05;
   }
 }
