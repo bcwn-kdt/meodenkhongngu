@@ -23,390 +23,58 @@ import "../styles/global.css";
     <main class="studio-app" id="studio-app" hidden>
       <aside class="studio-panel">
         <a class="studio-back" href="/tap-tho/va-vao-lan-yeu-cuoi">← về flipbook</a>
-        <h1>Book Studio V4.1</h1>
-        <p class="studio-note">Canvas dàn trang sách với Spread, Grid, Guides và Art Library PNG tách nền.</p>
+        <h1>Book Studio V5</h1>
+        <p class="studio-note">Designer canvas với Spread, Grid, Guides, Art Library, Zoom và Pan.</p>
 
-        <section>
-          <h2>View</h2>
-          <div class="studio-grid-buttons">
-            <button id="single-mode" type="button">Single</button>
-            <button id="spread-mode" type="button">Spread</button>
-            <button id="toggle-grid" type="button">Grid</button>
-            <button id="toggle-guides" type="button">Guides</button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Preset</h2>
-          <div class="studio-grid-buttons">
-            <button data-preset="poem" type="button">Poem</button>
-            <button data-preset="chapter" type="button">Chapter</button>
-            <button data-preset="cover" type="button">Cover</button>
-            <button data-preset="typewriter" type="button">Typewriter</button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Thêm layer</h2>
-          <div class="studio-grid-buttons">
-            <button data-add="text" type="button">Text</button>
-            <label class="file-button" for="image-input">Image</label>
-            <input id="image-input" class="hidden-file" type="file" accept="image/*" />
-            <button id="add-decor" type="button">Artline</button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Art Library PNG</h2>
-          <label class="file-button" for="art-upload">Upload PNG</label>
-          <input id="art-upload" class="hidden-file" type="file" accept="image/png,image/webp,image/*" multiple />
-          <div id="art-library" class="art-library"></div>
-          <button id="clear-art-library" type="button">Clear Library</button>
-        </section>
-
-        <section>
-          <h2>Trang sách</h2>
-          <label>Màu giấy <input id="paper-color" type="color" value="#efe3cf" /></label>
-          <label>Texture <input id="paper-texture" type="range" min="0" max="100" value="14" /></label>
-        </section>
-
-        <section>
-          <h2>Căn chỉnh</h2>
-          <div class="studio-grid-buttons">
-            <button id="center-x" type="button">Center X</button>
-            <button id="center-y" type="button">Center Y</button>
-            <button id="duplicate-layer" type="button">Duplicate</button>
-            <button id="front-layer" type="button">Bring front</button>
-            <button id="back-layer" type="button">Send back</button>
-            <button id="delete-layer" type="button">Delete</button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Layer đang chọn</h2>
-          <label>Font
-            <select id="font-family">
-              <option value="var(--font-serif)">Serif</option>
-              <option value='"Courier Prime", "Courier New", monospace'>Typewriter</option>
-              <option value='"Be Vietnam Pro", Arial, sans-serif'>Sans</option>
-            </select>
-          </label>
-          <label>Cỡ chữ <input id="font-size" type="range" min="8" max="56" value="18" /></label>
-          <label>Line height <input id="line-height" type="range" min="1" max="2.4" step="0.05" value="1.55" /></label>
-          <label>Opacity <input id="opacity" type="range" min="0" max="1" step="0.01" value="1" /></label>
-          <label>Rotate <input id="rotate" type="range" min="-45" max="45" value="0" /></label>
-        </section>
-
-        <section>
-          <h2>Layers</h2>
-          <div id="layer-list" class="layer-list"></div>
-        </section>
-
-        <section>
-          <h2>Lưu / xuất</h2>
-          <button id="save-design" type="button">Lưu draft</button>
-          <button id="reset-design" type="button">Reset</button>
-          <button id="export-design" type="button">Export JSON</button>
-          <textarea id="export-output" readonly placeholder="JSON sẽ hiện ở đây"></textarea>
-        </section>
+        <section><h2>View</h2><div class="studio-grid-buttons"><button id="single-mode" type="button">Single</button><button id="spread-mode" type="button">Spread</button><button id="toggle-grid" type="button">Grid</button><button id="toggle-guides" type="button">Guides</button></div></section>
+        <section><h2>Zoom / Pan</h2><div class="studio-grid-buttons"><button id="zoom-out" type="button">−</button><button id="zoom-in" type="button">+</button><button id="zoom-reset" type="button">100%</button><button id="fit-screen" type="button">Fit</button></div><label>Zoom <input id="zoom-range" type="range" min="40" max="180" value="100" /></label></section>
+        <section><h2>Preset</h2><div class="studio-grid-buttons"><button data-preset="poem" type="button">Poem</button><button data-preset="chapter" type="button">Chapter</button><button data-preset="cover" type="button">Cover</button><button data-preset="typewriter" type="button">Typewriter</button></div></section>
+        <section><h2>Thêm layer</h2><div class="studio-grid-buttons"><button data-add="text" type="button">Text</button><label class="file-button" for="image-input">Image</label><input id="image-input" class="hidden-file" type="file" accept="image/*" /><button id="add-decor" type="button">Artline</button></div></section>
+        <section><h2>Art Library PNG</h2><label class="file-button" for="art-upload">Upload PNG</label><input id="art-upload" class="hidden-file" type="file" accept="image/png,image/webp,image/*" multiple /><div id="art-library" class="art-library"></div><button id="clear-art-library" type="button">Clear Library</button></section>
+        <section><h2>Trang sách</h2><label>Màu giấy <input id="paper-color" type="color" value="#efe3cf" /></label><label>Texture <input id="paper-texture" type="range" min="0" max="100" value="14" /></label></section>
+        <section><h2>Căn chỉnh</h2><div class="studio-grid-buttons"><button id="center-x" type="button">Center X</button><button id="center-y" type="button">Center Y</button><button id="duplicate-layer" type="button">Duplicate</button><button id="front-layer" type="button">Bring front</button><button id="back-layer" type="button">Send back</button><button id="delete-layer" type="button">Delete</button></div></section>
+        <section><h2>Layer đang chọn</h2><label>Font<select id="font-family"><option value="var(--font-serif)">Serif</option><option value='"Courier Prime", "Courier New", monospace'>Typewriter</option><option value='"Be Vietnam Pro", Arial, sans-serif'>Sans</option></select></label><label>Cỡ chữ <input id="font-size" type="range" min="8" max="56" value="18" /></label><label>Line height <input id="line-height" type="range" min="1" max="2.4" step="0.05" value="1.55" /></label><label>Opacity <input id="opacity" type="range" min="0" max="1" step="0.01" value="1" /></label><label>Rotate <input id="rotate" type="range" min="-45" max="45" value="0" /></label></section>
+        <section><h2>Layers</h2><div id="layer-list" class="layer-list"></div></section>
+        <section><h2>Lưu / xuất</h2><button id="save-design" type="button">Lưu draft</button><button id="reset-design" type="button">Reset</button><button id="export-design" type="button">Export JSON</button><textarea id="export-output" readonly placeholder="JSON sẽ hiện ở đây"></textarea></section>
       </aside>
 
-      <section class="studio-workspace">
-        <div class="studio-toolbar" id="studio-status">V4.1 · Sẵn sàng</div>
-        <div class="studio-canvas" id="studio-canvas">
-          <div class="studio-spread" id="studio-spread">
-            <div class="studio-page left-page" id="left-page"></div>
-            <div class="studio-page right-page active-page" id="studio-page">
-              <div class="studio-layer text selected" data-type="text" spellcheck="false" contenteditable="true" style="left:58px;top:68px;width:304px;font-size:20px;line-height:1.2;font-family:var(--font-serif);">Tên bài thơ</div>
-              <div class="studio-layer text" data-type="text" spellcheck="false" contenteditable="true" style="left:58px;top:132px;width:286px;font-size:11.4px;line-height:1.62;font-family:'Courier Prime','Courier New',monospace;">Em viết những dòng này
+      <section class="studio-workspace"><div class="studio-toolbar" id="studio-status">V5 · Space + kéo để pan · Ctrl/Cmd + wheel để zoom</div><div class="studio-canvas" id="studio-canvas"><div class="studio-spread" id="studio-spread"><div class="studio-page left-page" id="left-page"></div><div class="studio-page right-page active-page" id="studio-page"><div class="studio-layer text selected" data-type="text" spellcheck="false" contenteditable="true" style="left:58px;top:68px;width:304px;font-size:20px;line-height:1.2;font-family:var(--font-serif);">Tên bài thơ</div><div class="studio-layer text" data-type="text" spellcheck="false" contenteditable="true" style="left:58px;top:132px;width:286px;font-size:11.4px;line-height:1.62;font-family:'Courier Prime','Courier New',monospace;">Em viết những dòng này
 như người đặt tay lên một cánh cửa cũ.
 Bên kia là đêm,
-và một mùa yêu đã khép lại.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+và một mùa yêu đã khép lại.</div></div></div></div></section>
     </main>
 
     <script is:inline>
       (() => {
-        const key = new URLSearchParams(location.search).get("key");
-        const app = document.getElementById("studio-app");
-        const lock = document.getElementById("studio-lock");
-        const status = document.getElementById("studio-status");
+        const key = new URLSearchParams(location.search).get("key"), app = document.getElementById("studio-app"), lock = document.getElementById("studio-lock"), status = document.getElementById("studio-status");
         if (key === "meoden") { app.hidden = false; lock.hidden = true; }
-
-        const spread = document.getElementById("studio-spread");
-        const leftPage = document.getElementById("left-page");
-        const rightPage = document.getElementById("studio-page");
-        const layerList = document.getElementById("layer-list");
-        const artLibraryEl = document.getElementById("art-library");
-        let page = rightPage;
-        let selected = rightPage.querySelector(".selected");
-        let z = 10;
-        let artLibrary = [];
+        const canvas = document.getElementById("studio-canvas"), spread = document.getElementById("studio-spread"), leftPage = document.getElementById("left-page"), rightPage = document.getElementById("studio-page"), layerList = document.getElementById("layer-list"), artLibraryEl = document.getElementById("art-library");
+        let page = rightPage, selected = rightPage.querySelector(".selected"), z = 10, artLibrary = [], zoom = 1, isSpace = false, isPanning = false, startPan = {x:0,y:0,left:0,top:0};
         const ART_KEY = "meoden-art-library-v4";
-
-        const controls = {
-          fontFamily: document.getElementById("font-family"),
-          fontSize: document.getElementById("font-size"),
-          lineHeight: document.getElementById("line-height"),
-          opacity: document.getElementById("opacity"),
-          rotate: document.getElementById("rotate"),
-        };
-
-        function setStatus(text) { status.textContent = `V4.1 · ${text}`; }
-        function allLayers() { return [...spread.querySelectorAll(".studio-layer")]; }
-        function setActivePage(p) {
-          leftPage.classList.remove("active-page");
-          rightPage.classList.remove("active-page");
-          page = p;
-          page.classList.add("active-page");
-        }
-        leftPage.addEventListener("click", e => { if (e.target === leftPage) setActivePage(leftPage); });
-        rightPage.addEventListener("click", e => { if (e.target === rightPage) setActivePage(rightPage); });
-
-        function selectLayer(layer) {
-          if (!layer) return;
-          allLayers().forEach(el => el.classList.remove("selected"));
-          selected = layer;
-          setActivePage(layer.closest(".studio-page"));
-          selected.classList.add("selected");
-          controls.fontSize.value = parseFloat(selected.style.fontSize) || 18;
-          controls.lineHeight.value = parseFloat(selected.style.lineHeight) || 1.55;
-          controls.opacity.value = parseFloat(selected.style.opacity) || 1;
-          const match = (selected.style.transform || "").match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-          controls.rotate.value = match ? match[1] : 0;
-          updateLayerList();
-        }
-
-        function updateLayerList() {
-          layerList.innerHTML = "";
-          allLayers().forEach((el, i) => {
-            const b = document.createElement("button");
-            b.type = "button";
-            b.textContent = `${i + 1}. ${el.closest(".left-page") ? "L" : "R"} · ${el.dataset.type}${el.dataset.type === "text" ? " — " + el.innerText.slice(0, 18) : ""}`;
-            if (el === selected) b.classList.add("active");
-            b.addEventListener("click", () => selectLayer(el));
-            layerList.appendChild(b);
-          });
-        }
-
-        function makeLayer(el) {
-          el.spellcheck = false;
-          if (!el.style.zIndex) el.style.zIndex = ++z;
-          el.addEventListener("input", updateLayerList);
-          el.addEventListener("pointerdown", e => {
-            selectLayer(el);
-            if (el.isContentEditable && e.detail > 1) return;
-            const startX = e.clientX;
-            const startY = e.clientY;
-            const startLeft = parseFloat(el.style.left) || 0;
-            const startTop = parseFloat(el.style.top) || 0;
-            el.setPointerCapture(e.pointerId);
-            const move = ev => {
-              el.style.left = `${startLeft + ev.clientX - startX}px`;
-              el.style.top = `${startTop + ev.clientY - startY}px`;
-            };
-            const up = () => {
-              el.removeEventListener("pointermove", move);
-              el.removeEventListener("pointerup", up);
-            };
-            el.addEventListener("pointermove", move);
-            el.addEventListener("pointerup", up);
-          });
-        }
-        allLayers().forEach(makeLayer);
-        updateLayerList();
-
-        function addText(text, style, target = page) {
-          const el = document.createElement("div");
-          el.className = "studio-layer text";
-          el.dataset.type = "text";
-          el.contentEditable = "true";
-          el.spellcheck = false;
-          el.innerText = text;
-          el.style.cssText = style;
-          target.appendChild(el);
-          makeLayer(el);
-          selectLayer(el);
-          return el;
-        }
-        function addImage(src, target = page) {
-          const img = document.createElement("img");
-          img.src = src;
-          img.className = "studio-layer image";
-          img.dataset.type = "image";
-          img.style.cssText = "left:80px;top:220px;width:160px;opacity:.9;";
-          target.appendChild(img);
-          makeLayer(img);
-          selectLayer(img);
-          return img;
-        }
-
-        document.querySelector('[data-add="text"]').addEventListener("click", () => addText("Text mới", "left:68px;top:190px;width:240px;font-size:15px;line-height:1.5;font-family:var(--font-serif);"));
-        document.getElementById("add-decor").addEventListener("click", () => {
-          const el = document.createElement("div");
-          el.className = "studio-layer decor";
-          el.dataset.type = "decor";
-          el.style.cssText = "left:250px;top:44px;width:112px;height:112px;opacity:.14;";
-          page.appendChild(el);
-          makeLayer(el);
-          selectLayer(el);
-        });
-
-        function readFileAsDataURL(file, callback) {
-          const reader = new FileReader();
-          reader.onload = () => callback(reader.result);
-          reader.onerror = () => alert("Không đọc được file ảnh này.");
-          reader.readAsDataURL(file);
-        }
-        document.getElementById("image-input").addEventListener("change", e => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          readFileAsDataURL(file, src => { addImage(src); setStatus("Đã thêm image layer"); });
-          e.target.value = "";
-        });
-
-        function saveArtLibrary() {
-          try { localStorage.setItem(ART_KEY, JSON.stringify(artLibrary)); }
-          catch (e) { alert("Ảnh hơi nặng, trình duyệt không lưu được hết. Hãy dùng PNG nhẹ hơn hoặc xoá bớt library."); }
-        }
-        function renderArtLibrary() {
-          artLibraryEl.innerHTML = "";
-          if (!artLibrary.length) {
-            artLibraryEl.innerHTML = '<p class="empty-art">Chưa có PNG.</p>';
-            return;
-          }
-          artLibrary.forEach((item, index) => {
-            const card = document.createElement("div");
-            card.className = "art-item";
-            const img = document.createElement("img");
-            img.src = item.src;
-            img.title = item.name;
-            img.addEventListener("click", () => { addImage(item.src); setStatus(`Đã thêm ${item.name}`); });
-            const del = document.createElement("button");
-            del.type = "button";
-            del.textContent = "×";
-            del.addEventListener("click", e => {
-              e.stopPropagation();
-              artLibrary.splice(index, 1);
-              saveArtLibrary();
-              renderArtLibrary();
-            });
-            card.appendChild(img);
-            card.appendChild(del);
-            artLibraryEl.appendChild(card);
-          });
-        }
-        function loadArtLibrary() {
-          try { artLibrary = JSON.parse(localStorage.getItem(ART_KEY) || "[]"); }
-          catch (e) { artLibrary = []; }
-          renderArtLibrary();
-        }
-        loadArtLibrary();
-        document.getElementById("art-upload").addEventListener("change", e => {
-          const files = [...(e.target.files || [])];
-          if (!files.length) return;
-          let done = 0;
-          files.forEach(file => {
-            readFileAsDataURL(file, src => {
-              artLibrary.push({ id: Date.now() + Math.random(), name: file.name, src });
-              done += 1;
-              saveArtLibrary();
-              renderArtLibrary();
-              setStatus(`Đã upload ${done}/${files.length} PNG`);
-            });
-          });
-          e.target.value = "";
-        });
-        document.getElementById("clear-art-library").addEventListener("click", () => {
-          if (confirm("Xóa toàn bộ Art Library trong trình duyệt này?")) {
-            artLibrary = [];
-            saveArtLibrary();
-            renderArtLibrary();
-            setStatus("Đã xóa Art Library");
-          }
-        });
-
-        document.getElementById("paper-color").addEventListener("input", e => spread.querySelectorAll(".studio-page").forEach(p => p.style.backgroundColor = e.target.value));
-        document.getElementById("paper-texture").addEventListener("input", e => spread.querySelectorAll(".studio-page").forEach(p => p.style.setProperty("--studio-texture", e.target.value / 100)));
-        Object.entries(controls).forEach(([k, input]) => input.addEventListener("input", () => {
-          if (!selected) return;
-          if (k === "fontFamily") selected.style.fontFamily = input.value;
-          if (k === "fontSize") selected.style.fontSize = `${input.value}px`;
-          if (k === "lineHeight") selected.style.lineHeight = input.value;
-          if (k === "opacity") selected.style.opacity = input.value;
-          if (k === "rotate") selected.style.transform = `rotate(${input.value}deg)`;
-        }));
-
-        document.getElementById("center-x").addEventListener("click", () => { if (selected) selected.style.left = `${(420 - selected.offsetWidth) / 2}px`; });
-        document.getElementById("center-y").addEventListener("click", () => { if (selected) selected.style.top = `${(620 - selected.offsetHeight) / 2}px`; });
-        document.getElementById("front-layer").addEventListener("click", () => { if (selected) selected.style.zIndex = ++z; updateLayerList(); });
-        document.getElementById("back-layer").addEventListener("click", () => { if (selected) selected.style.zIndex = 1; updateLayerList(); });
-        document.getElementById("duplicate-layer").addEventListener("click", () => {
-          if (!selected) return;
-          const c = selected.cloneNode(true);
-          c.classList.remove("selected");
-          c.style.left = `${(parseFloat(selected.style.left) || 0) + 18}px`;
-          c.style.top = `${(parseFloat(selected.style.top) || 0) + 18}px`;
-          page.appendChild(c);
-          makeLayer(c);
-          selectLayer(c);
-        });
-        document.getElementById("delete-layer").addEventListener("click", () => { if (selected) { selected.remove(); selected = null; updateLayerList(); } });
-
-        document.getElementById("single-mode").addEventListener("click", () => { spread.classList.remove("spread-mode"); setStatus("Single mode"); });
-        document.getElementById("spread-mode").addEventListener("click", () => { spread.classList.add("spread-mode"); setStatus("Spread mode"); });
-        document.getElementById("toggle-grid").addEventListener("click", () => { spread.classList.toggle("show-grid"); setStatus("Đã bật/tắt Grid"); });
-        document.getElementById("toggle-guides").addEventListener("click", () => { spread.classList.toggle("show-guides"); setStatus("Đã bật/tắt Guides"); });
-
-        function clearPages() { leftPage.innerHTML = ""; rightPage.innerHTML = ""; setActivePage(rightPage); }
-        document.querySelectorAll("[data-preset]").forEach(btn => btn.addEventListener("click", () => {
-          clearPages();
-          if (btn.dataset.preset === "poem") {
-            addText("Tên bài thơ", "left:58px;top:70px;width:300px;font-size:20px;line-height:1.18;font-family:var(--font-serif);", rightPage);
-            addText("Em viết những dòng này\nnhư người đặt tay lên một cánh cửa cũ.\nBên kia là đêm,\nvà một mùa yêu đã khép lại.", "left:58px;top:136px;width:286px;font-size:11.2px;line-height:1.64;font-family:'Courier Prime','Courier New',monospace;", rightPage);
-          }
-          if (btn.dataset.preset === "chapter") {
-            addText("CHƯƠNG I", "left:60px;top:210px;width:300px;font-size:10px;letter-spacing:.22em;line-height:1.2;font-family:'Be Vietnam Pro',Arial,sans-serif;", rightPage);
-            addText("Những vết xám đầu tiên", "left:60px;top:250px;width:300px;font-size:34px;line-height:1.02;font-family:var(--font-serif);", rightPage);
-            addText("Những ngày đầu của trống rỗng, nơi tổn thương chưa thành tên.", "left:60px;top:342px;width:260px;font-size:12px;line-height:1.6;font-family:'Courier Prime','Courier New',monospace;opacity:.72;", rightPage);
-          }
-          if (btn.dataset.preset === "cover") {
-            rightPage.style.backgroundColor = "#050505";
-            addText("Mèo Đen Không Ngủ", "left:64px;top:64px;width:300px;font-size:10px;letter-spacing:.22em;line-height:1.2;color:#fff;font-family:'Be Vietnam Pro',Arial,sans-serif;", rightPage);
-            addText("Va Vào\nLần Yêu Cuối", "left:64px;top:242px;width:300px;font-size:42px;line-height:.96;color:#fff;font-family:var(--font-serif);", rightPage);
-          }
-          if (btn.dataset.preset === "typewriter") {
-            addText("NGƯỜI TÌNH", "left:58px;top:70px;width:300px;font-size:13px;letter-spacing:.12em;line-height:1.2;font-family:'Courier Prime','Courier New',monospace;", rightPage);
-            addText("Và chúng ta chỉ gọi nhau là người tình,\nlà mỗi sớm bình minh, người vội vàng khoác áo.", "left:58px;top:128px;width:290px;font-size:11px;line-height:1.72;font-family:'Courier Prime','Courier New',monospace;", rightPage);
-          }
-          selectLayer(spread.querySelector(".studio-layer"));
-          updateLayerList();
-          setStatus(`Preset ${btn.dataset.preset}`);
-        }));
-
-        function pageData(p) {
-          return [...p.querySelectorAll(".studio-layer")].map(el => ({
-            type: el.dataset.type,
-            text: el.dataset.type === "text" ? el.innerText : null,
-            src: el.tagName === "IMG" ? el.src : null,
-            style: el.getAttribute("style"),
-          }));
-        }
-        function getDesign() {
-          return { mode: spread.classList.contains("spread-mode") ? "spread" : "single", paper: { color: rightPage.style.backgroundColor || "#efe3cf" }, pages: { left: pageData(leftPage), right: pageData(rightPage) } };
-        }
-        document.getElementById("save-design").addEventListener("click", () => { localStorage.setItem("meoden-book-studio-v4", JSON.stringify(getDesign())); setStatus("Đã lưu draft"); });
-        document.getElementById("export-design").addEventListener("click", () => { document.getElementById("export-output").value = JSON.stringify(getDesign(), null, 2); setStatus("Đã export JSON"); });
-        document.getElementById("reset-design").addEventListener("click", () => { localStorage.removeItem("meoden-book-studio-v4"); location.reload(); });
+        const controls = {fontFamily:document.getElementById("font-family"),fontSize:document.getElementById("font-size"),lineHeight:document.getElementById("line-height"),opacity:document.getElementById("opacity"),rotate:document.getElementById("rotate")};
+        const zoomRange = document.getElementById("zoom-range");
+        function setStatus(text){status.textContent=`V5 · ${text}`}
+        function applyZoom(){spread.style.transform=`scale(${zoom})`;spread.style.transformOrigin="center center";zoomRange.value=Math.round(zoom*100);setStatus(`Zoom ${Math.round(zoom*100)}%`)}
+        document.getElementById("zoom-in").onclick=()=>{zoom=Math.min(1.8,zoom+.1);applyZoom()};document.getElementById("zoom-out").onclick=()=>{zoom=Math.max(.4,zoom-.1);applyZoom()};document.getElementById("zoom-reset").onclick=()=>{zoom=1;applyZoom()};document.getElementById("fit-screen").onclick=()=>{zoom=spread.classList.contains("spread-mode")?.78:1;applyZoom()};zoomRange.oninput=e=>{zoom=e.target.value/100;applyZoom()};
+        window.addEventListener("keydown",e=>{if(e.code==="Space"){isSpace=true;canvas.classList.add("is-panning")}});window.addEventListener("keyup",e=>{if(e.code==="Space"){isSpace=false;isPanning=false;canvas.classList.remove("is-panning")}});
+        canvas.addEventListener("wheel",e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();zoom=Math.max(.4,Math.min(1.8,zoom+(e.deltaY<0?.06:-.06)));applyZoom()}},{passive:false});
+        canvas.addEventListener("pointerdown",e=>{if(!isSpace)return;isPanning=true;startPan={x:e.clientX,y:e.clientY,left:canvas.scrollLeft,top:canvas.scrollTop};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener("pointermove",e=>{if(!isPanning)return;canvas.scrollLeft=startPan.left-(e.clientX-startPan.x);canvas.scrollTop=startPan.top-(e.clientY-startPan.y)});canvas.addEventListener("pointerup",()=>{isPanning=false});
+        function allLayers(){return[...spread.querySelectorAll(".studio-layer")]} function setActivePage(p){leftPage.classList.remove("active-page");rightPage.classList.remove("active-page");page=p;p.classList.add("active-page")} leftPage.onclick=e=>{if(e.target===leftPage)setActivePage(leftPage)};rightPage.onclick=e=>{if(e.target===rightPage)setActivePage(rightPage)};
+        function selectLayer(layer){if(!layer)return;allLayers().forEach(el=>el.classList.remove("selected"));selected=layer;setActivePage(layer.closest(".studio-page"));selected.classList.add("selected");controls.fontSize.value=parseFloat(selected.style.fontSize)||18;controls.lineHeight.value=parseFloat(selected.style.lineHeight)||1.55;controls.opacity.value=parseFloat(selected.style.opacity)||1;const m=(selected.style.transform||"").match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);controls.rotate.value=m?m[1]:0;updateLayerList()}
+        function updateLayerList(){layerList.innerHTML="";allLayers().forEach((el,i)=>{const b=document.createElement("button");b.type="button";b.textContent=`${i+1}. ${el.closest(".left-page")?"L":"R"} · ${el.dataset.type}${el.dataset.type==="text"?" — "+el.innerText.slice(0,18):""}`;if(el===selected)b.classList.add("active");b.onclick=()=>selectLayer(el);layerList.appendChild(b)})}
+        function makeLayer(el){el.spellcheck=false;if(!el.style.zIndex)el.style.zIndex=++z;el.addEventListener("input",updateLayerList);el.addEventListener("pointerdown",e=>{if(isSpace)return;selectLayer(el);if(el.isContentEditable&&e.detail>1)return;const sx=e.clientX,sy=e.clientY,sl=parseFloat(el.style.left)||0,st=parseFloat(el.style.top)||0;el.setPointerCapture(e.pointerId);const mv=ev=>{el.style.left=`${sl+(ev.clientX-sx)/zoom}px`;el.style.top=`${st+(ev.clientY-sy)/zoom}px`};const up=()=>{el.removeEventListener("pointermove",mv);el.removeEventListener("pointerup",up)};el.addEventListener("pointermove",mv);el.addEventListener("pointerup",up)})}
+        allLayers().forEach(makeLayer);updateLayerList();
+        function addText(text,style,target=page){const el=document.createElement("div");el.className="studio-layer text";el.dataset.type="text";el.contentEditable="true";el.spellcheck=false;el.innerText=text;el.style.cssText=style;target.appendChild(el);makeLayer(el);selectLayer(el);return el} function addImage(src,target=page){const img=document.createElement("img");img.src=src;img.className="studio-layer image";img.dataset.type="image";img.style.cssText="left:80px;top:220px;width:160px;opacity:.9;";target.appendChild(img);makeLayer(img);selectLayer(img);return img}
+        document.querySelector('[data-add="text"]').onclick=()=>addText("Text mới","left:68px;top:190px;width:240px;font-size:15px;line-height:1.5;font-family:var(--font-serif);");document.getElementById("add-decor").onclick=()=>{const el=document.createElement("div");el.className="studio-layer decor";el.dataset.type="decor";el.style.cssText="left:250px;top:44px;width:112px;height:112px;opacity:.14;";page.appendChild(el);makeLayer(el);selectLayer(el)};
+        function readFileAsDataURL(file,cb){const r=new FileReader();r.onload=()=>cb(r.result);r.onerror=()=>alert("Không đọc được file ảnh này.");r.readAsDataURL(file)} document.getElementById("image-input").onchange=e=>{const f=e.target.files?.[0];if(!f)return;readFileAsDataURL(f,src=>{addImage(src);setStatus("Đã thêm image layer")});e.target.value=""};
+        function saveArtLibrary(){try{localStorage.setItem(ART_KEY,JSON.stringify(artLibrary))}catch(e){alert("Ảnh hơi nặng, trình duyệt không lưu được hết.")}} function renderArtLibrary(){artLibraryEl.innerHTML="";if(!artLibrary.length){artLibraryEl.innerHTML='<p class="empty-art">Chưa có PNG.</p>';return}artLibrary.forEach((item,index)=>{const card=document.createElement("div");card.className="art-item";const img=document.createElement("img");img.src=item.src;img.title=item.name;img.onclick=()=>{addImage(item.src);setStatus(`Đã thêm ${item.name}`)};const del=document.createElement("button");del.type="button";del.textContent="×";del.onclick=e=>{e.stopPropagation();artLibrary.splice(index,1);saveArtLibrary();renderArtLibrary()};card.appendChild(img);card.appendChild(del);artLibraryEl.appendChild(card)})} function loadArtLibrary(){try{artLibrary=JSON.parse(localStorage.getItem(ART_KEY)||"[]")}catch(e){artLibrary=[]}renderArtLibrary()} loadArtLibrary();document.getElementById("art-upload").onchange=e=>{const files=[...(e.target.files||[])];let done=0;files.forEach(file=>readFileAsDataURL(file,src=>{artLibrary.push({id:Date.now()+Math.random(),name:file.name,src});done++;saveArtLibrary();renderArtLibrary();setStatus(`Đã upload ${done}/${files.length}`)}));e.target.value=""};document.getElementById("clear-art-library").onclick=()=>{if(confirm("Xóa toàn bộ Art Library?")){artLibrary=[];saveArtLibrary();renderArtLibrary()}};
+        document.getElementById("paper-color").oninput=e=>spread.querySelectorAll(".studio-page").forEach(p=>p.style.backgroundColor=e.target.value);document.getElementById("paper-texture").oninput=e=>spread.querySelectorAll(".studio-page").forEach(p=>p.style.setProperty("--studio-texture",e.target.value/100));Object.entries(controls).forEach(([k,input])=>input.oninput=()=>{if(!selected)return;if(k==="fontFamily")selected.style.fontFamily=input.value;if(k==="fontSize")selected.style.fontSize=`${input.value}px`;if(k==="lineHeight")selected.style.lineHeight=input.value;if(k==="opacity")selected.style.opacity=input.value;if(k==="rotate")selected.style.transform=`rotate(${input.value}deg)`});
+        document.getElementById("center-x").onclick=()=>{if(selected)selected.style.left=`${(420-selected.offsetWidth)/2}px`};document.getElementById("center-y").onclick=()=>{if(selected)selected.style.top=`${(620-selected.offsetHeight)/2}px`};document.getElementById("front-layer").onclick=()=>{if(selected)selected.style.zIndex=++z;updateLayerList()};document.getElementById("back-layer").onclick=()=>{if(selected)selected.style.zIndex=1;updateLayerList()};document.getElementById("duplicate-layer").onclick=()=>{if(!selected)return;const c=selected.cloneNode(true);c.classList.remove("selected");c.style.left=`${(parseFloat(selected.style.left)||0)+18}px`;c.style.top=`${(parseFloat(selected.style.top)||0)+18}px`;page.appendChild(c);makeLayer(c);selectLayer(c)};document.getElementById("delete-layer").onclick=()=>{if(selected){selected.remove();selected=null;updateLayerList()}};
+        document.getElementById("single-mode").onclick=()=>{spread.classList.remove("spread-mode");setStatus("Single mode")};document.getElementById("spread-mode").onclick=()=>{spread.classList.add("spread-mode");setStatus("Spread mode")};document.getElementById("toggle-grid").onclick=()=>{spread.classList.toggle("show-grid");setStatus("Grid")};document.getElementById("toggle-guides").onclick=()=>{spread.classList.toggle("show-guides");setStatus("Guides")};
+        function pageData(p){return[...p.querySelectorAll(".studio-layer")].map(el=>({type:el.dataset.type,text:el.dataset.type==="text"?el.innerText:null,src:el.tagName==="IMG"?el.src:null,style:el.getAttribute("style")}))} function getDesign(){return{mode:spread.classList.contains("spread-mode")?"spread":"single",zoom,pages:{left:pageData(leftPage),right:pageData(rightPage)}}} document.getElementById("save-design").onclick=()=>{localStorage.setItem("meoden-book-studio-v5",JSON.stringify(getDesign()));setStatus("Đã lưu draft")};document.getElementById("export-design").onclick=()=>{document.getElementById("export-output").value=JSON.stringify(getDesign(),null,2);setStatus("Đã export JSON")};document.getElementById("reset-design").onclick=()=>{localStorage.removeItem("meoden-book-studio-v5");location.reload()};
       })();
     </script>
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
-      .studio-body{background:#050505}.studio-lock{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}.studio-lock h1{font-family:var(--font-serif);font-size:clamp(42px,8vw,84px);margin:0 0 12px}.studio-lock p{text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}.studio-lock span{color:var(--text-soft)}.studio-app{min-height:100vh;display:grid;grid-template-columns:300px 1fr}.studio-panel{border-right:1px solid rgba(255,255,255,.12);padding:20px;background:rgba(255,255,255,.04);backdrop-filter:blur(18px);overflow:auto;max-height:100vh}.studio-back{color:var(--muted);font-size:13px}.studio-panel h1{font-family:var(--font-serif);font-size:34px;margin:18px 0 6px}.studio-note{color:var(--muted);font-size:13px;line-height:1.6}.studio-panel section{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;margin-top:16px;display:grid;gap:11px}.studio-panel h2{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:0}.studio-grid-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.studio-panel label{display:grid;gap:6px;color:var(--text-soft);font-size:13px}.studio-panel input,.studio-panel select,.studio-panel button,.file-button,textarea{width:100%;border:1px solid rgba(255,255,255,.13);border-radius:12px;background:rgba(0,0,0,.32);color:white;padding:9px 11px;font:inherit}.studio-panel button,.file-button{cursor:pointer;text-align:center}.studio-panel button:hover,.file-button:hover,.layer-list button.active{border-color:rgba(94,213,255,.5);background:rgba(94,213,255,.1)}.hidden-file{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}.file-button input{display:none}textarea{min-height:130px;font-size:11px;font-family:monospace}.layer-list{display:grid;gap:6px}.layer-list button{text-align:left;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.art-library{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-height:44px}.empty-art{grid-column:1/-1;color:var(--muted);font-size:12px;margin:0}.art-item{position:relative;aspect-ratio:1;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:linear-gradient(45deg,rgba(255,255,255,.06) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,.06) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,.06) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.06) 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0;overflow:hidden}.art-item img{width:100%;height:100%;object-fit:contain;padding:6px;cursor:pointer}.art-item button{position:absolute;right:4px;top:4px;width:22px;height:22px;padding:0;border-radius:999px;background:rgba(0,0,0,.7)}.studio-workspace{min-width:0;display:grid;grid-template-rows:auto 1fr}.studio-toolbar{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.1);color:var(--muted);font-size:13px}.studio-canvas{overflow:auto;display:grid;place-items:center;padding:46px;background:radial-gradient(circle at center,rgba(255,255,255,.05),transparent 28rem),#020202}.studio-spread{display:grid;grid-template-columns:420px;filter:drop-shadow(0 38px 120px rgba(0,0,0,.65));position:relative}.studio-spread.spread-mode{grid-template-columns:420px 420px}.studio-spread::after{content:"";position:absolute;left:50%;top:14px;bottom:14px;width:28px;transform:translateX(-50%);opacity:0;pointer-events:none;background:radial-gradient(ellipse,rgba(0,0,0,.24),transparent 70%);filter:blur(12px)}.studio-spread.spread-mode::after{opacity:.55}.studio-page{--studio-texture:.14;width:420px;height:620px;position:relative;overflow:hidden;background-color:#efe3cf;color:#17120f;border:1px solid rgba(0,0,0,.18);background-image:radial-gradient(circle at top left,rgba(255,255,255,.48),transparent 28%),repeating-linear-gradient(0deg,rgba(0,0,0,calc(var(--studio-texture)*.05)) 0 1px,transparent 1px 7px)}.left-page{display:none}.spread-mode .left-page{display:block}.active-page{box-shadow:inset 0 0 0 2px rgba(94,213,255,.22)}.show-grid .studio-page{background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px),radial-gradient(circle at top left,rgba(255,255,255,.48),transparent 28%);background-size:24px 24px,24px 24px,auto}.show-guides .studio-page::before{content:"";position:absolute;inset:44px;border:1px dashed rgba(0,0,0,.22);pointer-events:none;z-index:30}.show-guides .studio-page::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed rgba(0,0,0,.18);pointer-events:none;z-index:30}.studio-layer{position:absolute;min-width:32px;min-height:24px;outline:1px solid transparent;resize:both;overflow:auto;padding:2px;touch-action:none;white-space:pre-line;scrollbar-width:none}.studio-layer::-webkit-scrollbar{display:none}.studio-layer:focus{outline:none}.studio-layer.selected{outline:1px solid rgba(94,213,255,.75);box-shadow:0 0 0 4px rgba(94,213,255,.12)}.studio-layer.text{white-space:pre-line}.studio-layer.image{height:auto;padding:0}.studio-layer.decor::before{content:"";position:absolute;inset:8px;border:1.2px solid currentColor;border-radius:58% 42% 50% 46%;transform:rotate(-18deg)}.studio-layer.decor::after{content:"";position:absolute;left:55%;top:52%;width:1px;height:72px;background:currentColor;transform:rotate(28deg)}@media(max-width:1100px){.studio-spread.spread-mode{transform:scale(.82);transform-origin:top center}.studio-canvas{place-items:start center}}@media(max-width:900px){.studio-app{grid-template-columns:1fr}.studio-panel{max-height:none;border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}.studio-canvas{padding:24px;place-items:start center;min-height:560px}.studio-spread,.studio-spread.spread-mode{transform:scale(.78);transform-origin:top center}}
-    </style>
+    <style>@import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");html.studio-html,body.studio-body,.studio-body *{cursor:auto!important}.studio-body{background:#050505}.studio-lock{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}.studio-lock h1{font-family:var(--font-serif);font-size:clamp(42px,8vw,84px);margin:0 0 12px}.studio-lock p{text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}.studio-lock span{color:var(--text-soft)}.studio-app{min-height:100vh;display:grid;grid-template-columns:300px 1fr}.studio-panel{border-right:1px solid rgba(255,255,255,.12);padding:20px;background:rgba(255,255,255,.04);backdrop-filter:blur(18px);overflow:auto;max-height:100vh}.studio-back{color:var(--muted);font-size:13px}.studio-panel h1{font-family:var(--font-serif);font-size:34px;margin:18px 0 6px}.studio-note{color:var(--muted);font-size:13px;line-height:1.6}.studio-panel section{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;margin-top:16px;display:grid;gap:11px}.studio-panel h2{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:0}.studio-grid-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.studio-panel label{display:grid;gap:6px;color:var(--text-soft);font-size:13px}.studio-panel input,.studio-panel select,.studio-panel button,.file-button,textarea{width:100%;border:1px solid rgba(255,255,255,.13);border-radius:12px;background:rgba(0,0,0,.32);color:white;padding:9px 11px;font:inherit}.studio-panel button,.file-button{cursor:pointer!important;text-align:center}.studio-panel button:hover,.file-button:hover,.layer-list button.active{border-color:rgba(94,213,255,.5);background:rgba(94,213,255,.1)}.hidden-file{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}.file-button input{display:none}textarea{min-height:130px;font-size:11px;font-family:monospace}.layer-list{display:grid;gap:6px}.layer-list button{text-align:left;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.art-library{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-height:44px}.empty-art{grid-column:1/-1;color:var(--muted);font-size:12px;margin:0}.art-item{position:relative;aspect-ratio:1;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:linear-gradient(45deg,rgba(255,255,255,.06) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,.06) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,.06) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.06) 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0;overflow:hidden}.art-item img{width:100%;height:100%;object-fit:contain;padding:6px;cursor:pointer!important}.art-item button{position:absolute;right:4px;top:4px;width:22px;height:22px;padding:0;border-radius:999px;background:rgba(0,0,0,.7)}.studio-workspace{min-width:0;display:grid;grid-template-rows:auto 1fr}.studio-toolbar{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.1);color:var(--muted);font-size:13px}.studio-canvas{overflow:auto;display:grid;place-items:center;padding:46px;background:radial-gradient(circle at center,rgba(255,255,255,.05),transparent 28rem),#020202}.studio-canvas.is-panning{cursor:grab!important}.studio-spread{display:grid;grid-template-columns:420px;filter:drop-shadow(0 38px 120px rgba(0,0,0,.65));position:relative;transition:transform .18s ease}.studio-spread.spread-mode{grid-template-columns:420px 420px}.studio-spread::after{content:"";position:absolute;left:50%;top:14px;bottom:14px;width:28px;transform:translateX(-50%);opacity:0;pointer-events:none;background:radial-gradient(ellipse,rgba(0,0,0,.24),transparent 70%);filter:blur(12px)}.studio-spread.spread-mode::after{opacity:.55}.studio-page{--studio-texture:.14;width:420px;height:620px;position:relative;overflow:hidden;background-color:#efe3cf;color:#17120f;border:1px solid rgba(0,0,0,.18);background-image:radial-gradient(circle at top left,rgba(255,255,255,.48),transparent 28%),repeating-linear-gradient(0deg,rgba(0,0,0,calc(var(--studio-texture)*.05)) 0 1px,transparent 1px 7px)}.left-page{display:none}.spread-mode .left-page{display:block}.active-page{box-shadow:inset 0 0 0 2px rgba(94,213,255,.22)}.show-grid .studio-page{background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px),radial-gradient(circle at top left,rgba(255,255,255,.48),transparent 28%);background-size:24px 24px,24px 24px,auto}.show-guides .studio-page::before{content:"";position:absolute;inset:44px;border:1px dashed rgba(0,0,0,.22);pointer-events:none;z-index:30}.show-guides .studio-page::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed rgba(0,0,0,.18);pointer-events:none;z-index:30}.studio-layer{position:absolute;min-width:32px;min-height:24px;outline:1px solid transparent;resize:both;overflow:auto;padding:2px;touch-action:none;white-space:pre-line;scrollbar-width:none;cursor:move!important}.studio-layer::-webkit-scrollbar{display:none}.studio-layer:focus{outline:none}.studio-layer.selected{outline:1px solid rgba(94,213,255,.75);box-shadow:0 0 0 4px rgba(94,213,255,.12)}.studio-layer.text{white-space:pre-line;cursor:text!important}.studio-layer.image{height:auto;padding:0}.studio-layer.decor::before{content:"";position:absolute;inset:8px;border:1.2px solid currentColor;border-radius:58% 42% 50% 46%;transform:rotate(-18deg)}.studio-layer.decor::after{content:"";position:absolute;left:55%;top:52%;width:1px;height:72px;background:currentColor;transform:rotate(28deg)}@media(max-width:1100px){.studio-canvas{place-items:start center}}@media(max-width:900px){.studio-app{grid-template-columns:1fr}.studio-panel{max-height:none;border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}.studio-canvas{padding:24px;place-items:start center;min-height:560px}.studio-spread{transform:scale(.78);transform-origin:top center}}</style>
   </body>
 </html>
