@@ -120,7 +120,7 @@ const poems = sorted.map((entry) => ({
           #f0e5d1;
         color: var(--ink);
         border: 1px solid rgba(0, 0, 0, 0.18);
-        padding: 44px;
+        padding: 40px;
         overflow: hidden;
         font-family: var(--font-serif);
         font-feature-settings: "kern";
@@ -140,9 +140,11 @@ const poems = sorted.map((entry) => ({
 
       .cover-page {
         background:
-          radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.12), transparent 30%),
-          linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 34%),
+          linear-gradient(rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.82)),
+          url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80"),
           linear-gradient(180deg, #0a0a0c 0%, #020203 100%);
+        background-size: cover;
+        background-position: center;
         color: #ffffff;
         display: grid;
         place-items: center;
@@ -153,7 +155,7 @@ const poems = sorted.map((entry) => ({
       .cover-page::after {
         background:
           linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.06)),
-          radial-gradient(circle at 50% 60%, transparent 0%, rgba(0, 0, 0, 0.54) 78%);
+          radial-gradient(circle at 50% 60%, transparent 0%, rgba(0, 0, 0, 0.58) 78%);
       }
 
       .cover-art {
@@ -167,7 +169,7 @@ const poems = sorted.map((entry) => ({
         content: "";
         position: absolute;
         inset: 28px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.18);
       }
 
       .cover-art::after {
@@ -178,31 +180,31 @@ const poems = sorted.map((entry) => ({
         width: 220px;
         height: 220px;
         transform: translate(-50%, -50%);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.16);
         border-radius: 999px;
-        opacity: 0.55;
+        opacity: 0.42;
       }
 
       .moon {
         position: absolute;
         left: 50%;
-        top: 28%;
-        width: 118px;
-        height: 118px;
+        top: 27%;
+        width: 108px;
+        height: 108px;
         transform: translateX(-50%);
         border-radius: 999px;
         background:
           radial-gradient(circle at 36% 28%, #ffffff, rgba(255, 255, 255, 0.86) 32%, rgba(255, 255, 255, 0.12) 68%, transparent 70%);
         filter: blur(0.2px) drop-shadow(0 0 38px rgba(255, 255, 255, 0.38));
-        opacity: 0.78;
+        opacity: 0.72;
       }
 
       .cat-silhouette {
         position: absolute;
         left: 50%;
         bottom: 142px;
-        width: 92px;
-        height: 70px;
+        width: 86px;
+        height: 64px;
         transform: translateX(-50%);
         border-radius: 48% 48% 36% 36%;
         background: rgba(0, 0, 0, 0.88);
@@ -213,12 +215,12 @@ const poems = sorted.map((entry) => ({
       .cat-silhouette::after {
         content: "";
         position: absolute;
-        top: -20px;
+        top: -19px;
         width: 0;
         height: 0;
-        border-left: 18px solid transparent;
-        border-right: 18px solid transparent;
-        border-bottom: 34px solid rgba(0, 0, 0, 0.88);
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        border-bottom: 31px solid rgba(0, 0, 0, 0.88);
       }
 
       .cat-silhouette::before {
@@ -241,29 +243,29 @@ const poems = sorted.map((entry) => ({
       }
 
       .cover-author {
-        color: rgba(255, 255, 255, 0.72);
+        color: rgba(255, 255, 255, 0.78);
         text-transform: uppercase;
         letter-spacing: 0.18em;
         font-family: var(--font-ui);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         margin: 0 0 auto;
       }
 
       .cover-page h2 {
         font-family: var(--font-serif);
-        font-size: clamp(42px, 6vw, 60px);
+        font-size: clamp(38px, 6vw, 56px);
         font-weight: 700;
-        line-height: 0.98;
-        letter-spacing: -0.06em;
+        line-height: 1;
+        letter-spacing: -0.055em;
         margin: auto 0 22px;
         text-wrap: balance;
       }
 
       .cover-page small {
-        color: rgba(255, 255, 255, 0.72);
+        color: rgba(255, 255, 255, 0.78);
         font-family: var(--font-ui);
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 0.08em;
         line-height: 1.7;
         text-transform: uppercase;
@@ -286,17 +288,17 @@ const poems = sorted.map((entry) => ({
         display: block;
         color: rgba(0, 0, 0, 0.52);
         font-family: var(--font-ui);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.18em;
         text-transform: uppercase;
-        margin-bottom: 28px;
+        margin-bottom: 24px;
       }
 
       .intro-inner p {
-        font-size: 21px;
-        line-height: 1.9;
-        margin: 0 0 22px;
+        font-size: 18px;
+        line-height: 1.78;
+        margin: 0 0 18px;
       }
 
       .poem-book-page {
@@ -310,7 +312,7 @@ const poems = sorted.map((entry) => ({
         bottom: 28px;
         color: rgba(0, 0, 0, 0.35);
         font-family: var(--font-ui);
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 0.16em;
       }
 
@@ -318,11 +320,11 @@ const poems = sorted.map((entry) => ({
         position: relative;
         z-index: 1;
         font-family: var(--font-serif);
-        font-size: 30px;
+        font-size: 25px;
         font-weight: 700;
-        line-height: 1.15;
-        letter-spacing: -0.035em;
-        margin: 12px 0 18px;
+        line-height: 1.16;
+        letter-spacing: -0.03em;
+        margin: 10px 0 14px;
       }
 
       .book-date {
@@ -330,7 +332,7 @@ const poems = sorted.map((entry) => ({
         z-index: 1;
         color: rgba(0, 0, 0, 0.48);
         font-family: var(--font-ui);
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         margin: 0;
@@ -341,22 +343,22 @@ const poems = sorted.map((entry) => ({
         z-index: 1;
         color: rgba(0, 0, 0, 0.62);
         font-family: var(--font-serif);
-        font-size: 15px;
+        font-size: 13px;
         font-style: italic;
-        line-height: 1.75;
-        margin-bottom: 24px;
+        line-height: 1.65;
+        margin-bottom: 18px;
       }
 
       .book-poem-body {
         position: relative;
         z-index: 1;
         font-family: var(--font-serif);
-        font-size: 15px;
-        line-height: 1.88;
+        font-size: 13px;
+        line-height: 1.72;
       }
 
       .book-poem-body p {
-        margin: 0 0 16px;
+        margin: 0 0 12px;
       }
 
       .end-page {
@@ -364,7 +366,7 @@ const poems = sorted.map((entry) => ({
         place-items: center;
         text-align: center;
         font-family: var(--font-serif);
-        font-size: 52px;
+        font-size: 46px;
         font-weight: 700;
       }
 
@@ -377,7 +379,7 @@ const poems = sorted.map((entry) => ({
         display: block;
         color: rgba(0, 0, 0, 0.56);
         font-family: var(--font-ui);
-        font-size: 12px;
+        font-size: 11px;
         letter-spacing: 0.1em;
         text-transform: uppercase;
       }
@@ -400,16 +402,16 @@ const poems = sorted.map((entry) => ({
         }
 
         .book-page {
-          padding: 34px;
+          padding: 32px;
         }
 
         .poem-book-page h2 {
-          font-size: 26px;
+          font-size: 23px;
         }
 
         .book-poem-body {
-          font-size: 14px;
-          line-height: 1.82;
+          font-size: 12.5px;
+          line-height: 1.68;
         }
       }
     </style>
