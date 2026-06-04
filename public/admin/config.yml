@@ -1,8 +1,6 @@
 backend:
-  name: github
-  repo: bcwn-kdt/meodenkhongngu
+  name: git-gateway
   branch: main
-  base_url: https://api.netlify.com
   
 media_folder: "public/uploads"
 public_folder: "/uploads"
