@@ -1,5 +1,7 @@
 import HTMLFlipBook from "react-pageflip";
 
+const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
+
 export default function FlipBook({ poems }) {
   return (
     <section className="book-section">
@@ -41,7 +43,7 @@ export default function FlipBook({ poems }) {
             </div>
           </div>
 
-          <div className="book-page intro-page decorated-page">
+          <div className="book-page intro-page decorated-page botanical-rose">
             <div className="botanical botanical-top" aria-hidden="true" />
             <div className="botanical botanical-bottom" aria-hidden="true" />
 
@@ -63,22 +65,29 @@ export default function FlipBook({ poems }) {
             </div>
           </div>
 
-          {poems.map((poem, index) => (
-            <div className="book-page poem-book-page decorated-page" key={poem.slug}>
-              <div className="botanical botanical-top" aria-hidden="true" />
-              <div className="botanical botanical-bottom" aria-hidden="true" />
-              <div className="book-page-number">{String(index + 1).padStart(2, "0")}</div>
-              <p className="book-date">{poem.date}</p>
-              <h2>{poem.title}</h2>
-              {poem.excerpt && <p className="book-excerpt">{poem.excerpt}</p>}
-              <div
-                className="book-poem-body"
-                dangerouslySetInnerHTML={{ __html: poem.html }}
-              />
-            </div>
-          ))}
+          {poems.map((poem, index) => {
+            const botanical = botanicalStyles[index % botanicalStyles.length];
 
-          <div className="book-page end-page decorated-page">
+            return (
+              <div
+                className={`book-page poem-book-page decorated-page botanical-${botanical}`}
+                key={poem.slug}
+              >
+                <div className="botanical botanical-top" aria-hidden="true" />
+                <div className="botanical botanical-bottom" aria-hidden="true" />
+                <div className="book-page-number">{String(index + 1).padStart(2, "0")}</div>
+                <p className="book-date">{poem.date}</p>
+                <h2>{poem.title}</h2>
+                {poem.excerpt && <p className="book-excerpt">{poem.excerpt}</p>}
+                <div
+                  className="book-poem-body"
+                  dangerouslySetInnerHTML={{ __html: poem.html }}
+                />
+              </div>
+            );
+          })}
+
+          <div className="book-page end-page decorated-page botanical-ginkgo">
             <div className="botanical botanical-top" aria-hidden="true" />
             <div className="botanical botanical-bottom" aria-hidden="true" />
             <div>
