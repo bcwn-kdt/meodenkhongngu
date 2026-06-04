@@ -11,23 +11,25 @@ import "../styles/global.css";
   </head>
 
   <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
+
     <div class="site-shell">
-      <header class="site-header">
-        <a class="logo" href="/">Mèo Đen Không Ngủ</a>
+      <header class="site-header glow-surface">
+        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
 
         <nav class="nav">
-          <a href="/tho">Thơ</a>
-          <a href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a href="/ve-meo">Về Mèo</a>
+          <a class="glow-link" href="/tho">Thơ</a>
+          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
+          <a class="glow-link" href="/ve-meo">Về Mèo</a>
         </nav>
       </header>
 
       <main>
-        <section class="about">
-          <p class="eyebrow">about</p>
+        <section class="about glow-surface">
+          <p class="eyebrow">artist statement</p>
           <h1 class="page-title">Về Mèo</h1>
 
-          <div class="about-content">
+          <div class="about-content glow-surface">
             <p>
               Mèo Đen Không Ngủ là nơi cất lại những bài thơ, những đêm dài,
               những mùa yêu đã từng đi qua bằng tất cả dịu dàng và thương tổn.
@@ -45,5 +47,7 @@ import "../styles/global.css";
         <p>© Mèo Đen Không Ngủ</p>
       </footer>
     </div>
+
+    <script is:inline src="/glow.js"></script>
   </body>
 </html>
