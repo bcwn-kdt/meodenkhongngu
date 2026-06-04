@@ -15,6 +15,10 @@ const latest = poems
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mèo Đen Không Ngủ</title>
+    <meta
+      name="description"
+      content="Mèo Đen Không Ngủ là kho lưu trữ thơ cá nhân, nơi cất lại những đêm dài, những lần yêu và những phiên bản cũ đã từng rất buồn."
+    />
   </head>
 
   <body>
@@ -59,8 +63,10 @@ const latest = poems
               latest.map((poem) => (
                 <a class="poem-item glow-card" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
                   <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
-                  <h2>{poem.data.title}</h2>
-                  {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+                  <div>
+                    <h2>{poem.data.title}</h2>
+                    {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+                  </div>
                 </a>
               ))
             }
@@ -73,38 +79,6 @@ const latest = poems
       </footer>
     </div>
 
-    <script is:inline>
-      const cursorGlow = document.querySelector(".cursor-glow");
-      const interactiveElements = document.querySelectorAll(".glow-surface, .glow-card, .glow-button, .glow-link");
-
-      window.addEventListener("pointermove", (event) => {
-        document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
-        document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
-
-        if (cursorGlow) {
-          cursorGlow.style.opacity = "1";
-          cursorGlow.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
-        }
-
-        interactiveElements.forEach((element) => {
-          const rect = element.getBoundingClientRect();
-          element.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
-          element.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
-        });
-      });
-
-      window.addEventListener("pointerleave", () => {
-        if (cursorGlow) cursorGlow.style.opacity = "0";
-      });
-    </script>
+    <script is:inline src="/glow.js"></script>
   </body>
 </html>
-
-<style>
-  .section-title {
-    font-family: Georgia, serif;
-    font-size: 46px;
-    line-height: 1;
-    margin: 10px 0 0;
-  }
-</style>
