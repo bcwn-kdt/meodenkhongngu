@@ -1,0 +1,221 @@
+:root {
+  --bg: #08080b;
+  --bg-soft: #111118;
+  --card: rgba(255, 255, 255, 0.035);
+  --text: #eee5d8;
+  --muted: #9e9488;
+  --accent: #b68a5b;
+  --line: rgba(255, 255, 255, 0.1);
+  --paper: #efe5d1;
+  --ink: #17120f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(182, 138, 91, 0.16), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(120, 55, 45, 0.12), transparent 32%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, Arial, sans-serif;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-shell {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.site-header {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.logo {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  letter-spacing: 0.02em;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.nav a:hover {
+  color: var(--accent);
+}
+
+.site-footer {
+  margin-top: 90px;
+  padding: 34px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 12px;
+}
+
+.hero {
+  min-height: 68vh;
+  display: grid;
+  place-content: center;
+  max-width: 780px;
+  padding: 86px 0;
+}
+
+.hero h1,
+.page-title {
+  font-family: Georgia, serif;
+  font-size: clamp(56px, 10vw, 118px);
+  line-height: 0.9;
+  margin: 14px 0 24px;
+}
+
+.intro {
+  color: var(--muted);
+  font-size: 18px;
+  max-width: 650px;
+}
+
+.button-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.button {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.button.secondary {
+  border-color: var(--line);
+  color: var(--text);
+}
+
+.archive {
+  max-width: 880px;
+  margin: 76px auto 0;
+}
+
+.poem-list {
+  margin-top: 48px;
+  border-top: 1px solid var(--line);
+}
+
+.poem-item {
+  display: block;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.poem-item span {
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.poem-item h2 {
+  font-family: Georgia, serif;
+  font-size: 40px;
+  line-height: 1;
+  margin: 10px 0;
+}
+
+.poem-item p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.poem-item:hover h2 {
+  color: var(--accent);
+}
+
+.poem-page {
+  max-width: 780px;
+  margin: 76px auto 0;
+}
+
+.poem-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.poem-header h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(46px, 8vw, 88px);
+  line-height: 0.95;
+  margin: 14px 0 18px;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.poem-content {
+  font-family: Georgia, serif;
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 2.05;
+}
+
+.poem-content p {
+  margin: 0 0 32px;
+  white-space: pre-line;
+}
+
+.about {
+  max-width: 760px;
+  margin: 86px auto 0;
+}
+
+.about-content {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  line-height: 2;
+}
+
+.about-content p {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero h1,
+  .page-title {
+    font-size: clamp(52px, 16vw, 78px);
+  }
+}

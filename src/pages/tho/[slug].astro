@@ -1,0 +1,66 @@
+---
+import "../../styles/global.css";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const poems = await getCollection("poems");
+
+  return poems
+    .filter((poem) => poem.data.published)
+    .map((poem) => ({
+      params: { slug: poem.id.replace(/\.md$/, "") },
+      props: { poem },
+    }));
+}
+
+const { poem } = Astro.props;
+const { Content } = await render(poem);
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{poem.data.title} | Mèo Đen Không Ngủ</title>
+  </head>
+
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="logo" href="/">Mèo Đen Không Ngủ</a>
+
+        <nav class="nav">
+          <a href="/tho">Thơ</a>
+          <a href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
+          <a href="/ve-meo">Về Mèo</a>
+          <a href="/admin">Admin</a>
+        </nav>
+      </header>
+
+      <main>
+        <article class="poem-page">
+          <header class="poem-header">
+            {poem.data.collection && <p class="eyebrow">{poem.data.collection}</p>}
+
+            <h1>{poem.data.title}</h1>
+
+            <div class="meta">
+              <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
+              {poem.data.chapter && <span> · {poem.data.chapter}</span>}
+              {poem.data.mood && <span> · {poem.data.mood}</span>}
+            </div>
+          </header>
+
+          <div class="poem-content">
+            <Content />
+          </div>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>© Mèo Đen Không Ngủ</p>
+      </footer>
+    </div>
+  </body>
+</html>
