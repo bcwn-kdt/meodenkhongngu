@@ -23,7 +23,7 @@ const poems = sorted.map((entry) => ({
   title: entry.data.title,
   date: entry.data.date.toLocaleDateString("vi-VN"),
   excerpt: entry.data.excerpt,
-  html: marked.parse(entry.body),
+  html: marked.parse(entry.body || ""),
 }));
 ---
 
