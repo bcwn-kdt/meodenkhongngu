@@ -6,8 +6,8 @@ export default function FlipBook({ poems }) {
       <div className="book-top">
         <h1>Va Vào Lần Yêu Cuối</h1>
         <p>
-          Một tập thơ về những điều từng làm mình không ngủ —
-          nay được cất lại như một cuốn sách.
+          Một ấn bản thơ điện tử của Mèo Đen Không Ngủ — nơi những bài thơ cũ
+          được đặt lại trong một căn phòng tối, dịu và yên hơn.
         </p>
       </div>
 
@@ -25,23 +25,36 @@ export default function FlipBook({ poems }) {
           className="flip-book"
         >
           <div className="book-page cover-page">
-            <div>
-              <p>Mèo Đen Không Ngủ</p>
-              <h2>Va Vào Lần Yêu Cuối</h2>
-              <small>Một tập thơ để khép lại một mùa yêu.</small>
+            <div className="cover-art" aria-hidden="true">
+              <span className="moon" />
+              <span className="cat-silhouette" />
+            </div>
+
+            <div className="cover-content">
+              <p className="cover-author">Mèo Đen Không Ngủ</p>
+              <h2>
+                Va Vào
+                <br />
+                Lần Yêu Cuối
+              </h2>
+              <small>Tập thơ | Ấn bản điện tử | 2026</small>
             </div>
           </div>
 
           <div className="book-page intro-page">
-            <p>Có những bài thơ không được viết ra để giữ một người ở lại.</p>
-            <p>
-              Chúng được viết ra để một phiên bản cũ của mình
-              có nơi mà nằm xuống.
-            </p>
+            <div className="intro-inner">
+              <span>Lời mở</span>
+              <p>Có những bài thơ không được viết ra để giữ một người ở lại.</p>
+              <p>
+                Chúng được viết ra để một phiên bản cũ của mình
+                có nơi mà nằm xuống.
+              </p>
+            </div>
           </div>
 
-          {poems.map((poem) => (
+          {poems.map((poem, index) => (
             <div className="book-page poem-book-page" key={poem.slug}>
+              <div className="book-page-number">{String(index + 1).padStart(2, "0")}</div>
               <p className="book-date">{poem.date}</p>
               <h2>{poem.title}</h2>
               {poem.excerpt && <p className="book-excerpt">{poem.excerpt}</p>}
@@ -53,8 +66,10 @@ export default function FlipBook({ poems }) {
           ))}
 
           <div className="book-page end-page">
-            <p>Hết.</p>
-            <small>Mèo Đen Không Ngủ</small>
+            <div>
+              <p>Hết.</p>
+              <small>Mèo Đen Không Ngủ</small>
+            </div>
           </div>
         </HTMLFlipBook>
       </div>
