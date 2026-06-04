@@ -5,39 +5,168 @@ const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
 const chapters = [
   {
     title: "Chương I",
-    subtitle: "Những ngày không anh",
-    description: "Những bài thơ của khoảng trống, của một người ở lại với căn phòng và tiếng im lặng.",
-    match: ["ngày không anh", "hoàng hôn", "mỏng manh", "những bước chân em"],
+    subtitle: "Những vết xám đầu tiên",
+    description:
+      "Những ngày đầu của trống rỗng, nơi tổn thương chưa thành tên nhưng đã kịp đổi màu bầu trời.",
+    poems: [
+      "Ngày lại ngày",
+      "Màu xám",
+      "Đôi lúc",
+      "Người Tình",
+      "Vội",
+      "Lỗi",
+      "Tổn thương",
+      "Ưu tình",
+      "Mùi nhớ nhung",
+      "Thành thật",
+      "Hoàng hôn",
+      "Mỏng manh",
+      "Ký ức về anh",
+      "Ngày không anh",
+    ],
   },
   {
     title: "Chương II",
-    subtitle: "Va vào tình yêu",
-    description: "Những bài thơ của lần chạm cuối, nơi tình yêu vừa rực rỡ vừa làm mình xây xát.",
-    match: ["va vào lần yêu cuối", "giữ lấy em", "yêu", "tình"],
+    subtitle: "Người tình và những cuộc yêu vội",
+    description:
+      "Những bài thơ của men say, va chạm, hứa hẹn và các cuộc tình chưa kịp gọi đúng tên.",
+    poems: [
+      "Thoáng chốc dại khờ",
+      "Trò chơi",
+      "Ta và em",
+      "Trái tim không tuổi",
+      "Yêu và hiểu",
+      "Lời anh nói",
+      "Lời mật ngọt",
+      "Vết đêm",
+      "Va vào lần yêu cuối",
+      "Giữ lấy em",
+      "Một chút tò mò",
+      "Gửi em",
+      "Yêu em?",
+      "Vật chứa",
+      "Định nghĩa",
+      "Ngôi đền",
+      "Đếm đêm",
+      "Khi ta yêu",
+    ],
   },
   {
     title: "Chương III",
-    subtitle: "Sau những tổn thương",
-    description: "Những bài thơ của đoạn rơi, của nỗi đau được gọi tên và được đặt xuống rất khẽ.",
-    match: ["đau", "buồn", "rời", "khóc", "vỡ", "quên"],
+    subtitle: "Khi tình yêu bắt đầu rời đi",
+    description:
+      "Những trang thơ của buông tay, muộn màng, những điều không nói và các khoảng cách cứ lớn dần.",
+    poems: [
+      "Vết dấu",
+      "Hết yêu",
+      "Thôi",
+      "Bình thường",
+      "Muộn",
+      "Ngày và đêm",
+      "Hôm nay và mai sau",
+      "Ta không còn là những đứa trẻ",
+      "Cơn đau nào cũng hết",
+      "Đừng giấu vào đêm",
+      "Cuối Cùng Em Hiểu",
+      "Chạm tay nhau lỡ làng",
+      "Thôi mình đừng hỏi nhau “ổn không”",
+      "Đừng để tình mình chỉ chắp vá",
+      "Khi mình xa",
+      "Một ngày",
+      "Yêu xa",
+      "Tình ca tan vỡ",
+      "Dự định",
+      "Những điều không nói",
+      "Lửng lơ",
+      "Lặng thầm",
+    ],
   },
   {
     title: "Chương IV",
-    subtitle: "Khép lại",
-    description: "Những bài thơ còn lại, như phần cuối của một cuốn sổ đã biết cách tự ngủ yên.",
-    match: [],
+    subtitle: "Em, những mảnh vỡ và cõi lòng",
+    description:
+      "Khi người viết quay về nhìn chính mình: cơ thể, bản ngã, nỗi buồn, sự nhạy cảm và những phần em đã phải tự ôm lấy.",
+    poems: [
+      "Những bước chân em",
+      "Hãy nhìn em",
+      "Cõi Lòng Em",
+      "Bận Lòng",
+      "Hãy ở lại",
+      "Nhiều nhân cách trong em",
+      "Muôn kiếp nhân sinh",
+      "Nỗi buồn em",
+      "Tổn thương là nhỏ nhặt",
+      "Tất cả của em",
+      "Tìm nơi đâu",
+      "Đừng",
+      "Một, hai và ba…",
+      "Nhạy cảm",
+      "Anh thấy gì ở màu xanh nơi em?",
+      "Hướng nào?",
+      "Những bàn tay",
+      "Hãy Tìm Em",
+      "Tơ Tằm",
+      "Ta Sẽ Đi Về Đâu?",
+      "Vai phụ",
+      "Hỗn loạn",
+      "Intact",
+    ],
+  },
+  {
+    title: "Chương V",
+    subtitle: "Thơ như một nơi trú ẩn",
+    description:
+      "Những bài thơ viết về chính thơ: nơi nỗi đau được đặt xuống, được đọc lại, và đôi khi được tha thứ.",
+    poems: [
+      "Thơ em",
+      "Nếu anh đọc thơ em",
+      "Những bài thơ",
+      "Vần thơ em",
+      "Anh biết không?",
+    ],
+  },
+  {
+    title: "Chương VI",
+    subtitle: "Sau cùng, em khép lại",
+    description:
+      "Những trang cuối của một cuộc tình: không còn níu kéo, chỉ còn người viết tự bước qua và gọi tên bình yên.",
+    poems: [
+      "Bận Lòng",
+      "Rung cảm",
+      "Tạm bợ",
+      "Giá như",
+      "Chương khác",
+      "Cổ tích",
+      "Giấc mơ",
+      "Trói buộc/giải thoát",
+      "Rồi Một Ngày",
+      "Nếu Có Thể",
+      "Phép thử",
+      "Miền đất hứa",
+      "Lời xin lỗi",
+      "Ngày không còn tên",
+      "Không tên",
+      "Da thịt và khoảng trống",
+    ],
   },
 ];
 
 function normalize(text = "") {
-  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[“”]/g, '"')
+    .replace(/…/g, "...")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function getChapterIndex(poem) {
-  const text = normalize(`${poem.title || ""} ${poem.excerpt || ""}`);
+  const title = normalize(poem.title || "");
 
   const index = chapters.findIndex((chapter) =>
-    chapter.match.some((keyword) => text.includes(normalize(keyword)))
+    chapter.poems.some((chapterPoem) => normalize(chapterPoem) === title)
   );
 
   return index >= 0 ? index : chapters.length - 1;
@@ -112,6 +241,23 @@ export default function FlipBook({ poems }) {
                 Nếu có một phiên bản cũ của mình từng khóc trong những trang này,
                 mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.
               </p>
+            </div>
+          </div>
+
+          <div className="book-page toc-page decorated-page botanical-branch">
+            <div className="botanical botanical-top" aria-hidden="true" />
+            <div className="botanical botanical-bottom" aria-hidden="true" />
+            <div className="toc-inner">
+              <span>Mục lục</span>
+              <h2>Các chương</h2>
+              <div className="toc-list">
+                {groupedChapters.map((chapter) => (
+                  <div className="toc-item" key={`toc-${chapter.title}`}>
+                    <small>{chapter.title}</small>
+                    <strong>{chapter.subtitle}</strong>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
