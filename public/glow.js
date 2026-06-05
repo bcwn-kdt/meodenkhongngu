@@ -5,6 +5,26 @@
   const cursor = document.querySelector(".cursor-glow");
   if (!cursor) return;
 
+  const injectEffectStyles = () => {
+    if (document.getElementById("meo-touch-effects")) return;
+    const style = document.createElement("style");
+    style.id = "meo-touch-effects";
+    style.textContent = `
+      .mobile-particles{position:fixed;inset:0;z-index:9997;pointer-events:none;overflow:hidden;opacity:.98;mix-blend-mode:screen}
+      .mobile-particle{position:absolute;bottom:-12vh;border-radius:999px;background:radial-gradient(circle,rgba(255,248,239,1),rgba(240,198,122,.78) 46%,transparent 72%);box-shadow:0 0 12px rgba(240,198,122,.42),0 0 20px rgba(158,220,255,.16);animation:ambientFloat linear infinite;will-change:transform,opacity}
+      .touch-glow,.paper-dust{position:fixed;left:0;top:0;pointer-events:none;z-index:10000;will-change:transform,opacity}
+      .touch-glow{width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:999px;background:radial-gradient(circle,rgba(255,255,255,1) 0 3px,rgba(240,198,122,.72) 4px,rgba(240,198,122,.34) 30%,rgba(158,220,255,.22) 58%,transparent 76%);box-shadow:0 0 44px rgba(240,198,122,.48),0 0 74px rgba(158,220,255,.28);mix-blend-mode:screen;animation:touchRipple 920ms cubic-bezier(.16,1,.3,1) forwards}
+      .paper-dust{border-radius:2px;background:linear-gradient(135deg,rgba(255,248,239,1),rgba(240,198,122,.88));box-shadow:0 0 14px rgba(240,198,122,.32);opacity:1;mix-blend-mode:screen;animation:paperDust ease-out forwards}
+      @keyframes ambientFloat{0%{transform:translate3d(0,0,0) scale(.72);opacity:0}12%{opacity:.95}82%{opacity:.76}100%{transform:translate3d(var(--ambient-x),-118vh,0) scale(1.18);opacity:0}}
+      @keyframes touchRipple{0%{transform:translate3d(0,0,0) scale(.45);opacity:1;filter:blur(0)}48%{opacity:.72}100%{transform:translate3d(0,0,0) scale(9.6);opacity:0;filter:blur(2px)}}
+      @keyframes paperDust{0%{transform:translate3d(-50%,-50%,0) rotate(0deg) scale(1);opacity:1}55%{opacity:.82}100%{transform:translate3d(calc(var(--dust-x) - 50%),calc(var(--dust-y) + 64px),0) rotate(var(--dust-r)) scale(.28);opacity:0}}
+      @media(min-width:761px){.mobile-particles{display:none}}
+    `;
+    document.head.appendChild(style);
+  };
+
+  injectEffectStyles();
+
   const interactiveElements = document.querySelectorAll(
     ".glow-surface, .glow-card, .glow-button, .glow-link, .poem-page, .poem-content, .about, .about-content, .book-wrap, .studio-controls, .writing-note"
   );
