@@ -86,26 +86,26 @@
   };
 
   const createAmbientParticles = () => {
-    if (finePointer || window.innerWidth > 760 || document.querySelector(".mobile-particles")) return;
+    if (window.innerWidth > 760 || document.querySelector(".mobile-particles")) return;
 
     const layer = document.createElement("div");
     layer.className = "mobile-particles";
     layer.setAttribute("aria-hidden", "true");
 
-    const amount = window.innerWidth < 420 ? 24 : 34;
+    const amount = window.innerWidth < 420 ? 28 : 40;
     for (let index = 0; index < amount; index += 1) {
       const particle = document.createElement("span");
-      const size = 1.4 + Math.random() * 3.8;
+      const size = 2.2 + Math.random() * 5.2;
       const startX = Math.random() * 100;
-      const driftX = -28 + Math.random() * 56;
-      const duration = 9500 + Math.random() * 13500;
+      const driftX = -42 + Math.random() * 84;
+      const duration = 6500 + Math.random() * 9000;
       const delay = -Math.random() * duration;
 
       particle.className = "mobile-particle";
       particle.style.left = `${startX}vw`;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
-      particle.style.opacity = `${0.18 + Math.random() * 0.46}`;
+      particle.style.opacity = `${0.34 + Math.random() * 0.5}`;
       particle.style.setProperty("--ambient-x", `${driftX}px`);
       particle.style.animationDuration = `${duration}ms`;
       particle.style.animationDelay = `${delay}ms`;
