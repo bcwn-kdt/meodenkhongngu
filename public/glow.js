@@ -56,33 +56,39 @@
 
   const makePaperDust = (x, y) => {
     const now = performance.now();
-    if (now - lastBurst < 120) return;
+    if (now - lastBurst < 70) return;
     lastBurst = now;
 
-    const amount = window.innerWidth < 520 ? 11 : 15;
+    const amount = window.innerWidth < 520 ? 24 : 32;
     for (let index = 0; index < amount; index += 1) {
       const dust = document.createElement("span");
-      const size = 3 + Math.random() * 6;
+      const size = 5 + Math.random() * 11;
       const angle = Math.random() * Math.PI * 2;
-      const distance = 34 + Math.random() * 86;
+      const distance = 52 + Math.random() * 150;
       const driftX = Math.cos(angle) * distance;
-      const driftY = Math.sin(angle) * distance - 24 - Math.random() * 40;
-      const rotate = -110 + Math.random() * 220;
-      const duration = 720 + Math.random() * 520;
+      const driftY = Math.sin(angle) * distance + 70 + Math.random() * 130;
+      const rotate = -260 + Math.random() * 520;
+      const duration = 1100 + Math.random() * 850;
 
       dust.className = "paper-dust";
       dust.style.left = `${x}px`;
       dust.style.top = `${y}px`;
       dust.style.width = `${size}px`;
-      dust.style.height = `${size * (0.55 + Math.random() * 0.85)}px`;
+      dust.style.height = `${size * (0.5 + Math.random() * 1.1)}px`;
       dust.style.setProperty("--dust-x", `${driftX}px`);
       dust.style.setProperty("--dust-y", `${driftY}px`);
       dust.style.setProperty("--dust-r", `${rotate}deg`);
       dust.style.animationDuration = `${duration}ms`;
-      dust.style.animationDelay = `${Math.random() * 70}ms`;
+      dust.style.animationDelay = `${Math.random() * 90}ms`;
       document.body.appendChild(dust);
       dust.addEventListener("animationend", () => dust.remove(), { once: true });
     }
+  };
+
+  const burstAt = (x, y, temporary = true) => {
+    showAt(x, y, temporary);
+    makeTouchGlow(x, y);
+    makePaperDust(x, y);
   };
 
   const render = () => {
@@ -100,12 +106,11 @@
 
   window.addEventListener("pointerdown", (event) => {
     cursor.classList.add("is-pressing");
-    showAt(event.clientX, event.clientY, event.pointerType === "touch");
+    burstAt(event.clientX, event.clientY, event.pointerType === "touch");
+  }, { passive: true });
 
-    if (event.pointerType === "touch" || !finePointer) {
-      makeTouchGlow(event.clientX, event.clientY);
-      makePaperDust(event.clientX, event.clientY);
-    }
+  window.addEventListener("click", (event) => {
+    burstAt(event.clientX, event.clientY, true);
   }, { passive: true });
 
   window.addEventListener("pointerup", () => {
