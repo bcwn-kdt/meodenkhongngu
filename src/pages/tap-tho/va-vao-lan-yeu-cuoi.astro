@@ -51,9 +51,10 @@ const poems = sorted.map((entry) => ({
 
     <FlipBook client:only="react" poems={poems} />
 
-    <script is:inline src="/glow.js"></script>
+   <script is:inline src="/glow.js"></script>
+<script is:inline src="/ambient.js"></script>
 
-    <style is:global>
+<style is:global>
       @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
 
       :root {
