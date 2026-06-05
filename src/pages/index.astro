@@ -38,9 +38,85 @@ const bookCount = published.filter((poem) => poem.data.showInBook).length;
         </nav>
       </header>
 
-      <main><!-- content unchanged --></main>
+      <main>
+        <section class="home-cover glow-surface">
+          <div class="home-cover-text">
+            <p class="eyebrow">một căn phòng đọc lúc nửa đêm</p>
+            <h1>Mèo Đen Không Ngủ</h1>
 
-      <footer class="site-footer"><p>© Mèo Đen Không Ngủ</p></footer>
+            <div class="home-manifesto">
+              <p>Có những đêm dài đến mức người ta không biết mình đang thức vì cà phê, vì nỗi nhớ, hay vì một điều gì đó đã mất từ rất lâu.</p>
+              <p>Mèo Đen Không Ngủ được sinh ra từ những đêm như thế.</p>
+              <p>Đây là nơi lưu giữ những bài thơ về tình yêu, những cuộc chia ly, những lần tổn thương và cả hành trình học cách bước tiếp. Mỗi câu chữ là một lát cắt của cảm xúc, được viết ra không phải để than khóc cho quá khứ, mà để hiểu hơn về những điều đã từng đi qua.</p>
+              <p>Hơn một trăm bài thơ nằm lại ở đây như những trang nhật ký không ghi ngày tháng. Có bài được viết trong những ngày yêu nhất. Có bài được viết khi lòng người đã vỡ vụn. Và cũng có những bài đánh dấu khoảnh khắc một con người học được cách tha thứ cho chính mình.</p>
+              <p>Nếu bạn đang yêu, đang nhớ một ai đó, đang đi qua một cuộc chia tay, hay đơn giản chỉ muốn tìm một góc yên tĩnh giữa những ồn ào của cuộc sống, hy vọng bạn sẽ tìm thấy một phần câu chuyện của mình ở đây.</p>
+            </div>
+
+            <div class="button-row">
+              <a class="button glow-button" href="/tho">Đọc kho thơ</a>
+              <a class="button secondary glow-button" href="/tap-tho/va-vao-lan-yeu-cuoi">Mở sách lật</a>
+            </div>
+          </div>
+
+          <aside class="home-cover-card glow-card">
+            <div class="moon-mark" aria-hidden="true"></div>
+            <p class="eyebrow">tập thơ nổi bật</p>
+            <h2>Va Vào<br />Lần Yêu Cuối</h2>
+            <p>Một tập bản thảo của những lần yêu cũ, những vết thương cũ, và một người đang học cách dịu dàng hơn với chính mình.</p>
+            <a class="text-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Lật từng trang →</a>
+          </aside>
+        </section>
+
+        <section class="home-panels" aria-label="Lối vào nhanh">
+          <a class="home-panel glow-card" href="/tho">
+            <span>{published.length}</span>
+            <h2>Kho thơ</h2>
+            <p>Toàn bộ bài thơ được sắp lại như một mục lục nhỏ, gọn và dễ tìm.</p>
+          </a>
+
+          <a class="home-panel glow-card" href="/tap-tho/va-vao-lan-yeu-cuoi">
+            <span>{bookCount}</span>
+            <h2>Sách lật</h2>
+            <p>Đọc tập thơ như một bản thảo cũ, có trang giấy và hiệu ứng lật nhẹ.</p>
+          </a>
+
+          <a class="home-panel glow-card" href="/ve-meo">
+            <span>∞</span>
+            <h2>Về Mèo</h2>
+            <p>Một lời tự bạch nhỏ về nơi những bài thơ này được cất lại.</p>
+          </a>
+        </section>
+
+        <section class="archive home-latest glow-surface">
+          <div class="section-heading-row">
+            <div>
+              <p class="eyebrow">mục lục mới</p>
+              <h2 class="section-title">Những bài gần đây</h2>
+            </div>
+            <a class="text-link" href="/tho">Xem tất cả →</a>
+          </div>
+
+          <div class="poem-list poem-list-minimal">
+            {
+              latest.map((poem) => (
+                <a class="poem-item glow-card" href={`/tho/${poem.id.replace(/\.md$/, "")}`}>
+                  <div>
+                    <h2>{poem.data.title}</h2>
+                    <div class="poem-tags">
+                      {poem.data.collection && <small>{poem.data.collection}</small>}
+                      {poem.data.mood && <small>{poem.data.mood}</small>}
+                    </div>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>© Mèo Đen Không Ngủ</p>
+      </footer>
     </div>
 
     <script is:inline src="/glow.js"></script>
