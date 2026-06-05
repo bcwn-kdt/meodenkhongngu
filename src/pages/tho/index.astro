@@ -17,7 +17,6 @@ const moods = Array.from(
 
 const totalPoems = sorted.length;
 const bookPoems = sorted.filter((poem) => poem.data.showInBook).length;
-const latestDate = sorted[0]?.data.date.toLocaleDateString("vi-VN") ?? "chưa có";
 ---
 
 <!doctype html>
@@ -55,13 +54,12 @@ const latestDate = sorted[0]?.data.date.toLocaleDateString("vi-VN") ?? "chưa c�
           <div class="studio-stats" aria-label="Thống kê nhanh">
             <div><strong>{totalPoems}</strong><span>bài thơ</span></div>
             <div><strong>{bookPoems}</strong><span>trong tập thơ</span></div>
-            <div><strong>{latestDate}</strong><span>mới cập nhật</span></div>
           </div>
 
           <div class="studio-controls glow-card" data-poem-controls>
             <label class="search-field">
               <span>Tìm trong kho thơ</span>
-              <input type="search" placeholder="Nhập tên bài, trích đoạn, tâm trạng..." data-poem-search />
+              <input type="search" placeholder="Nhập tên bài, tập thơ hoặc tâm trạng..." data-poem-search />
             </label>
 
             <div class="filter-row" aria-label="Bộ lọc thơ">
@@ -75,7 +73,7 @@ const latestDate = sorted[0]?.data.date.toLocaleDateString("vi-VN") ?? "chưa c�
             </div>
           </div>
 
-          <div class="poem-list" data-poem-list>
+          <div class="poem-list poem-list-minimal" data-poem-list>
             {
               sorted.map((poem) => (
                 <a
@@ -86,14 +84,12 @@ const latestDate = sorted[0]?.data.date.toLocaleDateString("vi-VN") ?? "chưa c�
                   data-collection={poem.data.collection ?? ""}
                   data-mood={poem.data.mood ?? ""}
                 >
-                  <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
                   <div>
                     <h2>{poem.data.title}</h2>
                     <div class="poem-tags">
                       {poem.data.collection && <small>{poem.data.collection}</small>}
                       {poem.data.mood && <small>{poem.data.mood}</small>}
                     </div>
-                    {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
                   </div>
                 </a>
               ))
