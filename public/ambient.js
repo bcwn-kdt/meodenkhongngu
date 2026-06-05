@@ -9,9 +9,9 @@
       inset:0;
       width:100vw;
       height:100vh;
-      z-index:9996;
+      z-index:0;
       pointer-events:none;
-      opacity:.9;
+      opacity:.58;
       mix-blend-mode:screen;
     }
   `;
@@ -20,7 +20,7 @@
   const canvas = document.createElement("canvas");
   canvas.className = "ambient-particle-canvas";
   canvas.setAttribute("aria-hidden", "true");
-  document.body.appendChild(canvas);
+  document.body.prepend(canvas);
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -40,14 +40,14 @@
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const amount = width < 430 ? 42 : 58;
+    const amount = width < 430 ? 36 : 48;
     particles = Array.from({ length: amount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      r: 1.1 + Math.random() * 2.4,
-      vx: -0.09 + Math.random() * 0.18,
-      vy: -0.1 - Math.random() * 0.22,
-      alpha: 0.22 + Math.random() * 0.36,
+      r: 0.45 + Math.random() * 1.05,
+      vx: -0.055 + Math.random() * 0.11,
+      vy: -0.07 - Math.random() * 0.12,
+      alpha: 0.14 + Math.random() * 0.22,
       pulse: Math.random() * Math.PI * 2,
     }));
   };
@@ -58,7 +58,7 @@
     for (const p of particles) {
       p.x += p.vx;
       p.y += p.vy;
-      p.pulse += 0.02;
+      p.pulse += 0.014;
 
       if (p.y < -18) {
         p.y = height + 18;
@@ -67,11 +67,11 @@
       if (p.x < -18) p.x = width + 18;
       if (p.x > width + 18) p.x = -18;
 
-      const alpha = Math.max(0.08, p.alpha + Math.sin(p.pulse) * 0.08);
-      const glow = p.r * 5;
+      const alpha = Math.max(0.05, p.alpha + Math.sin(p.pulse) * 0.045);
+      const glow = p.r * 3.4;
       const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glow);
       gradient.addColorStop(0, `rgba(255,248,239,${alpha})`);
-      gradient.addColorStop(0.45, `rgba(240,198,122,${alpha * 0.55})`);
+      gradient.addColorStop(0.5, `rgba(240,198,122,${alpha * 0.38})`);
       gradient.addColorStop(1, "rgba(240,198,122,0)");
 
       ctx.fillStyle = gradient;
