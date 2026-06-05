@@ -48,7 +48,7 @@ export default function FlipBook({ poems }) {
             showCover={true}
             drawShadow={true}
             flippingTime={900}
-            usePortrait={false}
+            usePortrait={true}
             startZIndex={30}
             maxShadowOpacity={0.28}
             mobileScrollSupport={true}
@@ -61,17 +61,14 @@ export default function FlipBook({ poems }) {
               <div className="cover-art" aria-hidden="true"><span className="moon" /><span className="cat-silhouette" /></div>
               <div className="cover-content"><p className="cover-author">Mèo Đen Không Ngủ</p><h2>Va Vào<br />Lần Yêu Cuối</h2><small>Tập thơ | Ấn bản điện tử</small></div>
             </div>
-
             <div className="book-page intro-page decorated-page botanical-rose">
               <div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" />
               <div className="intro-inner"><span>Lời mở</span><p>Có những bài thơ được viết ra không phải để níu một người ở lại, mà để một nỗi buồn có nơi được gọi tên.</p><p><em>Va Vào Lần Yêu Cuối</em> là cách Mèo cất lại những mùa yêu đã qua: không còn trách móc, không còn cầu xin, chỉ còn một khoảng lặng đủ mềm để ký ức thôi làm đau.</p><p>Nếu có một phiên bản cũ của mình từng khóc trong những trang này, mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.</p></div>
             </div>
-
             <div className="book-page toc-page decorated-page botanical-branch">
               <div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" />
               <div className="toc-inner"><span>Mục lục</span><h2>Các chương</h2><div className="toc-list">{groupedChapters.map((chapter) => <div className="toc-item" key={`toc-${chapter.title}`}><small>{chapter.title}</small><strong>{chapter.subtitle}</strong></div>)}</div></div>
             </div>
-
             {groupedChapters.flatMap((chapter, chapterIndex) => {
               const chapterPage = <div className={`book-page chapter-page decorated-page botanical-${botanicalStyles[chapterIndex % botanicalStyles.length]}`} key={`chapter-${chapterIndex}`}><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div className="chapter-inner"><span>{chapter.title}</span><h2>{chapter.subtitle}</h2><p>{chapter.description}</p></div></div>;
               const poemPages = chapter.poems.map((poem) => {
@@ -81,15 +78,12 @@ export default function FlipBook({ poems }) {
               });
               return [chapterPage, ...poemPages];
             })}
-
             <div className="book-page end-page decorated-page botanical-ginkgo hard-page"><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div><p>Hết.</p><small>Mèo Đen Không Ngủ</small></div></div>
           </HTMLFlipBook>
         </div>
-
-        <div className="book-status" aria-live="polite">Kéo góc giấy hoặc bấm trực tiếp vào mép trang để lật.</div>
+        <div className="book-status" aria-live="polite">Kéo góc giấy hoặc chạm vào mép trang để lật.</div>
       </div>
-
-      <p className="mobile-note">Nếu đọc trên điện thoại thấy khó lật trang, hãy xoay ngang màn hình hoặc đọc ở chế độ danh sách thơ.</p>
+      <p className="mobile-note">Trên điện thoại, sách hiển thị một trang mỗi lần để dễ đọc hơn.</p>
     </section>
   );
 }
