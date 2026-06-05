@@ -48,7 +48,7 @@ export default function FlipBook({ poems }) {
             showCover={true}
             drawShadow={true}
             flippingTime={900}
-            usePortrait={true}
+            usePortrait={false}
             startZIndex={30}
             maxShadowOpacity={0.28}
             mobileScrollSupport={true}
@@ -83,7 +83,7 @@ export default function FlipBook({ poems }) {
         </div>
         <div className="book-status" aria-live="polite">Kéo góc giấy hoặc chạm vào mép trang để lật.</div>
       </div>
-      <p className="mobile-note">Trên điện thoại, sách hiển thị một trang mỗi lần để dễ đọc hơn.</p>
+      <p className="mobile-note">Trên điện thoại, hãy xoay ngang màn hình nếu muốn xem dạng quyển sách mở.</p>
     </section>
   );
 }
