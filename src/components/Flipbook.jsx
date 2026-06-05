@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
 const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
@@ -21,15 +22,34 @@ function getChapterIndex(poem) {
   return index >= 0 ? index : chapters.length - 1;
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px)");
+    const update = () => setIsMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return isMobile;
+}
+
 export default function FlipBook({ poems }) {
+  const isMobile = useIsMobile();
   const groupedChapters = chapters
     .map((chapter, chapterIndex) => ({ ...chapter, poems: poems.filter((poem) => getChapterIndex(poem) === chapterIndex) }))
     .filter((chapter) => chapter.poems.length > 0);
 
   let pageNumber = 1;
+  const bookKey = isMobile ? "mobile-book" : "desktop-book";
+  const bookSize = isMobile
+    ? { width: 340, height: 560, minWidth: 280, maxWidth: 360, minHeight: 460, maxHeight: 620 }
+    : { width: 440, height: 640, minWidth: 300, maxWidth: 460, minHeight: 460, maxHeight: 680 };
 
   return (
-    <section className="book-section">
+    <section className={isMobile ? "book-section is-mobile-book" : "book-section"}>
       <div className="book-top">
         <h1>Va Vào Lần Yêu Cuối</h1>
         <p>Một ấn bản thơ điện tử của Mèo Đen Không Ngủ — nơi những bài thơ cũ được đặt lại trong một căn phòng tối, dịu và yên hơn.</p>
@@ -38,17 +58,18 @@ export default function FlipBook({ poems }) {
       <div className="book-wrap">
         <div className="book-stage">
           <HTMLFlipBook
-            width={440}
-            height={640}
+            key={bookKey}
+            width={bookSize.width}
+            height={bookSize.height}
             size="stretch"
-            minWidth={300}
-            maxWidth={460}
-            minHeight={460}
-            maxHeight={680}
+            minWidth={bookSize.minWidth}
+            maxWidth={bookSize.maxWidth}
+            minHeight={bookSize.minHeight}
+            maxHeight={bookSize.maxHeight}
             showCover={true}
             drawShadow={true}
             flippingTime={900}
-            usePortrait={false}
+            usePortrait={isMobile}
             startZIndex={30}
             maxShadowOpacity={0.28}
             mobileScrollSupport={true}
@@ -83,7 +104,7 @@ export default function FlipBook({ poems }) {
         </div>
         <div className="book-status" aria-live="polite">Kéo góc giấy hoặc chạm vào mép trang để lật.</div>
       </div>
-      <p className="mobile-note">Trên điện thoại, hãy xoay ngang màn hình nếu muốn xem dạng quyển sách mở.</p>
+      <p className="mobile-note">Trên điện thoại, sách hiển thị một trang mỗi lần để dễ đọc hơn.</p>
     </section>
   );
 }
