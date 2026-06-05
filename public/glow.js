@@ -85,6 +85,36 @@
     }
   };
 
+  const createAmbientParticles = () => {
+    if (finePointer || window.innerWidth > 760 || document.querySelector(".mobile-particles")) return;
+
+    const layer = document.createElement("div");
+    layer.className = "mobile-particles";
+    layer.setAttribute("aria-hidden", "true");
+
+    const amount = window.innerWidth < 420 ? 24 : 34;
+    for (let index = 0; index < amount; index += 1) {
+      const particle = document.createElement("span");
+      const size = 1.4 + Math.random() * 3.8;
+      const startX = Math.random() * 100;
+      const driftX = -28 + Math.random() * 56;
+      const duration = 9500 + Math.random() * 13500;
+      const delay = -Math.random() * duration;
+
+      particle.className = "mobile-particle";
+      particle.style.left = `${startX}vw`;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.opacity = `${0.18 + Math.random() * 0.46}`;
+      particle.style.setProperty("--ambient-x", `${driftX}px`);
+      particle.style.animationDuration = `${duration}ms`;
+      particle.style.animationDelay = `${delay}ms`;
+      layer.appendChild(particle);
+    }
+
+    document.body.prepend(layer);
+  };
+
   const burstAt = (x, y, temporary = true) => {
     showAt(x, y, temporary);
     makeTouchGlow(x, y);
@@ -98,6 +128,10 @@
     cursor.style.opacity = visible ? "1" : "0";
     requestAnimationFrame(render);
   };
+
+  createAmbientParticles();
+
+  window.addEventListener("resize", createAmbientParticles, { passive: true });
 
   window.addEventListener("pointermove", (event) => {
     if (event.pointerType === "touch") return;
