@@ -10,20 +10,88 @@
     const style = document.createElement("style");
     style.id = "meo-touch-effects";
     style.textContent = `
-      .mobile-particles{position:fixed;inset:0;z-index:9997;pointer-events:none;overflow:hidden;opacity:.9;mix-blend-mode:screen}
-      .mobile-particle{position:absolute;left:0;top:0;border-radius:999px;background:radial-gradient(circle,rgba(255,248,239,.95),rgba(240,198,122,.55) 46%,transparent 72%);box-shadow:0 0 10px rgba(240,198,122,.25);animation:ambientDrift ease-in-out infinite alternate;will-change:transform,opacity}
+      .ambient-particle-canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:2;pointer-events:none;mix-blend-mode:screen;opacity:.78}
       .touch-glow,.paper-dust{position:fixed;left:0;top:0;pointer-events:none;z-index:10000;will-change:transform,opacity}
       .touch-glow{width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:999px;background:radial-gradient(circle,rgba(255,255,255,1) 0 3px,rgba(240,198,122,.72) 4px,rgba(240,198,122,.34) 30%,rgba(158,220,255,.22) 58%,transparent 76%);box-shadow:0 0 44px rgba(240,198,122,.48),0 0 74px rgba(158,220,255,.28);mix-blend-mode:screen;animation:touchRipple 920ms cubic-bezier(.16,1,.3,1) forwards}
       .paper-dust{border-radius:2px;background:linear-gradient(135deg,rgba(255,248,239,1),rgba(240,198,122,.88));box-shadow:0 0 14px rgba(240,198,122,.32);opacity:1;mix-blend-mode:screen;animation:paperDust ease-out forwards}
-      @keyframes ambientDrift{0%{transform:translate3d(0,0,0) scale(.8);opacity:.28}100%{transform:translate3d(var(--ambient-x),var(--ambient-y),0) scale(1.08);opacity:.82}}
       @keyframes touchRipple{0%{transform:translate3d(0,0,0) scale(.45);opacity:1;filter:blur(0)}48%{opacity:.72}100%{transform:translate3d(0,0,0) scale(9.6);opacity:0;filter:blur(2px)}}
       @keyframes paperDust{0%{transform:translate3d(-50%,-50%,0) rotate(0deg) scale(1);opacity:1}55%{opacity:.82}100%{transform:translate3d(calc(var(--dust-x) - 50%),calc(var(--dust-y) + 64px),0) rotate(var(--dust-r)) scale(.28);opacity:0}}
-      @media(min-width:761px){.mobile-particles{display:none}}
+      @media(min-width:761px){.ambient-particle-canvas{display:none}}
     `;
     document.head.appendChild(style);
   };
 
   injectEffectStyles();
+
+  const createAmbientCanvas = () => {
+    if (window.innerWidth > 760 || document.querySelector(".ambient-particle-canvas")) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "ambient-particle-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    document.body.prepend(canvas);
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let particles = [];
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      particles = Array.from({ length: width < 420 ? 34 : 46 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: 0.8 + Math.random() * 2.1,
+        vx: -0.08 + Math.random() * 0.16,
+        vy: -0.12 - Math.random() * 0.18,
+        a: 0.18 + Math.random() * 0.34,
+        pulse: Math.random() * Math.PI * 2,
+      }));
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulse += 0.018;
+
+        if (p.y < -12) {
+          p.y = height + 12;
+          p.x = Math.random() * width;
+        }
+        if (p.x < -12) p.x = width + 12;
+        if (p.x > width + 12) p.x = -12;
+
+        const alpha = p.a + Math.sin(p.pulse) * 0.08;
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4.2);
+        gradient.addColorStop(0, `rgba(255,248,239,${alpha})`);
+        gradient.addColorStop(0.42, `rgba(240,198,122,${alpha * 0.48})`);
+        gradient.addColorStop(1, "rgba(240,198,122,0)");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 4.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+    draw();
+  };
+
+  createAmbientCanvas();
 
   const interactiveElements = document.querySelectorAll(
     ".glow-surface, .glow-card, .glow-button, .glow-link, .poem-page, .poem-content, .about, .about-content, .book-wrap, .studio-controls, .writing-note"
@@ -105,39 +173,6 @@
     }
   };
 
-  const createAmbientParticles = () => {
-    if (window.innerWidth > 760 || document.querySelector(".mobile-particles")) return;
-
-    const layer = document.createElement("div");
-    layer.className = "mobile-particles";
-    layer.setAttribute("aria-hidden", "true");
-
-    const amount = window.innerWidth < 420 ? 30 : 42;
-    for (let index = 0; index < amount; index += 1) {
-      const particle = document.createElement("span");
-      const size = 1.8 + Math.random() * 4.2;
-      const startX = Math.random() * window.innerWidth;
-      const startY = Math.random() * window.innerHeight;
-      const driftX = -24 + Math.random() * 48;
-      const driftY = -34 + Math.random() * 68;
-      const duration = 3600 + Math.random() * 5200;
-      const delay = -Math.random() * duration;
-
-      particle.className = "mobile-particle";
-      particle.style.transform = `translate3d(${startX}px, ${startY}px, 0)`;
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.opacity = `${0.3 + Math.random() * 0.46}`;
-      particle.style.setProperty("--ambient-x", `${driftX}px`);
-      particle.style.setProperty("--ambient-y", `${driftY}px`);
-      particle.style.animationDuration = `${duration}ms`;
-      particle.style.animationDelay = `${delay}ms`;
-      layer.appendChild(particle);
-    }
-
-    document.body.prepend(layer);
-  };
-
   const burstAt = (x, y, temporary = true) => {
     showAt(x, y, temporary);
     makeTouchGlow(x, y);
@@ -151,10 +186,6 @@
     cursor.style.opacity = visible ? "1" : "0";
     requestAnimationFrame(render);
   };
-
-  createAmbientParticles();
-
-  window.addEventListener("resize", createAmbientParticles, { passive: true });
 
   window.addEventListener("pointermove", (event) => {
     if (event.pointerType === "touch") return;
