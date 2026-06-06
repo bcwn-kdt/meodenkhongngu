@@ -1,13 +1,5 @@
 (() => {
-  const send = (eventName, params = {}) => {
-    if (typeof window.gtag !== "function") return;
-    window.gtag("event", eventName, {
-      page_title: document.title,
-      page_location: window.location.href,
-      page_path: window.location.pathname,
-      ...params,
-    });
-  };
+  const clean = (value) => (value || "").replace(/\s+/g, " ").trim();
 
   const getPageType = () => {
     const path = window.location.pathname;
@@ -21,20 +13,59 @@
 
   const pageType = getPageType();
 
+  const getPoemMeta = () => {
+    if (pageType !== "poem_detail") return {};
+
+    const title = clean(document.querySelector(".poem-header h1")?.textContent) || document.title.replace(" | Mèo Đen Không Ngủ", "");
+    const collection = clean(document.querySelector(".poem-header .eyebrow")?.textContent);
+    const metaText = clean(document.querySelector(".poem-header .meta")?.textContent);
+    const parts = metaText.split("·").map(clean).filter(Boolean);
+
+    return {
+      poem_title: title,
+      poem_collection: collection || "Không phân loại",
+      poem_date: parts[0] || "",
+      poem_chapter: parts[1] || "",
+      poem_mood: parts[2] || "",
+      poem_slug: window.location.pathname.replace(/^\/tho\//, ""),
+    };
+  };
+
+  const getBookMeta = () => {
+    if (pageType !== "book") return {};
+    return {
+      book_title: clean(document.querySelector("h1")?.textContent) || "Va Vào Lần Yêu Cuối",
+      book_slug: window.location.pathname.replace(/^\/tap-tho\//, ""),
+    };
+  };
+
+  const pageMeta = {
+    page_type: pageType,
+    ...getPoemMeta(),
+    ...getBookMeta(),
+  };
+
+  const send = (eventName, params = {}) => {
+    if (typeof window.gtag !== "function") return;
+    window.gtag("event", eventName, {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      ...pageMeta,
+      ...params,
+    });
+  };
+
   window.setTimeout(() => {
-    send("meo_page_ready", { page_type: pageType });
+    send("meo_page_ready");
   }, 1200);
 
   if (pageType === "poem_detail") {
-    send("poem_view", {
-      poem_title: document.querySelector(".poem-header h1")?.textContent?.trim() || document.title,
-    });
+    send("poem_view");
   }
 
   if (pageType === "book") {
-    send("book_open", {
-      book_title: document.querySelector("h1")?.textContent?.trim() || "Va Vào Lần Yêu Cuối",
-    });
+    send("book_open");
   }
 
   const depthMarks = [25, 50, 75, 90];
@@ -50,7 +81,6 @@
       if (depth >= mark && !sentDepths.has(mark)) {
         sentDepths.add(mark);
         send("reading_depth", {
-          page_type: pageType,
           depth_percent: mark,
         });
       }
@@ -69,7 +99,6 @@
     if (elapsed < 30) return;
     sentEngaged = true;
     send("engaged_read", {
-      page_type: pageType,
       seconds: elapsed,
     });
   };
@@ -81,7 +110,7 @@
     if (!link) return;
 
     const href = link.getAttribute("href") || "";
-    const text = link.textContent?.trim().slice(0, 80) || "";
+    const text = clean(link.textContent).slice(0, 80);
 
     if (href.startsWith("/tho/")) {
       send("poem_link_click", { link_text: text, link_url: href });
@@ -107,7 +136,6 @@
     if (document.visibilityState === "hidden") {
       const elapsed = Math.round((Date.now() - startTime) / 1000);
       send("page_leave", {
-        page_type: pageType,
         seconds_on_page: elapsed,
       });
     }
