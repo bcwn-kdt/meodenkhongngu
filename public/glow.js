@@ -41,6 +41,7 @@
       .touch-glow,.paper-dust{position:fixed;left:0;top:0;pointer-events:none;z-index:10000;will-change:transform,opacity}
       .touch-glow{width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:999px;background:radial-gradient(circle,rgba(255,248,239,.36) 0 2px,rgba(240,198,122,.09) 5px,transparent 74%);box-shadow:0 0 14px rgba(240,198,122,.08),0 0 26px rgba(158,220,255,.045);mix-blend-mode:screen;animation:touchRipple 1600ms cubic-bezier(.16,1,.3,1) forwards}
       .paper-dust{border-radius:999px;background:radial-gradient(circle,rgba(255,248,239,.7),rgba(240,198,122,.24) 48%,transparent 78%);box-shadow:0 0 7px rgba(240,198,122,.11);opacity:.56;mix-blend-mode:screen;animation:paperDustDrift var(--dust-duration) cubic-bezier(.19,1,.22,1) forwards;filter:blur(.1px)}
+      @media(pointer:fine){.touch-glow{width:24px;height:24px;margin:-12px 0 0 -12px;background:radial-gradient(circle,rgba(255,248,239,.42) 0 3px,rgba(240,198,122,.12) 7px,transparent 76%);box-shadow:0 0 20px rgba(240,198,122,.11),0 0 36px rgba(158,220,255,.06)}.paper-dust{box-shadow:0 0 10px rgba(240,198,122,.15);opacity:.64;filter:blur(.06px)}}
       @keyframes touchRipple{0%{transform:translate3d(0,0,0) scale(.22);opacity:.32;filter:blur(0)}46%{opacity:.12}100%{transform:translate3d(0,0,0) scale(4.8);opacity:0;filter:blur(3.2px)}}
       @keyframes paperDustDrift{0%{transform:translate3d(-50%,-50%,0) scale(.68);opacity:0}16%{opacity:.48}54%{transform:translate3d(calc(var(--dust-mid-x) - 50%),calc(var(--dust-mid-y) - 50%),0) scale(.94);opacity:.34}82%{opacity:.14}100%{transform:translate3d(calc(var(--dust-x) - 50%),calc(var(--dust-y) - 50%),0) scale(.46);opacity:0}}
     `;
@@ -100,22 +101,23 @@
 
   const makePaperDust = (x, y) => {
     const now = performance.now();
-    if (now - lastBurst < 150) return;
+    if (now - lastBurst < (finePointer ? 90 : 150)) return;
     lastBurst = now;
 
-    const amount = window.innerWidth < 520 ? 8 : 11;
+    const amount = finePointer ? 22 : window.innerWidth < 520 ? 8 : 11;
     for (let index = 0; index < amount; index += 1) {
       const dust = document.createElement("span");
-      const size = 1.8 + Math.random() * 3.2;
+      const size = finePointer ? 3.2 + Math.random() * 6.8 : 1.8 + Math.random() * 3.2;
       const angle = Math.random() * Math.PI * 2;
-      const distance = 10 + Math.random() * 38;
+      const distance = finePointer ? 26 + Math.random() * 96 : 10 + Math.random() * 38;
       const midDistance = distance * (0.34 + Math.random() * 0.28);
-      const floatUp = 18 + Math.random() * 46;
-      const driftX = Math.cos(angle) * distance + (-12 + Math.random() * 24);
-      const driftY = Math.sin(angle) * (distance * 0.42) - floatUp;
+      const floatUp = finePointer ? 24 + Math.random() * 72 : 18 + Math.random() * 46;
+      const sideDrift = finePointer ? -26 + Math.random() * 52 : -12 + Math.random() * 24;
+      const driftX = Math.cos(angle) * distance + sideDrift;
+      const driftY = Math.sin(angle) * (distance * (finePointer ? 0.62 : 0.42)) - floatUp;
       const midX = Math.cos(angle + 0.9) * midDistance;
-      const midY = Math.sin(angle) * (midDistance * 0.24) - floatUp * 0.34;
-      const duration = 2800 + Math.random() * 1700;
+      const midY = Math.sin(angle) * (midDistance * (finePointer ? 0.42 : 0.24)) - floatUp * 0.34;
+      const duration = finePointer ? 3200 + Math.random() * 1900 : 2800 + Math.random() * 1700;
 
       dust.className = "paper-dust";
       dust.style.left = `${x}px`;
@@ -127,7 +129,7 @@
       dust.style.setProperty("--dust-x", `${driftX}px`);
       dust.style.setProperty("--dust-y", `${driftY}px`);
       dust.style.setProperty("--dust-duration", `${duration}ms`);
-      dust.style.animationDelay = `${Math.random() * 160}ms`;
+      dust.style.animationDelay = `${Math.random() * (finePointer ? 220 : 160)}ms`;
       document.body.appendChild(dust);
       dust.addEventListener("animationend", () => dust.remove(), { once: true });
     }
