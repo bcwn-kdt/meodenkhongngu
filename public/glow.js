@@ -14,7 +14,16 @@
     document.head.appendChild(script);
   };
 
+  const loadInteractionAnalytics = () => {
+    if (document.querySelector('script[src="/analytics-events.js"]')) return;
+    const script = document.createElement("script");
+    script.defer = true;
+    script.src = "/analytics-events.js";
+    document.head.appendChild(script);
+  };
+
   loadAnalytics();
+  loadInteractionAnalytics();
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
