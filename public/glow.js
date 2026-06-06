@@ -1,4 +1,21 @@
 (() => {
+  const loadAnalytics = () => {
+    const measurementId = "G-Z90LT6R7NK";
+    if (window.gtag || document.querySelector(`script[src*="${measurementId}"]`)) return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag(){ window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", measurementId);
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+    document.head.appendChild(script);
+  };
+
+  loadAnalytics();
+
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
 
