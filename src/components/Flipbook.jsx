@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
 const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
@@ -36,11 +36,106 @@ function useIsMobile() {
   return isMobile;
 }
 
+function sendBookEvent(eventName, params = {}) {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+
+  window.gtag("event", eventName, {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname,
+    page_type: "book",
+    book_title: "Va Vào Lần Yêu Cuối",
+    book_slug: "va-vao-lan-yeu-cuoi",
+    ...params,
+  });
+}
+
 export default function FlipBook({ poems }) {
   const isMobile = useIsMobile();
+  const progressMarksRef = useRef(new Set());
+  const completedRef = useRef(false);
+
   const groupedChapters = chapters
     .map((chapter, chapterIndex) => ({ ...chapter, poems: poems.filter((poem) => getChapterIndex(poem) === chapterIndex) }))
     .filter((chapter) => chapter.poems.length > 0);
+
+  const totalPages = useMemo(() => {
+    const chapterPages = groupedChapters.length;
+    const poemPages = groupedChapters.reduce((sum, chapter) => sum + chapter.poems.length, 0);
+    return 3 + chapterPages + poemPages + 1;
+  }, [groupedChapters]);
+
+  const getPageMeta = (pageIndex) => {
+    const coverPages = 3;
+    let index = coverPages;
+
+    for (const chapter of groupedChapters) {
+      if (pageIndex === index) {
+        return {
+          content_type: "chapter",
+          chapter_title: chapter.title,
+          chapter_subtitle: chapter.subtitle,
+        };
+      }
+
+      index += 1;
+
+      for (const poem of chapter.poems) {
+        if (pageIndex === index) {
+          return {
+            content_type: "poem",
+            chapter_title: chapter.title,
+            chapter_subtitle: chapter.subtitle,
+            poem_title: poem.title,
+            poem_slug: poem.slug,
+          };
+        }
+        index += 1;
+      }
+    }
+
+    if (pageIndex >= totalPages - 1) {
+      return { content_type: "end" };
+    }
+
+    return { content_type: pageIndex === 0 ? "cover" : pageIndex === 1 ? "intro" : "toc" };
+  };
+
+  const handleFlip = (event) => {
+    const pageIndex = Number(event?.data ?? 0);
+    const pageNumber = pageIndex + 1;
+    const progressPercent = Math.min(100, Math.round((pageNumber / totalPages) * 100));
+    const pageMeta = getPageMeta(pageIndex);
+
+    sendBookEvent("book_page_flip", {
+      page_index: pageIndex,
+      page_number: pageNumber,
+      total_pages: totalPages,
+      progress_percent: progressPercent,
+      ...pageMeta,
+    });
+
+    [25, 50, 75, 90].forEach((mark) => {
+      if (progressPercent >= mark && !progressMarksRef.current.has(mark)) {
+        progressMarksRef.current.add(mark);
+        sendBookEvent("book_progress", {
+          progress_percent: mark,
+          page_number: pageNumber,
+          total_pages: totalPages,
+          ...pageMeta,
+        });
+      }
+    });
+
+    if (progressPercent >= 95 && !completedRef.current) {
+      completedRef.current = true;
+      sendBookEvent("book_complete", {
+        page_number: pageNumber,
+        total_pages: totalPages,
+        progress_percent: progressPercent,
+      });
+    }
+  };
 
   let pageNumber = 1;
   const bookKey = isMobile ? "mobile-book" : "desktop-book";
@@ -77,6 +172,7 @@ export default function FlipBook({ poems }) {
             useMouseEvents={true}
             swipeDistance={30}
             className="flip-book"
+            onFlip={handleFlip}
           >
             <div className="book-page cover-page hard-page">
               <div className="cover-art" aria-hidden="true"><span className="moon" /><span className="cat-silhouette" /></div>
