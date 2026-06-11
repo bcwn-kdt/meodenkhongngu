@@ -22,8 +22,17 @@
     document.head.appendChild(script);
   };
 
+  const loadReadingMode = () => {
+    if (document.querySelector('script[src^="/reading-mode.js"]')) return;
+    const script = document.createElement("script");
+    script.defer = true;
+    script.src = "/reading-mode.js?v=reading-v1";
+    document.head.appendChild(script);
+  };
+
   loadAnalytics();
   loadInteractionAnalytics();
+  loadReadingMode();
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
