@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Trăng khuyết">
+  <defs>
+    <radialGradient id="moonGlow" cx="36%" cy="32%" r="72%">
+      <stop offset="0%" stop-color="#fffaf0" stop-opacity="1"/>
+      <stop offset="36%" stop-color="#f7e6bf" stop-opacity="0.92"/>
+      <stop offset="68%" stop-color="#f0c67a" stop-opacity="0.62"/>
+      <stop offset="100%" stop-color="#f0c67a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonSurface" cx="38%" cy="34%" r="70%">
+      <stop offset="0%" stop-color="#fffdf8"/>
+      <stop offset="45%" stop-color="#f8e9c7"/>
+      <stop offset="100%" stop-color="#c99f58"/>
+    </radialGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.95 0 1 0 0 0.74 0 0 1 0 0.34 0 0 0 .58 0" result="goldBlur"/>
+      <feMerge>
+        <feMergeNode in="goldBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <mask id="crescentMask">
+      <rect width="240" height="240" fill="black"/>
+      <circle cx="116" cy="118" r="82" fill="white"/>
+      <circle cx="145" cy="98" r="86" fill="black"/>
+    </mask>
+    <linearGradient id="edge" x1="58" y1="48" x2="150" y2="184">
+      <stop offset="0%" stop-color="#fffefa" stop-opacity="0.92"/>
+      <stop offset="50%" stop-color="#f2d59a" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#b78a44" stop-opacity="0.36"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="120" cy="120" r="104" fill="url(#moonGlow)" opacity="0.28"/>
+
+  <g mask="url(#crescentMask)" filter="url(#softGlow)">
+    <circle cx="116" cy="118" r="82" fill="url(#moonSurface)"/>
+    <circle cx="88" cy="83" r="7" fill="#d6b36f" opacity="0.25"/>
+    <circle cx="76" cy="124" r="10" fill="#b99152" opacity="0.18"/>
+    <circle cx="105" cy="160" r="6" fill="#d8ba7a" opacity="0.2"/>
+    <circle cx="122" cy="64" r="4" fill="#fff8df" opacity="0.36"/>
+    <path d="M63 61C35 96 35 146 64 181C42 148 43 96 63 61Z" fill="#fffef8" opacity="0.2"/>
+    <path d="M66 51C31 91 31 151 68 190" fill="none" stroke="url(#edge)" stroke-width="7" stroke-linecap="round" opacity="0.62"/>
+  </g>
+</svg>
