@@ -3,7 +3,7 @@
     if (document.querySelector('link[href^="/footer.css"]')) return;
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "/footer.css?v=footer-v1";
+    link.href = "/footer.css?v=footer-v2";
     document.head.appendChild(link);
   };
 
