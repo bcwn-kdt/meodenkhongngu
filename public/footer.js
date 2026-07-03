@@ -1,4 +1,14 @@
 (() => {
+  const loadFooterStyles = () => {
+    if (document.querySelector('link[href^="/footer.css"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "/footer.css?v=footer-v1";
+    document.head.appendChild(link);
+  };
+
+  loadFooterStyles();
+
   const footer = document.querySelector(".site-footer");
   if (!footer || footer.dataset.enhanced === "true") return;
 
