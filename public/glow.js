@@ -34,7 +34,7 @@
     if (document.querySelector('script[src^="/footer.js"]')) return;
     const script = document.createElement("script");
     script.defer = true;
-    script.src = "/footer.js?v=footer-v1";
+    script.src = "/footer.js?v=footer-v2";
     document.head.appendChild(script);
   };
 
