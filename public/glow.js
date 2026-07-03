@@ -30,9 +30,18 @@
     document.head.appendChild(script);
   };
 
+  const loadFooter = () => {
+    if (document.querySelector('script[src^="/footer.js"]')) return;
+    const script = document.createElement("script");
+    script.defer = true;
+    script.src = "/footer.js?v=footer-v1";
+    document.head.appendChild(script);
+  };
+
   loadAnalytics();
   loadInteractionAnalytics();
   loadReadingMode();
+  loadFooter();
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
