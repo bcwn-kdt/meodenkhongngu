@@ -96,7 +96,28 @@ export default function FlipBook() {
       <style>{`
         .vvb-flipbook { position:relative; min-height:100vh; padding:44px 16px 64px; box-sizing:border-box; background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.055),transparent 32%),#090807; color:#eee3d2; overflow:hidden; }
         .vvb-flipbook__top { position:relative; z-index:5; max-width:1100px; margin:0 auto 18px; text-align:center; }
-        .vvb-flipbook__top h1 { margin:0; padding:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(30px,5vw,54px); font-weight:400; letter-spacing:normal; word-spacing:normal; white-space:nowrap; line-height:1.12; font-kerning:none; font-variant-ligatures:none; }
+
+        /* Use the site's Vietnamese-optimized UI font for the header.
+           This avoids the broken glyph spacing seen with some serif fallbacks. */
+        .vvb-flipbook__top h1 {
+          display:block;
+          margin:0;
+          padding:0;
+          font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+          font-size:clamp(30px,5vw,54px);
+          font-weight:600;
+          font-style:normal;
+          font-variant:normal;
+          font-feature-settings:"kern" 0,"liga" 0,"clig" 0;
+          font-kerning:none;
+          letter-spacing:0;
+          word-spacing:0;
+          white-space:nowrap;
+          line-height:1.15;
+          text-rendering:geometricPrecision;
+          -webkit-font-smoothing:antialiased;
+        }
+
         .vvb-flipbook__toolbar { position:relative; z-index:5; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:9px; margin:0 auto 18px; font-size:11px; }
         .vvb-flipbook__status,.vvb-flipbook__resume { border:1px solid rgba(238,227,210,.16); border-radius:999px; background:rgba(20,18,16,.86); color:#eee3d2; padding:8px 12px; }
         .vvb-flipbook__resume { cursor:pointer; }
