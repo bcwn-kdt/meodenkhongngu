@@ -4,8 +4,7 @@ import HTMLFlipBook from "react-pageflip";
 const BOOKMARK_KEY = "meo-bookmark-va-vao-lan-yeu-cuoi";
 const PAGE_COUNT = 33;
 
-// The book images are stored directly in /public.
-// Astro serves files in /public at the site root, so page-01.webp becomes /page-01.webp.
+// Astro serves files in /public at the site root.
 const pages = Array.from({ length: PAGE_COUNT }, (_, i) => ({
   index: i,
   src: `/page-${String(i + 1).padStart(2, "0")}.webp`,
@@ -96,9 +95,8 @@ export default function FlipBook() {
     <section className="vvb-flipbook">
       <style>{`
         .vvb-flipbook { position:relative; min-height:100vh; padding:44px 16px 64px; box-sizing:border-box; background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.055),transparent 32%),#090807; color:#eee3d2; overflow:hidden; }
-        .vvb-flipbook__top { position:relative; z-index:5; max-width:900px; margin:0 auto 22px; text-align:center; }
-        .vvb-flipbook__top h1 { margin:0 0 8px; font-family:Georgia,"Times New Roman",serif; font-size:clamp(30px,5vw,54px); font-weight:400; letter-spacing:-.04em; }
-        .vvb-flipbook__top p { margin:0; color:rgba(238,227,210,.62); font-size:12px; letter-spacing:.03em; }
+        .vvb-flipbook__top { position:relative; z-index:5; max-width:1100px; margin:0 auto 18px; text-align:center; }
+        .vvb-flipbook__top h1 { margin:0; padding:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(30px,5vw,54px); font-weight:400; letter-spacing:normal; word-spacing:normal; white-space:nowrap; line-height:1.12; font-kerning:none; font-variant-ligatures:none; }
         .vvb-flipbook__toolbar { position:relative; z-index:5; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:9px; margin:0 auto 18px; font-size:11px; }
         .vvb-flipbook__status,.vvb-flipbook__resume { border:1px solid rgba(238,227,210,.16); border-radius:999px; background:rgba(20,18,16,.86); color:#eee3d2; padding:8px 12px; }
         .vvb-flipbook__resume { cursor:pointer; }
@@ -107,12 +105,16 @@ export default function FlipBook() {
         .vvb-flipbook__book { position:relative; z-index:2; filter:drop-shadow(0 34px 58px rgba(0,0,0,.68)); }
         .vvb-flipbook__page { width:100%; height:100%; overflow:hidden; background:#eee2cf; box-sizing:border-box; }
         .vvb-flipbook__page img { display:block; width:100%; height:100%; object-fit:cover; user-select:none; -webkit-user-drag:none; pointer-events:none; }
-        @media(max-width:760px){ .vvb-flipbook{padding:28px 8px 42px}.vvb-flipbook__top h1{font-size:32px}.vvb-flipbook__top p{font-size:10px}.vvb-flipbook__stage{min-height:70vh;padding-bottom:32px}.vvb-flipbook__stage::after{width:80vw;height:44px} }
+        @media(max-width:760px){
+          .vvb-flipbook{padding:28px 8px 42px}
+          .vvb-flipbook__top h1{font-size:30px; white-space:normal; line-height:1.15}
+          .vvb-flipbook__stage{min-height:70vh;padding-bottom:32px}
+          .vvb-flipbook__stage::after{width:80vw;height:44px}
+        }
       `}</style>
 
       <div className="vvb-flipbook__top">
         <h1>Va Vào Lần Yêu Cuối</h1>
-        <p>Ấn bản dàn trang gốc · 33 trang · tự động đánh dấu trang</p>
       </div>
 
       <div className="vvb-flipbook__toolbar">
