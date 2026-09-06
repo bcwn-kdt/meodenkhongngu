@@ -1,206 +1,55 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
-const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
-
-const chapters = [
-  { title: "Chương I", subtitle: "Những vết xám đầu tiên", description: "Những ngày đầu của trống rỗng, nơi tổn thương chưa thành tên nhưng đã kịp đổi màu bầu trời.", poems: ["Ngày lại ngày", "Màu xám", "Đôi lúc", "Người Tình", "Vội", "Lỗi", "Tổn thương", "Ưu tình", "Mùi nhớ nhung", "Thành thật", "Hoàng hôn", "Mỏng manh", "Ký ức về anh", "Ngày không anh"] },
-  { title: "Chương II", subtitle: "Người tình và những cuộc yêu vội", description: "Những bài thơ của men say, va chạm, hứa hẹn và các cuộc tình chưa kịp gọi đúng tên.", poems: ["Thoáng chốc dại khờ", "Trò chơi", "Ta và em", "Trái tim không tuổi", "Yêu và hiểu", "Lời anh nói", "Lời mật ngọt", "Vết đêm", "Va vào lần yêu cuối", "Giữ lấy em", "Một chút tò mò", "Gửi em", "Yêu em?", "Vật chứa", "Định nghĩa", "Ngôi đền", "Đếm đêm", "Khi ta yêu"] },
-  { title: "Chương III", subtitle: "Khi tình yêu bắt đầu rời đi", description: "Những trang thơ của buông tay, muộn màng, những điều không nói và các khoảng cách cứ lớn dần.", poems: ["Vết dấu", "Hết yêu", "Thôi", "Bình thường", "Muộn", "Ngày và đêm", "Hôm nay và mai sau", "Ta không còn là những đứa trẻ", "Cơn đau nào cũng hết", "Đừng giấu vào đêm", "Cuối Cùng Em Hiểu", "Chạm tay nhau lỡ làng", "Thôi mình đừng hỏi nhau “ổn không”", "Đừng để tình mình chỉ chắp vá", "Khi mình xa", "Một ngày", "Yêu xa", "Tình ca tan vỡ", "Dự định", "Những điều không nói", "Lửng lơ", "Lặng thầm"] },
-  { title: "Chương IV", subtitle: "Em, những mảnh vỡ và cõi lòng", description: "Khi người viết quay về nhìn chính mình: cơ thể, bản ngã, nỗi buồn, sự nhạy cảm và những phần em đã phải tự ôm lấy.", poems: ["Những bước chân em", "Hãy nhìn em", "Cõi Lòng Em", "Bận Lòng", "Hãy ở lại", "Nhiều nhân cách trong em", "Muôn kiếp nhân sinh", "Nỗi buồn em", "Tổn thương là nhỏ nhặt", "Tất cả của em", "Tìm nơi đâu", "Đừng", "Một, hai và ba…", "Nhạy cảm", "Anh thấy gì ở màu xanh nơi em?", "Hướng nào?", "Những bàn tay", "Hãy Tìm Em", "Tơ Tằm", "Ta Sẽ Đi Về Đâu?", "Vai phụ", "Hỗn loạn", "Intact"] },
-  { title: "Chương V", subtitle: "Thơ như một nơi trú ẩn", description: "Những bài thơ viết về chính thơ: nơi nỗi đau được đặt xuống, được đọc lại, và đôi khi được tha thứ.", poems: ["Thơ em", "Nếu anh đọc thơ em", "Những bài thơ", "Vần thơ em", "Anh biết không?"] },
-  { title: "Chương VI", subtitle: "Sau cùng, em khép lại", description: "Những trang cuối của một cuộc tình: không còn níu kéo, chỉ còn người viết tự bước qua và gọi tên bình yên.", poems: ["Rung cảm", "Tạm bợ", "Giá như", "Chương khác", "Cổ tích", "Giấc mơ", "Trói buộc/giải thoát", "Rồi Một Ngày", "Nếu Có Thể", "Phép thử", "Miền đất hứa", "Lời xin lỗi", "Ngày không còn tên", "Không tên", "Da thịt và khoảng trống"] },
+const BOOKMARK_KEY = "meo-bookmark-va-vao-lan-yeu-cuoi";
+const pagePlan = [
+  { type: "cover" }, { type: "title" }, { type: "intro" },
+  { type: "chapter", chapter: "CHƯƠNG I", title: "Những vệt xám đầu tiên", text: "Là những ngày đầu của trống rỗng, là những lần giữa lằn ranh trắng và đen. Nơi tổn thương chưa thành tên nhưng đã kịp đổi màu cả bầu trời." },
+  { type: "poem", title: "Ngày lại ngày" }, { type: "poem", title: "Màu xám" }, { type: "poem", title: "Người tình" }, { type: "poem", title: "Vội" },
+  { type: "poems", titles: ["Lỗi ở trái tim", "Tổn thương"] }, { type: "poem", title: "Ưu tình" }, { type: "poem", title: "Mùi nhớ nhung" }, { type: "poem", title: "Thành thật" },
+  { type: "poem", title: "Hoàng hôn" }, { type: "poem", title: "Mỏng manh" }, { type: "poem", title: "Ký ức về anh" }, { type: "poem", title: "Ngày không anh" },
+  { type: "chapter", chapter: "CHƯƠNG II", title: "Đắm Chìm", text: "Là lúc các giác quan, cảm xúc, va chạm, hứa hẹn và các cuộc yêu di chuyển cùng nhau... trong tối" },
+  { type: "poem", title: "Thoáng chốc dại khờ" }, { type: "poem", title: "Trò chơi" }, { type: "poem", title: "Ta và em" }, { type: "poem", title: "Trái tim không tuổi" },
+  { type: "poem", title: "Yêu và Hiểu" }, { type: "poem", title: "Lời anh nói" }, { type: "poem", title: "Lời mật ngọt" }, { type: "poem", title: "Vết đêm" },
+  { type: "poem", title: "Va vào lần yêu cuối" }, { type: "poem", title: "Lời mật ngọt" }, { type: "poem", title: "Giữ lấy em" }, { type: "poem", title: "Một chút tò mò" },
+  { type: "poem", title: "Ngôi đền" }, { type: "poem", title: "Yêu em?" }, { type: "poem", title: "Yêu em" }, { type: "poem", title: "Định nghĩa" },
 ];
 
-function normalize(text = "") {
-  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[“”]/g, '"').replace(/…/g, "...").replace(/\s+/g, " ").trim();
-}
-
-function getChapterIndex(poem) {
-  const title = normalize(poem.title || "");
-  const index = chapters.findIndex((chapter) => chapter.poems.some((chapterPoem) => normalize(chapterPoem) === title));
-  return index >= 0 ? index : chapters.length - 1;
-}
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 760px)");
-    const update = () => setIsMobile(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-
-  return isMobile;
-}
-
-function sendBookEvent(eventName, params = {}) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
-
-  window.gtag("event", eventName, {
-    page_title: document.title,
-    page_location: window.location.href,
-    page_path: window.location.pathname,
-    page_type: "book",
-    book_title: "Va Vào Lần Yêu Cuối",
-    book_slug: "va-vao-lan-yeu-cuoi",
-    ...params,
-  });
-}
+function normalize(text = "") { return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[“”]/g, '"').replace(/…/g, "...").replace(/\s+/g, " ").trim(); }
+function findPoem(poems, title, used = new Set()) { const wanted = normalize(title); return poems.find((poem) => normalize(poem.title) === wanted && !used.has(poem.slug)) || poems.find((poem) => normalize(poem.title) === wanted); }
+function sendBookEvent(eventName, params = {}) { if (typeof window === "undefined" || typeof window.gtag !== "function") return; window.gtag("event", eventName, { page_title: document.title, page_location: window.location.href, page_path: window.location.pathname, page_type: "book", book_title: "Va Vào Lần Yêu Cuối", book_slug: "va-vao-lan-yeu-cuoi", ...params }); }
+function readBookmark() { try { const value = Number(window.localStorage.getItem(BOOKMARK_KEY)); return Number.isInteger(value) && value >= 0 ? value : 0; } catch { return 0; } }
 
 export default function FlipBook({ poems }) {
-  const isMobile = useIsMobile();
-  const progressMarksRef = useRef(new Set());
-  const completedRef = useRef(false);
-
-  const groupedChapters = chapters
-    .map((chapter, chapterIndex) => ({ ...chapter, poems: poems.filter((poem) => getChapterIndex(poem) === chapterIndex) }))
-    .filter((chapter) => chapter.poems.length > 0);
-
-  const totalPages = useMemo(() => {
-    const chapterPages = groupedChapters.length;
-    const poemPages = groupedChapters.reduce((sum, chapter) => sum + chapter.poems.length, 0);
-    return 3 + chapterPages + poemPages + 1;
-  }, [groupedChapters]);
-
-  const getPageMeta = (pageIndex) => {
-    const coverPages = 3;
-    let index = coverPages;
-
-    for (const chapter of groupedChapters) {
-      if (pageIndex === index) {
-        return {
-          content_type: "chapter",
-          chapter_title: chapter.title,
-          chapter_subtitle: chapter.subtitle,
-        };
-      }
-
-      index += 1;
-
-      for (const poem of chapter.poems) {
-        if (pageIndex === index) {
-          return {
-            content_type: "poem",
-            chapter_title: chapter.title,
-            chapter_subtitle: chapter.subtitle,
-            poem_title: poem.title,
-            poem_slug: poem.slug,
-          };
-        }
-        index += 1;
-      }
-    }
-
-    if (pageIndex >= totalPages - 1) {
-      return { content_type: "end" };
-    }
-
-    return { content_type: pageIndex === 0 ? "cover" : pageIndex === 1 ? "intro" : "toc" };
-  };
-
+  const bookRef = useRef(null); const restoredRef = useRef(false); const progressMarksRef = useRef(new Set()); const completedRef = useRef(false);
+  const [currentPage, setCurrentPage] = useState(0); const [savedPage, setSavedPage] = useState(0); const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => { const media = window.matchMedia("(max-width: 760px)"); const update = () => setIsMobile(media.matches); update(); media.addEventListener("change", update); return () => media.removeEventListener("change", update); }, []);
+  const resolvedPages = useMemo(() => { const used = new Set(); return pagePlan.map((page) => { if (page.type === "poem") { const poem = findPoem(poems, page.title, used); if (poem) used.add(poem.slug); return { ...page, poem }; } if (page.type === "poems") return { ...page, poems: page.titles.map((title) => { const poem = findPoem(poems, title, used); if (poem) used.add(poem.slug); return poem; }).filter(Boolean) }; return page; }); }, [poems]);
+  const totalPages = resolvedPages.length;
+  const bookmarkLabel = savedPage > 0 ? `Trang ${savedPage + 1}` : "Bắt đầu từ đầu";
+  useEffect(() => { const target = Math.min(readBookmark(), totalPages - 1); setSavedPage(target); setCurrentPage(target); }, [totalPages]);
+  const restoreBookmark = () => { const target = Math.min(readBookmark(), totalPages - 1); try { bookRef.current?.pageFlip()?.turnToPage(target); setCurrentPage(target); setSavedPage(target); sendBookEvent("book_bookmark_resume", { page_index: target, page_number: target + 1, total_pages: totalPages }); } catch {} };
+  const handleInit = () => { if (restoredRef.current) return; restoredRef.current = true; window.setTimeout(restoreBookmark, 120); };
   const handleFlip = (event) => {
-    const pageIndex = Number(event?.data ?? 0);
-    const pageNumber = pageIndex + 1;
-    const progressPercent = Math.min(100, Math.round((pageNumber / totalPages) * 100));
-    const pageMeta = getPageMeta(pageIndex);
-
-    sendBookEvent("book_page_flip", {
-      page_index: pageIndex,
-      page_number: pageNumber,
-      total_pages: totalPages,
-      progress_percent: progressPercent,
-      ...pageMeta,
-    });
-
-    [25, 50, 75, 90].forEach((mark) => {
-      if (progressPercent >= mark && !progressMarksRef.current.has(mark)) {
-        progressMarksRef.current.add(mark);
-        sendBookEvent("book_progress", {
-          progress_percent: mark,
-          page_number: pageNumber,
-          total_pages: totalPages,
-          ...pageMeta,
-        });
-      }
-    });
-
-    if (progressPercent >= 95 && !completedRef.current) {
-      completedRef.current = true;
-      sendBookEvent("book_complete", {
-        page_number: pageNumber,
-        total_pages: totalPages,
-        progress_percent: progressPercent,
-      });
-    }
+    const pageIndex = Number(event?.data ?? 0), pageNumber = pageIndex + 1, progressPercent = Math.min(100, Math.round((pageNumber / totalPages) * 100));
+    setCurrentPage(pageIndex); setSavedPage(pageIndex); try { window.localStorage.setItem(BOOKMARK_KEY, String(pageIndex)); } catch {}
+    const page = resolvedPages[pageIndex] || {}, poem = page.poem;
+    sendBookEvent("book_page_flip", { page_index: pageIndex, page_number: pageNumber, total_pages: totalPages, progress_percent: progressPercent, content_type: page.type, poem_title: poem?.title, poem_slug: poem?.slug, chapter_title: page.chapter });
+    [25, 50, 75, 90].forEach((mark) => { if (progressPercent >= mark && !progressMarksRef.current.has(mark)) { progressMarksRef.current.add(mark); sendBookEvent("book_progress", { progress_percent: mark, page_number: pageNumber, total_pages: totalPages }); } });
+    if (progressPercent >= 95 && !completedRef.current) { completedRef.current = true; sendBookEvent("book_complete", { page_number: pageNumber, total_pages: totalPages, progress_percent: progressPercent }); }
   };
+  const pageClass = (page, index) => { if (page.type === "cover") return "vvb-page vvb-cover"; if (page.type === "title") return "vvb-page vvb-title-page"; if (page.type === "intro") return "vvb-page vvb-intro"; if (page.type === "chapter") return `vvb-page vvb-chapter ${index === 16 ? "vvb-chapter-ii" : "vvb-chapter-i"}`; if (page.type === "poems") return "vvb-page vvb-poem vvb-dual-poem"; return `vvb-page vvb-poem vvb-poem-${index % 4}`; };
+  const renderPoem = (poem, compact = false) => <article className={compact ? "vvb-poem-block vvb-poem-compact" : "vvb-poem-block"}><h2>{poem?.title || " "}</h2><div className="vvb-poem-body" dangerouslySetInnerHTML={{ __html: poem?.html || `<p>${poem?.excerpt || ""}</p>` }} /></article>;
 
-  let pageNumber = 1;
-  const bookKey = isMobile ? "mobile-book" : "desktop-book";
-  const bookSize = isMobile
-    ? { width: 340, height: 560, minWidth: 280, maxWidth: 360, minHeight: 460, maxHeight: 620 }
-    : { width: 440, height: 640, minWidth: 300, maxWidth: 460, minHeight: 460, maxHeight: 680 };
-
-  return (
-    <section className={isMobile ? "book-section is-mobile-book" : "book-section"}>
-      <div className="book-top">
-        <h1>Va Vào Lần Yêu Cuối</h1>
-        <p>Một ấn bản thơ điện tử của Mèo Đen Không Ngủ — nơi những bài thơ cũ được đặt lại trong một căn phòng tối, dịu và yên hơn.</p>
-      </div>
-
-      <div className="book-wrap">
-        <div className="book-stage">
-          <HTMLFlipBook
-            key={bookKey}
-            width={bookSize.width}
-            height={bookSize.height}
-            size="stretch"
-            minWidth={bookSize.minWidth}
-            maxWidth={bookSize.maxWidth}
-            minHeight={bookSize.minHeight}
-            maxHeight={bookSize.maxHeight}
-            showCover={true}
-            drawShadow={true}
-            flippingTime={900}
-            usePortrait={isMobile}
-            startZIndex={30}
-            maxShadowOpacity={0.28}
-            mobileScrollSupport={true}
-            clickEventForward={true}
-            useMouseEvents={true}
-            swipeDistance={30}
-            className="flip-book"
-            onFlip={handleFlip}
-          >
-            <div className="book-page cover-page hard-page">
-              <div className="cover-art" aria-hidden="true"><span className="moon" /><span className="cat-silhouette" /></div>
-              <div className="cover-content"><p className="cover-author">Mèo Đen Không Ngủ</p><h2>Va Vào<br />Lần Yêu Cuối</h2><small>Tập thơ | Ấn bản điện tử</small></div>
-            </div>
-            <div className="book-page intro-page decorated-page botanical-rose">
-              <div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" />
-              <div className="intro-inner"><span>Lời mở</span><p>Có những bài thơ được viết ra không phải để níu một người ở lại, mà để một nỗi buồn có nơi được gọi tên.</p><p><em>Va Vào Lần Yêu Cuối</em> là cách Mèo cất lại những mùa yêu đã qua: không còn trách móc, không còn cầu xin, chỉ còn một khoảng lặng đủ mềm để ký ức thôi làm đau.</p><p>Nếu có một phiên bản cũ của mình từng khóc trong những trang này, mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.</p></div>
-            </div>
-            <div className="book-page toc-page decorated-page botanical-branch">
-              <div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" />
-              <div className="toc-inner"><span>Mục lục</span><h2>Các chương</h2><div className="toc-list">{groupedChapters.map((chapter) => <div className="toc-item" key={`toc-${chapter.title}`}><small>{chapter.title}</small><strong>{chapter.subtitle}</strong></div>)}</div></div>
-            </div>
-            {groupedChapters.flatMap((chapter, chapterIndex) => {
-              const chapterPage = <div className={`book-page chapter-page decorated-page botanical-${botanicalStyles[chapterIndex % botanicalStyles.length]}`} key={`chapter-${chapterIndex}`}><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div className="chapter-inner"><span>{chapter.title}</span><h2>{chapter.subtitle}</h2><p>{chapter.description}</p></div></div>;
-              const poemPages = chapter.poems.map((poem) => {
-                const botanical = botanicalStyles[(pageNumber - 1) % botanicalStyles.length];
-                const currentPage = pageNumber++;
-                return <div className={`book-page poem-book-page decorated-page botanical-${botanical}`} key={poem.slug}><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div className="book-page-number">{String(currentPage).padStart(2, "0")}</div><h2>{poem.title}</h2><div className="book-poem-body" dangerouslySetInnerHTML={{ __html: poem.html }} /></div>;
-              });
-              return [chapterPage, ...poemPages];
-            })}
-            <div className="book-page end-page decorated-page botanical-ginkgo hard-page"><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div><p>Hết.</p><small>Mèo Đen Không Ngủ</small></div></div>
-          </HTMLFlipBook>
-        </div>
-        <div className="book-status" aria-live="polite">Kéo góc giấy hoặc chạm vào mép trang để lật.</div>
-      </div>
-      <p className="mobile-note">Trên điện thoại, sách hiển thị một trang mỗi lần để dễ đọc hơn.</p>
-    </section>
-  );
+  return <section className="vvb-shell">
+    <style>{`.vvb-shell{--paper:#efe2cb;--ink:#2a211b;--muted:#766a5c;position:relative;padding:54px 20px 70px;overflow:hidden}.vvb-heading{max-width:760px;margin:0 auto 30px;text-align:center}.vvb-heading h1{margin:0 0 10px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(36px,5vw,64px);font-weight:400;letter-spacing:-.045em}.vvb-heading p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}.vvb-toolbar{max-width:920px;margin:0 auto 18px;display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}.vvb-bookmark-status,.vvb-resume{border:1px solid rgba(42,33,27,.16);background:rgba(239,226,203,.8);padding:8px 12px;border-radius:999px}.vvb-resume{cursor:pointer;color:var(--ink)}.vvb-stage{position:relative;display:grid;place-items:center;min-height:690px;padding:20px 0 45px}.vvb-stage:after{content:"";position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:min(720px,82vw);height:54px;border-radius:50%;background:rgba(0,0,0,.32);filter:blur(22px);z-index:0}.vvb-book{position:relative;z-index:2;filter:drop-shadow(0 32px 55px rgba(0,0,0,.42))}.vvb-page{position:relative;width:100%;height:100%;overflow:hidden;background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif;border:1px solid rgba(42,33,27,.14);box-sizing:border-box}.vvb-page:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.055),transparent 13%,transparent 87%,rgba(0,0,0,.04)),radial-gradient(circle at 20% 10%,rgba(255,255,255,.28),transparent 30%);mix-blend-mode:multiply}.vvb-page>*{position:relative;z-index:2}.vvb-cover{background:#030303;color:#f1e5d1;padding:48px 44px}.vvb-cover:before{content:"";position:absolute;right:55px;top:56px;width:88px;height:88px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 12%,#aaa 22%,#777 43%,#ddd 68%,#444 100%);box-shadow:0 0 24px rgba(255,255,255,.18)}.vvb-cover:after{background:radial-gradient(ellipse at 20% 82%,rgba(70,90,150,.25),transparent 35%)}.vvb-cover-brand{font-size:11px;letter-spacing:.02em}.vvb-cover-title{position:absolute;left:44px;top:42%;font-size:42px;line-height:1.12;font-weight:400}.vvb-crescent{position:absolute;left:45px;bottom:82px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 36% 35%,#eef6ff,#91b8ff 55%,#314a7d 100%);box-shadow:0 0 30px rgba(111,153,255,.18)}.vvb-crescent:after{content:"";position:absolute;left:37px;top:-3px;width:130px;height:130px;border-radius:50%;background:#030303}.vvb-cover-foot{position:absolute;left:44px;bottom:42px;font-size:10px}.vvb-title-page{padding:80px 72px;display:flex;flex-direction:column;justify-content:space-between}.vvb-title-page .vvb-small{font-size:10px}.vvb-title-page h2{font-size:38px;font-weight:400;line-height:1.15;max-width:330px}.vvb-title-page .vvb-bottom{font-size:10px}.vvb-intro{padding:76px 70px}.vvb-intro .vvb-small{font-size:10px;text-transform:uppercase;letter-spacing:.12em}.vvb-intro h2{font-size:14px;font-weight:400;margin:30px 0 22px}.vvb-intro p{font-size:12px;line-height:1.8;margin:0 0 17px}.vvb-sign{margin-top:25px;text-align:right;font-size:11px}.vvb-chapter{display:flex;align-items:center;justify-content:center;text-align:left;padding:65px}.vvb-chapter-i:before{content:"";position:absolute;left:50%;top:58px;width:135px;height:115px;transform:translateX(-50%);border-radius:50% 55% 45% 60%;background:radial-gradient(circle at 30% 35%,rgba(100,108,112,.45),rgba(155,161,163,.22) 48%,transparent 72%);filter:blur(4px)}.vvb-chapter-ii:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 12% 18%,rgba(75,79,82,.5),transparent 25%),radial-gradient(ellipse at 90% 80%,rgba(60,64,66,.42),transparent 28%),radial-gradient(ellipse at 8% 88%,rgba(60,64,66,.35),transparent 25%);filter:blur(12px)}.vvb-chapter-inner{max-width:330px;margin-top:90px}.vvb-chapter-ii .vvb-chapter-inner{margin-top:20px}.vvb-chapter .vvb-small{font-size:9px;letter-spacing:.14em}.vvb-chapter h2{font-size:30px;font-weight:400;line-height:1.12;margin:15px 0}.vvb-chapter p{font-size:12px;line-height:1.7}.vvb-poem{padding:70px 62px;display:flex;align-items:flex-start}.vvb-poem-block{max-width:350px;margin-top:24px}.vvb-poem-block h2{font-size:22px;font-weight:400;line-height:1.2;margin:0 0 17px}.vvb-poem-body{font-size:10.8px;line-height:1.72}.vvb-poem-body p{margin:0 0 8px}.vvb-poem-1 .vvb-poem-block{margin-left:10px;margin-top:130px}.vvb-poem-2 .vvb-poem-block{margin-top:115px}.vvb-poem-3 .vvb-poem-block{margin-left:55px;margin-top:150px}.vvb-poem-3:before{content:"";position:absolute;right:40px;top:80px;width:105px;height:145px;border-radius:55% 35% 65% 25%;background:linear-gradient(150deg,transparent 0 20%,rgba(24,31,67,.8) 23% 29%,transparent 31% 38%,rgba(25,31,71,.55) 41% 48%,transparent 51%);transform:rotate(-18deg)}.vvb-poem-5 .vvb-poem-block{margin-top:55px}.vvb-poem-5:before{content:"";position:absolute;right:55px;top:90px;width:150px;height:150px;background:repeating-conic-gradient(#25211c 0 12.5%,transparent 0 25%);transform:rotate(45deg);opacity:.95}.vvb-poem-5:after{content:"";position:absolute;right:85px;bottom:80px;width:50px;height:105px;border:1px solid rgba(42,33,27,.3);border-radius:55% 55% 10% 10%;transform:rotate(12deg)}.vvb-dual-poem{padding:80px 48px;gap:34px}.vvb-dual-poem .vvb-poem-block{width:50%;margin:25px 0 0}.vvb-dual-poem .vvb-poem-block h2{font-size:18px}.vvb-dual-poem .vvb-poem-body{font-size:9.7px}.vvb-dual-poem .vvb-poem-block:nth-child(2){margin-top:290px}.vvb-current{position:absolute;right:calc(50% - min(480px,44vw));top:28px;z-index:4;background:#211a15;color:#efe2cb;padding:8px 11px;font-size:10px;letter-spacing:.04em;box-shadow:0 7px 20px rgba(0,0,0,.2)}.vvb-current:before{content:"";position:absolute;right:8px;top:100%;border-left:10px solid transparent;border-right:10px solid transparent;border-top:18px solid #211a15}.vvb-note{text-align:center;color:var(--muted);font-size:11px;margin:0}.vvb-mobile-note{display:none}@media(max-width:760px){.vvb-shell{padding:32px 10px 45px}.vvb-heading h1{font-size:34px}.vvb-heading p{font-size:12px}.vvb-toolbar{font-size:10px}.vvb-stage{min-height:590px;padding:12px 0 34px}.vvb-book{filter:drop-shadow(0 22px 35px rgba(0,0,0,.4))}.vvb-cover{padding:30px 28px}.vvb-cover-title{left:28px;font-size:31px}.vvb-cover:before{right:30px;top:35px;width:62px;height:62px}.vvb-crescent{left:28px;bottom:60px;width:92px;height:92px}.vvb-crescent:after{left:27px;width:92px;height:92px}.vvb-cover-foot{left:28px;bottom:28px}.vvb-title-page,.vvb-intro,.vvb-poem{padding:42px 35px}.vvb-title-page h2{font-size:30px}.vvb-intro p,.vvb-poem-body{font-size:9.2px;line-height:1.65}.vvb-chapter{padding:40px}.vvb-chapter-inner{max-width:250px}.vvb-chapter h2{font-size:25px}.vvb-poem-block h2{font-size:18px}.vvb-dual-poem{padding:44px 28px;gap:18px}.vvb-dual-poem .vvb-poem-body{font-size:8.3px}.vvb-current{right:10px;top:10px}.vvb-note{display:none}.vvb-mobile-note{display:block;text-align:center;color:var(--muted);font-size:11px;margin-top:12px}}`}</style>
+    <div className="vvb-heading"><h1>Va Vào Lần Yêu Cuối</h1><p>Ấn bản điện tử được dàn lại theo file thiết kế 33 trang.</p></div>
+    <div className="vvb-toolbar"><span className="vvb-bookmark-status">● Tự động đánh dấu: {bookmarkLabel}</span>{savedPage > 0 && savedPage !== currentPage && <button className="vvb-resume" type="button" onClick={restoreBookmark}>Tiếp tục đọc</button>}</div>
+    <div className="vvb-stage"><div className="vvb-current">Đã lưu · {currentPage + 1}/{totalPages}</div>
+      <HTMLFlipBook ref={bookRef} key={isMobile ? "mobile" : "desktop"} width={isMobile ? 340 : 420} height={isMobile ? 481 : 594} size="stretch" minWidth={280} maxWidth={420} minHeight={400} maxHeight={594} showCover drawShadow flippingTime={850} usePortrait={isMobile} startZIndex={30} maxShadowOpacity={0.28} mobileScrollSupport clickEventForward useMouseEvents swipeDistance={30} className="vvb-book" onInit={handleInit} onFlip={handleFlip}>
+        {resolvedPages.map((page, index) => page.type === "cover" ? <div className="vvb-page vvb-cover" key={`page-${index}`}><div className="vvb-cover-brand">Mèo Đen Không Ngủ</div><div className="vvb-cover-title">Va Vào<br />Lần Yêu Cuối</div><div className="vvb-crescent" aria-hidden="true" /><div className="vvb-cover-foot">Ấn bản điện tử</div></div> : page.type === "title" ? <div className="vvb-page vvb-title-page" key={`page-${index}`}><span className="vvb-small">Mèo Đen Không Ngủ</span><h2>Va Vào<br />Lần Yêu Cuối</h2><span className="vvb-bottom">Ấn bản điện tử</span></div> : page.type === "intro" ? <div className="vvb-page vvb-intro" key={`page-${index}`}><span className="vvb-small">Lời mở</span><h2>Va Vào Lần Yêu Cuối</h2><p>Một tập thơ Mèo đã ấp ủ từ rất lâu, từ những ngày chập chững tuổi mười tám, từ những đêm không ngủ, từ những cảm xúc chân thật nhất của chính Mèo khi rơi vào tình yêu.</p><p>Tập thơ này ra đời không mang một mục đích nào hơn ngoài việc được nói ra, viết ra, được thổ lộ một cách rất thật qua các giai đoạn của tình yêu.</p><p>Mèo bắt đầu viết và viết, miệt mài những đêm không ngủ chỉ để được giải thoát khỏi những xúc cảm và khắc khoải của mình. Để rồi, được cất lại những mùa yêu đã qua...</p><p>Ở đâu đó ngoài kia, Mèo biết có những tâm hồn cũng trải qua tương tự những câu chuyện Mèo sẽ kể lại trong tập thơ này. Mèo chỉ có thể nói với bạn rằng, bằng tập thơ này, Mèo có thể ôm lấy bạn bằng tất cả những ấm áp nhất của mình, vỗ về bạn trong những đêm ta không ngủ.</p><div className="vvb-sign">Mèo Đen Không Ngủ</div></div> : page.type === "chapter" ? <div className={pageClass(page,index)} key={`page-${index}`}><div className="vvb-chapter-inner"><span className="vvb-small">{page.chapter}</span><h2>{page.title}</h2><p>{page.text}</p></div></div> : page.type === "poems" ? <div className={pageClass(page,index)} key={`page-${index}`}>{page.poems.map((poem) => renderPoem(poem, true))}</div> : <div className={pageClass(page,index)} key={`page-${index}`}>{page.poem ? renderPoem(page.poem) : <div className="vvb-poem-block"><h2>{page.title}</h2><p>Trang thơ chưa có nội dung tương ứng trong bộ sưu tập hiện tại.</p></div>}</div>)}
+      </HTMLFlipBook>
+    </div>
+    <p className="vvb-note">Lần mở sau, sách sẽ tự trở lại đúng trang bạn đã đọc.</p><p className="vvb-mobile-note">Vuốt hoặc chạm mép trang để lật · dấu trang được lưu tự động.</p>
+  </section>;
 }
