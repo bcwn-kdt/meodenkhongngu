@@ -4,16 +4,23 @@ import HTMLFlipBook from "react-pageflip";
 const BOOKMARK_KEY = "meo-bookmark-va-vao-lan-yeu-cuoi";
 const PAGE_COUNT = 33;
 
+// The book images are stored directly in /public.
+// Astro serves files in /public at the site root, so page-01.webp becomes /page-01.webp.
 const pages = Array.from({ length: PAGE_COUNT }, (_, i) => ({
   index: i,
-  src: `/book-layout/page-${String(i + 1).padStart(2, "0")}.webp`,
+  src: `/page-${String(i + 1).padStart(2, "0")}.webp`,
 }));
 
 function getBookmark() {
   if (typeof window === "undefined") return 0;
   try {
-    const value = Number.parseInt(window.localStorage.getItem(BOOKMARK_KEY) || "0", 10);
-    return Number.isFinite(value) ? Math.max(0, Math.min(PAGE_COUNT - 1, value)) : 0;
+    const value = Number.parseInt(
+      window.localStorage.getItem(BOOKMARK_KEY) || "0",
+      10,
+    );
+    return Number.isFinite(value)
+      ? Math.max(0, Math.min(PAGE_COUNT - 1, value))
+      : 0;
   } catch {
     return 0;
   }
@@ -55,6 +62,7 @@ export default function FlipBook() {
   const handleInit = () => {
     if (restoredRef.current) return;
     restoredRef.current = true;
+
     requestAnimationFrame(() => {
       const target = getBookmark();
       if (target > 0) {
@@ -112,7 +120,11 @@ export default function FlipBook() {
           🔖 Đã lưu trang {currentPage + 1}/{PAGE_COUNT} · {progress}%
         </span>
         {savedPage > 0 && savedPage !== currentPage && (
-          <button className="vvb-flipbook__resume" type="button" onClick={restoreBookmark}>
+          <button
+            className="vvb-flipbook__resume"
+            type="button"
+            onClick={restoreBookmark}
+          >
             Tiếp tục từ trang {savedPage + 1}
           </button>
         )}
@@ -144,8 +156,16 @@ export default function FlipBook() {
           onFlip={handleFlip}
         >
           {pages.map((page) => (
-            <div className="vvb-flipbook__page" key={page.index} data-page={page.index + 1}>
-              <img src={page.src} alt={`Va Vào Lần Yêu Cuối — trang ${page.index + 1}`} draggable="false" />
+            <div
+              className="vvb-flipbook__page"
+              key={page.index}
+              data-page={page.index + 1}
+            >
+              <img
+                src={page.src}
+                alt={`Va Vào Lần Yêu Cuối — trang ${page.index + 1}`}
+                draggable="false"
+              />
             </div>
           ))}
         </HTMLFlipBook>
