@@ -1,25 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
-const botanicalStyles = ["rose", "branch", "ginkgo", "wildflower"];
+const BOOKMARK_KEY = "meo-bookmark-va-vao-lan-yeu-cuoi";
+const PAGE_COUNT = 33;
 
-const chapters = [
-  { title: "Chương I", subtitle: "Những vết xám đầu tiên", description: "Những ngày đầu của trống rỗng, nơi tổn thương chưa thành tên nhưng đã kịp đổi màu bầu trời.", poems: ["Ngày lại ngày", "Màu xám", "Đôi lúc", "Người Tình", "Vội", "Lỗi", "Tổn thương", "Ưu tình", "Mùi nhớ nhung", "Thành thật", "Hoàng hôn", "Mỏng manh", "Ký ức về anh", "Ngày không anh"] },
-  { title: "Chương II", subtitle: "Người tình và những cuộc yêu vội", description: "Những bài thơ của men say, va chạm, hứa hẹn và các cuộc tình chưa kịp gọi đúng tên.", poems: ["Thoáng chốc dại khờ", "Trò chơi", "Ta và em", "Trái tim không tuổi", "Yêu và hiểu", "Lời anh nói", "Lời mật ngọt", "Vết đêm", "Va vào lần yêu cuối", "Giữ lấy em", "Một chút tò mò", "Gửi em", "Yêu em?", "Vật chứa", "Định nghĩa", "Ngôi đền", "Đếm đêm", "Khi ta yêu"] },
-  { title: "Chương III", subtitle: "Khi tình yêu bắt đầu rời đi", description: "Những trang thơ của buông tay, muộn màng, những điều không nói và các khoảng cách cứ lớn dần.", poems: ["Vết dấu", "Hết yêu", "Thôi", "Bình thường", "Muộn", "Ngày và đêm", "Hôm nay và mai sau", "Ta không còn là những đứa trẻ", "Cơn đau nào cũng hết", "Đừng giấu vào đêm", "Cuối Cùng Em Hiểu", "Chạm tay nhau lỡ làng", "Thôi mình đừng hỏi nhau “ổn không”", "Đừng để tình mình chỉ chắp vá", "Khi mình xa", "Một ngày", "Yêu xa", "Tình ca tan vỡ", "Dự định", "Những điều không nói", "Lửng lơ", "Lặng thầm"] },
-  { title: "Chương IV", subtitle: "Em, những mảnh vỡ và cõi lòng", description: "Khi người viết quay về nhìn chính mình: cơ thể, bản ngã, nỗi buồn, sự nhạy cảm và những phần em đã phải tự ôm lấy.", poems: ["Những bước chân em", "Hãy nhìn em", "Cõi Lòng Em", "Bận Lòng", "Hãy ở lại", "Nhiều nhân cách trong em", "Muôn kiếp nhân sinh", "Nỗi buồn em", "Tổn thương là nhỏ nhặt", "Tất cả của em", "Tìm nơi đâu", "Đừng", "Một, hai và ba…", "Nhạy cảm", "Anh thấy gì ở màu xanh nơi em?", "Hướng nào?", "Những bàn tay", "Hãy Tìm Em", "Tơ Tằm", "Ta Sẽ Đi Về Đâu?", "Vai phụ", "Hỗn loạn", "Intact"] },
-  { title: "Chương V", subtitle: "Thơ như một nơi trú ẩn", description: "Những bài thơ viết về chính thơ: nơi nỗi đau được đặt xuống, được đọc lại, và đôi khi được tha thứ.", poems: ["Thơ em", "Nếu anh đọc thơ em", "Những bài thơ", "Vần thơ em", "Anh biết không?"] },
-  { title: "Chương VI", subtitle: "Sau cùng, em khép lại", description: "Những trang cuối của một cuộc tình: không còn níu kéo, chỉ còn người viết tự bước qua và gọi tên bình yên.", poems: ["Rung cảm", "Tạm bợ", "Giá như", "Chương khác", "Cổ tích", "Giấc mơ", "Trói buộc/giải thoát", "Rồi Một Ngày", "Nếu Có Thể", "Phép thử", "Miền đất hứa", "Lời xin lỗi", "Ngày không còn tên", "Không tên", "Da thịt và khoảng trống"] },
-];
+const pages = Array.from({ length: PAGE_COUNT }, (_, i) => ({
+  index: i,
+  src: `/book-layout/page-${String(i + 1).padStart(2, "0")}.webp`,
+}));
 
-function normalize(text = "") {
-  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[“”]/g, '"').replace(/…/g, "...").replace(/\s+/g, " ").trim();
+function getBookmark() {
+  if (typeof window === "undefined") return 0;
+  try {
+    const value = Number.parseInt(window.localStorage.getItem(BOOKMARK_KEY) || "0", 10);
+    return Number.isFinite(value) ? Math.max(0, Math.min(PAGE_COUNT - 1, value)) : 0;
+  } catch {
+    return 0;
+  }
 }
 
-function getChapterIndex(poem) {
-  const title = normalize(poem.title || "");
-  const index = chapters.findIndex((chapter) => chapter.poems.some((chapterPoem) => normalize(chapterPoem) === title));
-  return index >= 0 ? index : chapters.length - 1;
+function saveBookmark(pageIndex) {
+  try {
+    window.localStorage.setItem(BOOKMARK_KEY, String(pageIndex));
+  } catch {}
 }
 
 function useIsMobile() {
@@ -36,171 +39,117 @@ function useIsMobile() {
   return isMobile;
 }
 
-function sendBookEvent(eventName, params = {}) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
-
-  window.gtag("event", eventName, {
-    page_title: document.title,
-    page_location: window.location.href,
-    page_path: window.location.pathname,
-    page_type: "book",
-    book_title: "Va Vào Lần Yêu Cuối",
-    book_slug: "va-vao-lan-yeu-cuoi",
-    ...params,
-  });
-}
-
-export default function FlipBook({ poems }) {
+export default function FlipBook() {
   const isMobile = useIsMobile();
-  const progressMarksRef = useRef(new Set());
-  const completedRef = useRef(false);
+  const bookRef = useRef(null);
+  const restoredRef = useRef(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [savedPage, setSavedPage] = useState(0);
 
-  const groupedChapters = chapters
-    .map((chapter, chapterIndex) => ({ ...chapter, poems: poems.filter((poem) => getChapterIndex(poem) === chapterIndex) }))
-    .filter((chapter) => chapter.poems.length > 0);
+  useEffect(() => {
+    const page = getBookmark();
+    setSavedPage(page);
+    setCurrentPage(page);
+  }, []);
 
-  const totalPages = useMemo(() => {
-    const chapterPages = groupedChapters.length;
-    const poemPages = groupedChapters.reduce((sum, chapter) => sum + chapter.poems.length, 0);
-    return 3 + chapterPages + poemPages + 1;
-  }, [groupedChapters]);
-
-  const getPageMeta = (pageIndex) => {
-    const coverPages = 3;
-    let index = coverPages;
-
-    for (const chapter of groupedChapters) {
-      if (pageIndex === index) {
-        return {
-          content_type: "chapter",
-          chapter_title: chapter.title,
-          chapter_subtitle: chapter.subtitle,
-        };
+  const handleInit = () => {
+    if (restoredRef.current) return;
+    restoredRef.current = true;
+    requestAnimationFrame(() => {
+      const target = getBookmark();
+      if (target > 0) {
+        try {
+          bookRef.current?.pageFlip()?.turnToPage(target);
+        } catch {}
       }
-
-      index += 1;
-
-      for (const poem of chapter.poems) {
-        if (pageIndex === index) {
-          return {
-            content_type: "poem",
-            chapter_title: chapter.title,
-            chapter_subtitle: chapter.subtitle,
-            poem_title: poem.title,
-            poem_slug: poem.slug,
-          };
-        }
-        index += 1;
-      }
-    }
-
-    if (pageIndex >= totalPages - 1) {
-      return { content_type: "end" };
-    }
-
-    return { content_type: pageIndex === 0 ? "cover" : pageIndex === 1 ? "intro" : "toc" };
+    });
   };
 
   const handleFlip = (event) => {
     const pageIndex = Number(event?.data ?? 0);
-    const pageNumber = pageIndex + 1;
-    const progressPercent = Math.min(100, Math.round((pageNumber / totalPages) * 100));
-    const pageMeta = getPageMeta(pageIndex);
-
-    sendBookEvent("book_page_flip", {
-      page_index: pageIndex,
-      page_number: pageNumber,
-      total_pages: totalPages,
-      progress_percent: progressPercent,
-      ...pageMeta,
-    });
-
-    [25, 50, 75, 90].forEach((mark) => {
-      if (progressPercent >= mark && !progressMarksRef.current.has(mark)) {
-        progressMarksRef.current.add(mark);
-        sendBookEvent("book_progress", {
-          progress_percent: mark,
-          page_number: pageNumber,
-          total_pages: totalPages,
-          ...pageMeta,
-        });
-      }
-    });
-
-    if (progressPercent >= 95 && !completedRef.current) {
-      completedRef.current = true;
-      sendBookEvent("book_complete", {
-        page_number: pageNumber,
-        total_pages: totalPages,
-        progress_percent: progressPercent,
-      });
-    }
+    const safePage = Math.max(0, Math.min(PAGE_COUNT - 1, pageIndex));
+    setCurrentPage(safePage);
+    setSavedPage(safePage);
+    saveBookmark(safePage);
   };
 
-  let pageNumber = 1;
-  const bookKey = isMobile ? "mobile-book" : "desktop-book";
-  const bookSize = isMobile
-    ? { width: 340, height: 560, minWidth: 280, maxWidth: 360, minHeight: 460, maxHeight: 620 }
-    : { width: 440, height: 640, minWidth: 300, maxWidth: 460, minHeight: 460, maxHeight: 680 };
+  const restoreBookmark = () => {
+    const target = getBookmark();
+    try {
+      bookRef.current?.pageFlip()?.turnToPage(target);
+    } catch {}
+    setCurrentPage(target);
+    setSavedPage(target);
+  };
+
+  const progress = Math.round(((currentPage + 1) / PAGE_COUNT) * 100);
 
   return (
-    <section className={isMobile ? "book-section is-mobile-book" : "book-section"}>
-      <div className="book-top">
+    <section className="vvb-flipbook">
+      <style>{`
+        .vvb-flipbook { position:relative; min-height:100vh; padding:44px 16px 64px; box-sizing:border-box; background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.055),transparent 32%),#090807; color:#eee3d2; overflow:hidden; }
+        .vvb-flipbook__top { position:relative; z-index:5; max-width:900px; margin:0 auto 22px; text-align:center; }
+        .vvb-flipbook__top h1 { margin:0 0 8px; font-family:Georgia,"Times New Roman",serif; font-size:clamp(30px,5vw,54px); font-weight:400; letter-spacing:-.04em; }
+        .vvb-flipbook__top p { margin:0; color:rgba(238,227,210,.62); font-size:12px; letter-spacing:.03em; }
+        .vvb-flipbook__toolbar { position:relative; z-index:5; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:9px; margin:0 auto 18px; font-size:11px; }
+        .vvb-flipbook__status,.vvb-flipbook__resume { border:1px solid rgba(238,227,210,.16); border-radius:999px; background:rgba(20,18,16,.86); color:#eee3d2; padding:8px 12px; }
+        .vvb-flipbook__resume { cursor:pointer; }
+        .vvb-flipbook__stage { position:relative; z-index:2; display:grid; place-items:center; min-height:min(78vh,900px); padding:10px 0 48px; }
+        .vvb-flipbook__stage::after { content:""; position:absolute; left:50%; bottom:24px; width:min(1000px,90vw); height:65px; transform:translateX(-50%); border-radius:50%; background:rgba(0,0,0,.72); filter:blur(24px); pointer-events:none; z-index:0; }
+        .vvb-flipbook__book { position:relative; z-index:2; filter:drop-shadow(0 34px 58px rgba(0,0,0,.68)); }
+        .vvb-flipbook__page { width:100%; height:100%; overflow:hidden; background:#eee2cf; box-sizing:border-box; }
+        .vvb-flipbook__page img { display:block; width:100%; height:100%; object-fit:cover; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+        @media(max-width:760px){ .vvb-flipbook{padding:28px 8px 42px}.vvb-flipbook__top h1{font-size:32px}.vvb-flipbook__top p{font-size:10px}.vvb-flipbook__stage{min-height:70vh;padding-bottom:32px}.vvb-flipbook__stage::after{width:80vw;height:44px} }
+      `}</style>
+
+      <div className="vvb-flipbook__top">
         <h1>Va Vào Lần Yêu Cuối</h1>
-        <p>Một ấn bản thơ điện tử của Mèo Đen Không Ngủ — nơi những bài thơ cũ được đặt lại trong một căn phòng tối, dịu và yên hơn.</p>
+        <p>Ấn bản dàn trang gốc · 33 trang · tự động đánh dấu trang</p>
       </div>
 
-      <div className="book-wrap">
-        <div className="book-stage">
-          <HTMLFlipBook
-            key={bookKey}
-            width={bookSize.width}
-            height={bookSize.height}
-            size="stretch"
-            minWidth={bookSize.minWidth}
-            maxWidth={bookSize.maxWidth}
-            minHeight={bookSize.minHeight}
-            maxHeight={bookSize.maxHeight}
-            showCover={true}
-            drawShadow={true}
-            flippingTime={900}
-            usePortrait={isMobile}
-            startZIndex={30}
-            maxShadowOpacity={0.28}
-            mobileScrollSupport={true}
-            clickEventForward={true}
-            useMouseEvents={true}
-            swipeDistance={30}
-            className="flip-book"
-            onFlip={handleFlip}
-          >
-            <div className="book-page cover-page hard-page">
-              <div className="cover-art" aria-hidden="true"><span className="moon" /><span className="cat-silhouette" /></div>
-              <div className="cover-content"><p className="cover-author">Mèo Đen Không Ngủ</p><h2>Va Vào<br />Lần Yêu Cuối</h2><small>Tập thơ | Ấn bản điện tử</small></div>
-            </div>
-            <div className="book-page intro-page decorated-page botanical-rose">
-              <div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" />
-              <div className="intro-inner"><span>Lời mở</span><p>Có những bài thơ được viết ra không phải để níu một người ở lại, mà để một nỗi buồn có nơi được gọi tên.</p><p><em>Va Vào Lần Yêu Cuối</em> là cách Mèo cất lại những mùa yêu đã qua: không còn trách móc, không còn cầu xin, chỉ còn một khoảng lặng đủ mềm để ký ức thôi làm đau.</p><p>Nếu có một phiên bản cũ của mình từng khóc trong những trang này, mong rằng khi khép sách lại, phiên bản ấy cũng được ngủ yên.</p></div>
-            </div>
-            <div className="book-page toc-page decorated-page botanical-branch">
-              <div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" />
-              <div className="toc-inner"><span>Mục lục</span><h2>Các chương</h2><div className="toc-list">{groupedChapters.map((chapter) => <div className="toc-item" key={`toc-${chapter.title}`}><small>{chapter.title}</small><strong>{chapter.subtitle}</strong></div>)}</div></div>
-            </div>
-            {groupedChapters.flatMap((chapter, chapterIndex) => {
-              const chapterPage = <div className={`book-page chapter-page decorated-page botanical-${botanicalStyles[chapterIndex % botanicalStyles.length]}`} key={`chapter-${chapterIndex}`}><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div className="chapter-inner"><span>{chapter.title}</span><h2>{chapter.subtitle}</h2><p>{chapter.description}</p></div></div>;
-              const poemPages = chapter.poems.map((poem) => {
-                const botanical = botanicalStyles[(pageNumber - 1) % botanicalStyles.length];
-                const currentPage = pageNumber++;
-                return <div className={`book-page poem-book-page decorated-page botanical-${botanical}`} key={poem.slug}><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div className="book-page-number">{String(currentPage).padStart(2, "0")}</div><h2>{poem.title}</h2><div className="book-poem-body" dangerouslySetInnerHTML={{ __html: poem.html }} /></div>;
-              });
-              return [chapterPage, ...poemPages];
-            })}
-            <div className="book-page end-page decorated-page botanical-ginkgo hard-page"><div className="botanical botanical-top" aria-hidden="true" /><div className="botanical botanical-bottom" aria-hidden="true" /><div><p>Hết.</p><small>Mèo Đen Không Ngủ</small></div></div>
-          </HTMLFlipBook>
-        </div>
-        <div className="book-status" aria-live="polite">Kéo góc giấy hoặc chạm vào mép trang để lật.</div>
+      <div className="vvb-flipbook__toolbar">
+        <span className="vvb-flipbook__status">
+          🔖 Đã lưu trang {currentPage + 1}/{PAGE_COUNT} · {progress}%
+        </span>
+        {savedPage > 0 && savedPage !== currentPage && (
+          <button className="vvb-flipbook__resume" type="button" onClick={restoreBookmark}>
+            Tiếp tục từ trang {savedPage + 1}
+          </button>
+        )}
       </div>
-      <p className="mobile-note">Trên điện thoại, sách hiển thị một trang mỗi lần để dễ đọc hơn.</p>
+
+      <div className="vvb-flipbook__stage">
+        <HTMLFlipBook
+          ref={bookRef}
+          key={isMobile ? "mobile-book" : "desktop-book"}
+          width={595}
+          height={842}
+          size="stretch"
+          minWidth={280}
+          maxWidth={595}
+          minHeight={396}
+          maxHeight={842}
+          showCover
+          usePortrait={isMobile}
+          drawShadow
+          flippingTime={700}
+          maxShadowOpacity={0.32}
+          startZIndex={20}
+          mobileScrollSupport
+          clickEventForward
+          useMouseEvents
+          swipeDistance={30}
+          className="vvb-flipbook__book"
+          onInit={handleInit}
+          onFlip={handleFlip}
+        >
+          {pages.map((page) => (
+            <div className="vvb-flipbook__page" key={page.index} data-page={page.index + 1}>
+              <img src={page.src} alt={`Va Vào Lần Yêu Cuối — trang ${page.index + 1}`} draggable="false" />
+            </div>
+          ))}
+        </HTMLFlipBook>
+      </div>
     </section>
   );
 }
