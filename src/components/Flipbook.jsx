@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
 const BOOKMARK_KEY = "meo-bookmark-va-vao-lan-yeu-cuoi";
-const PAGE_COUNT = 31;
+const PAGE_COUNT = 32;
 
 // Astro serves files in /public at the site root.
 const pages = Array.from({ length: PAGE_COUNT }, (_, i) => ({
