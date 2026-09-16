@@ -15,6 +15,8 @@ export async function getStaticPaths() {
 
 const { poem } = Astro.props;
 const { Content } = await render(poem);
+const layout = poem.data.layout;
+const lineSpacing = poem.data.lineSpacing;
 ---
 
 <!doctype html>
@@ -41,7 +43,7 @@ const { Content } = await render(poem);
       </header>
 
       <main>
-        <article class="poem-page glow-surface">
+        <article class:list={["poem-page", "glow-surface", `poem-exhibit--${layout}`]}>
           <header class="poem-header">
             {poem.data.collection && <p class="eyebrow">{poem.data.collection}</p>}
 
@@ -54,7 +56,7 @@ const { Content } = await render(poem);
             </div>
           </header>
 
-          <div class="poem-content glow-surface">
+          <div class:list={["poem-content", "glow-surface", `poem-spacing--${lineSpacing}`]}>
             <Content />
           </div>
         </article>

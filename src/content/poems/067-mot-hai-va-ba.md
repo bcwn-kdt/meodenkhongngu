@@ -6,6 +6,8 @@ published: true
 showInBook: true
 collection: "Va Vào Lần Yêu Cuối"
 order: 67
+layout: "fragmented"
+lineSpacing: "compact"
 ---
 
 Một…  

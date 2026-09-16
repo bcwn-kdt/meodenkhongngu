@@ -6,6 +6,8 @@ published: true
 showInBook: true
 collection: "Va Vào Lần Yêu Cuối"
 order: 37
+layout: "narrow"
+lineSpacing: "balanced"
 ---
 
 Cơ thể em cũng chỉ là vật chứa,  

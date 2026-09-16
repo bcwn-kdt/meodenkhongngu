@@ -6,6 +6,8 @@ published: true
 showInBook: true
 collection: "Va Vào Lần Yêu Cuối"
 order: 99
+layout: "center"
+lineSpacing: "airy"
 ---
 
 Anh để lại em  

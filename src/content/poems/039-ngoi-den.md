@@ -6,6 +6,8 @@ published: true
 showInBook: true
 collection: "Va Vào Lần Yêu Cuối"
 order: 39
+layout: "narrow"
+lineSpacing: "airy"
 ---
 
 Trái tim em, tựa như một ngôi đền  

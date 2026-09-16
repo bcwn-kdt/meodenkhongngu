@@ -11,6 +11,8 @@ const poems = defineCollection({
     chapter: z.string().optional(),
     order: z.number().optional(),
     mood: z.string().optional(),
+    layout: z.enum(["left", "center", "narrow", "fragmented"]).default("left"),
+    lineSpacing: z.enum(["compact", "balanced", "airy"]).default("balanced"),
     showInBook: z.boolean().default(false),
     published: z.boolean().default(true),
   }),
