@@ -40,7 +40,12 @@
 
   loadAnalytics();
   loadInteractionAnalytics();
-  loadReadingMode();
+
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  const supportsReadingMode =
+    pathname.startsWith("/tho/") || pathname.startsWith("/tap-tho/");
+
+  if (supportsReadingMode) loadReadingMode();
   loadFooter();
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -68,9 +73,8 @@
 
   injectEffectStyles();
 
-  const interactiveElements = document.querySelectorAll(
-    ".glow-surface, .glow-card, .glow-button, .glow-link, .poem-page, .poem-content, .about, .about-content, .book-wrap, .studio-controls, .writing-note"
-  );
+  const interactiveSelector =
+    ".glow-surface, .glow-card, .glow-button, .glow-link, .poem-page, .poem-content, .about, .about-content, .book-wrap, .studio-controls, .writing-note";
 
   const finePointer = window.matchMedia("(pointer: fine)").matches;
   let targetX = window.innerWidth / 2;
@@ -80,24 +84,36 @@
   let visible = false;
   let hideTimer = null;
   let lastBurst = 0;
+  let activeSurface = null;
+  let paintFrame = 0;
 
-  const paintElements = (x, y) => {
+  const paintSurface = (x, y, surface) => {
     document.documentElement.style.setProperty("--cursor-x", `${x}px`);
     document.documentElement.style.setProperty("--cursor-y", `${y}px`);
 
-    interactiveElements.forEach((element) => {
-      const rect = element.getBoundingClientRect();
-      element.style.setProperty("--mouse-x", `${x - rect.left}px`);
-      element.style.setProperty("--mouse-y", `${y - rect.top}px`);
+    if (!surface) return;
+
+    const rect = surface.getBoundingClientRect();
+    surface.style.setProperty("--mouse-x", `${x - rect.left}px`);
+    surface.style.setProperty("--mouse-y", `${y - rect.top}px`);
+  };
+
+  const scheduleSurfacePaint = (x, y, surface) => {
+    activeSurface = surface;
+    if (paintFrame) return;
+
+    paintFrame = requestAnimationFrame(() => {
+      paintFrame = 0;
+      paintSurface(x, y, activeSurface);
     });
   };
 
-  const showAt = (x, y, temporary = false) => {
+  const showAt = (x, y, temporary = false, surface = activeSurface) => {
     targetX = x;
     targetY = y;
     visible = true;
     cursor.classList.add("is-visible");
-    paintElements(x, y);
+    scheduleSurfacePaint(x, y, surface);
 
     if (temporary) {
       clearTimeout(hideTimer);
@@ -153,8 +169,8 @@
     }
   };
 
-  const burstAt = (x, y, temporary = true) => {
-    showAt(x, y, temporary);
+  const burstAt = (x, y, temporary = true, surface = activeSurface) => {
+    showAt(x, y, temporary, surface);
     makeTouchGlow(x, y);
     makePaperDust(x, y);
   };
@@ -169,16 +185,19 @@
 
   window.addEventListener("pointermove", (event) => {
     if (event.pointerType === "touch") return;
-    showAt(event.clientX, event.clientY);
+    const surface = event.target.closest?.(interactiveSelector) || null;
+    showAt(event.clientX, event.clientY, false, surface);
   }, { passive: true });
 
   window.addEventListener("pointerdown", (event) => {
     cursor.classList.add("is-pressing");
-    burstAt(event.clientX, event.clientY, event.pointerType === "touch");
+    const surface = event.target.closest?.(interactiveSelector) || null;
+    burstAt(event.clientX, event.clientY, event.pointerType === "touch", surface);
   }, { passive: true });
 
   window.addEventListener("click", (event) => {
-    burstAt(event.clientX, event.clientY, true);
+    const surface = event.target.closest?.(interactiveSelector) || null;
+    burstAt(event.clientX, event.clientY, true, surface);
   }, { passive: true });
 
   window.addEventListener("pointerup", () => {
