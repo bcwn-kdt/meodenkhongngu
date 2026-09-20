@@ -48,6 +48,7 @@
   let animationFrame = 0;
   let previousFrame = 0;
   let resizeFrame = 0;
+  let speedMultiplier = 1;
 
   const makeParticle = (fromBottom = false) => ({
     x: Math.random() * width,
@@ -83,9 +84,9 @@
     ctx.clearRect(0, 0, width, height);
 
     for (const particle of particles) {
-      particle.x += particle.velocityX;
-      particle.y += particle.velocityY;
-      particle.pulse += .014;
+      particle.x += particle.velocityX * speedMultiplier;
+      particle.y += particle.velocityY * speedMultiplier;
+      particle.pulse += .014 * speedMultiplier;
 
       if (particle.y < -18) Object.assign(particle, makeParticle(true));
       if (particle.x < -18) particle.x = width + 18;
@@ -122,6 +123,7 @@
     stop();
     window.removeEventListener("resize", scheduleResize);
     document.removeEventListener("visibilitychange", handleVisibility);
+    window.removeEventListener("ambient:footer", handleFooter);
     canvas.remove();
     style.remove();
   };
@@ -139,10 +141,15 @@
     else start();
   };
 
+  const handleFooter = (event) => {
+    speedMultiplier = event.detail?.active ? .38 : 1;
+  };
+
   resize();
   start();
   window.addEventListener("resize", scheduleResize, { passive: true });
   document.addEventListener("visibilitychange", handleVisibility);
+  window.addEventListener("ambient:footer", handleFooter);
   motionPreference.addEventListener("change", (event) => {
     if (event.matches) remove();
   }, { once: true });
