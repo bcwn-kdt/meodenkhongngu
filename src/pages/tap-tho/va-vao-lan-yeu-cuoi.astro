@@ -1,5 +1,5 @@
 ---
-import "../../styles/global.css";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import FlipBook from "../../components/Flipbook.jsx";
 import { getCollection } from "astro:content";
 import { marked } from "marked";
@@ -26,33 +26,13 @@ const poems = sorted.map((entry) => ({
 }));
 ---
 
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Va Vào Lần Yêu Cuối | Mèo Đen Không Ngủ</title>
-  </head>
-
-  <body>
-    <div class="cursor-glow" aria-hidden="true"></div>
-
-    <div class="site-shell">
-      <header class="site-header glow-surface">
-        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
-
-        <nav class="nav">
-          <a class="glow-link" href="/tho">Thơ</a>
-          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a class="glow-link" href="/ve-meo">Về Mèo</a>
-        </nav>
-      </header>
-    </div>
-
+<BaseLayout
+  title="Va Vào Lần Yêu Cuối | Mèo Đen Không Ngủ"
+  description="Đọc tập thơ Va Vào Lần Yêu Cuối của Mèo Đen Không Ngủ."
+  current="book"
+  bodyClass="book-page-view"
+>
     <FlipBook client:only="react" poems={poems} />
-
-    <script is:inline src="/glow.js?v=glow-v3"></script>
-<script is:inline src="/ambient.js"></script>
 
 <style is:global>
       @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
@@ -124,5 +104,4 @@ const poems = sorted.map((entry) => ({
       @media (max-width:760px) { .book-section { padding: 48px 0 20px; overflow-x: hidden; } .book-top { width: min(100% - 28px, 720px); margin-bottom: 30px; } .book-top h1 { font-size: clamp(38px, 12vw, 58px); line-height: 1.02; } .book-top p { font-size: 14.5px; line-height: 1.7; } .book-wrap { min-height: 560px; overflow-x: hidden; padding: 18px 0 34px; transform: scale(.94); transform-origin: top center; } .book-wrap::before { width: 92vw; height: 42px; bottom: 18px; opacity: .54; } .flip-book { filter: drop-shadow(0 26px 70px rgba(0,0,0,.74)); } .flip-book::before { opacity: .12; width: 30px; filter: blur(14px); } .book-page { padding: 32px 30px 36px; } .botanical-top, .botanical-bottom { opacity: .07; transform: scale(.78); } .poem-book-page h2 { font-size: 16px; line-height: 1.28; margin-bottom: 14px; } .book-poem-body { font-size: 10.4px; line-height: 1.62; } .book-page-number { right: 24px; bottom: 22px; } .mobile-note { width: min(100% - 28px, 560px); margin: 0 auto; font-size: 12.5px; line-height: 1.6; } }
       @media (max-width:420px) { .book-wrap { transform: scale(.88); min-height: 520px; } .book-page { padding: 30px 26px 34px; } .book-poem-body { font-size: 10px; line-height: 1.58; } .poem-book-page h2 { font-size: 15px; } }
     </style>
-  </body>
-</html>
+</BaseLayout>

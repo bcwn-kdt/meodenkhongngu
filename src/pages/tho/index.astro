@@ -1,116 +1,52 @@
 ---
-import "../../styles/global.css";
-import "../../styles/effects.css";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const poems = await getCollection("poems");
-const sorted = poems
+const poems = (await getCollection("poems"))
   .filter((poem) => poem.data.published)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-
-const collections = Array.from(
-  new Set(sorted.map((poem) => poem.data.collection).filter(Boolean))
-).sort();
-
-const moods = Array.from(
-  new Set(sorted.map((poem) => poem.data.mood).filter(Boolean))
-).sort();
-
-const totalPoems = sorted.length;
-const bookPoems = sorted.filter((poem) => poem.data.showInBook).length;
 ---
 
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thơ | Mèo Đen Không Ngủ</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon-cat-moon.svg" />
-  </head>
+<BaseLayout
+  title="Kho thơ | Mèo Đen Không Ngủ"
+  description="Toàn bộ kho thơ của Mèo Đen Không Ngủ."
+  current="poems"
+  bodyClass="archive-page"
+>
+  <section class="archive-intro" aria-labelledby="archive-title">
+    <h1 id="archive-title">Mỗi bài thơ là<br /><em>một căn phòng.</em></h1>
+    <p>Từng bài thơ là một lát cắt cảm xúc trong những đêm không ngủ.</p>
+  </section>
 
-  <body>
-    <div class="cursor-glow" aria-hidden="true"></div>
-
-    <div class="site-shell">
-      <header class="site-header glow-surface">
-        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
-
-        <nav class="nav">
-          <a class="glow-link" href="/tho">Thơ</a>
-          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a class="glow-link" href="/ve-meo">Về Mèo</a>
-        </nav>
-      </header>
-
-      <main>
-        <section class="archive glow-surface poem-studio">
-          <p class="eyebrow">kho lưu trữ</p>
-          <h1 class="page-title">Thơ</h1>
-
-          <p class="intro">
-            Những bài thơ đã từng là một vết thương, một lời tạm biệt,
-            hoặc một cách để sống sót qua đêm.
-          </p>
-
-          <div class="studio-stats" aria-label="Thống kê nhanh">
-            <div><strong>{totalPoems}</strong><span>bài thơ</span></div>
-            <div><strong>{bookPoems}</strong><span>trong tập thơ</span></div>
-          </div>
-
-          <div class="studio-controls glow-card" data-poem-controls>
-            <label class="search-field">
-              <span>Tìm trong kho thơ</span>
-              <input type="search" placeholder="Nhập tên bài, tập thơ hoặc tâm trạng..." data-poem-search />
-            </label>
-
-            <div class="filter-row" aria-label="Bộ lọc thơ">
-              <button class="filter-chip is-active" type="button" data-filter="all" data-value="all">Tất cả</button>
-              {collections.map((collection) => (
-                <button class="filter-chip" type="button" data-filter="collection" data-value={collection}>{collection}</button>
-              ))}
-              {moods.map((mood) => (
-                <button class="filter-chip" type="button" data-filter="mood" data-value={mood}>{mood}</button>
-              ))}
-            </div>
-          </div>
-
-          <div class="poem-list poem-list-minimal" data-poem-list>
-            {
-              sorted.map((poem) => (
-                <a
-                  class="poem-item glow-card"
-                  href={`/tho/${poem.id.replace(/\.md$/, "")}`}
-                  data-title={poem.data.title.toLowerCase()}
-                  data-excerpt={(poem.data.excerpt ?? "").toLowerCase()}
-                  data-collection={poem.data.collection ?? ""}
-                  data-mood={poem.data.mood ?? ""}
-                >
-                  <div>
-                    <h2>{poem.data.title}</h2>
-                    <div class="poem-tags">
-                      {poem.data.collection && <small>{poem.data.collection}</small>}
-                      {poem.data.mood && <small>{poem.data.mood}</small>}
-                    </div>
-                  </div>
-                </a>
-              ))
-            }
-          </div>
-
-          <p class="empty-state" data-empty-state hidden>
-            Chưa tìm thấy bài thơ phù hợp. Thử một từ khóa khác nhẹ hơn nhé.
-          </p>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <p>© Mèo Đen Không Ngủ</p>
-      </footer>
+  <section class="archive-gallery" aria-label="Danh sách bài thơ">
+    <div class="archive-controls">
+      <label class="search-field">
+        <span>Tìm trong kho thơ</span>
+        <input type="search" placeholder="Nhập tên bài hoặc một câu gợi nhớ…" autocomplete="off" data-poem-search />
+      </label>
+      <button class="wander-button" type="button" data-archive-wander>Để Mèo dẫn lối <span aria-hidden="true">↗</span></button>
     </div>
 
-  <script is:inline src="/glow.js?v=glow-v3"></script>
-    <script is:inline src="/ambient.js"></script>
-    <script is:inline src="/poem-filters.js"></script>
-  </body>
-</html>
+    <p class="archive-result" aria-live="polite" data-result-count>{poems.length} bài thơ</p>
+
+    <div class="archive-grid" data-poem-list>
+      {poems.map((poem, index) => (
+        <a
+          class="archive-card"
+          href={`/tho/${poem.id.replace(/\.md$/, "")}`}
+          data-search-text={`${poem.data.title} ${poem.data.excerpt ?? ""} ${poem.data.collection ?? ""}`.toLocaleLowerCase("vi-VN")}
+        >
+          <span class="card-number">{String(index + 1).padStart(3, "0")}</span>
+          <span class="card-theme">{poem.data.collection ?? "Thơ"}</span>
+          <h2>{poem.data.title}</h2>
+          {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+          <span class="card-status">Đọc bài</span>
+        </a>
+      ))}
+    </div>
+
+    <p class="empty-state" data-empty-state hidden>Chưa tìm thấy bài thơ phù hợp.</p>
+  </section>
+
+  <script slot="scripts" is:inline src="/poem-filters.js"></script>
+</BaseLayout>

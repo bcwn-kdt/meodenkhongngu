@@ -11,16 +11,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/react": "^5.0.7",
+    "@astrojs/react": "^6.0.6",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
-    "astro": "^6.4.4",
+    "astro": "^7.3.3",
     "marked": "^18.0.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-pageflip": "^2.0.3"
-  },
-  "overrides": {
-    "vite": "^7"
   }
 }

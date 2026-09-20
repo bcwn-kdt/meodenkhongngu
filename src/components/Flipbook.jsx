@@ -31,6 +31,7 @@ export default function FlipBook() {
       <style>{`
         .vvb-flipbook { position:relative; min-height:100vh; padding:44px 16px 64px; box-sizing:border-box; background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.055),transparent 32%),#090807; color:#eee3d2; overflow:hidden; }
         .vvb-flipbook__top { position:relative; z-index:5; max-width:1100px; margin:0 auto 18px; text-align:center; }
+
         .vvb-flipbook__top h1 {
           display:block;
           margin:0;

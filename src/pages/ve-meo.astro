@@ -1,58 +1,27 @@
 ---
-import "../styles/global.css";
-import "../styles/effects.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Đôi Chút Về Mèo | Mèo Đen Không Ngủ</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon-cat-moon.svg" />
-    <meta
-      name="description"
-      content=" Mèo Đen Không Ngủ — nơi những bài thơ được viết như một cách để đi qua những đêm dài không ngủ."
-    />
-  </head>
+<BaseLayout
+  title="Về Mèo | Mèo Đen Không Ngủ"
+  description="Mèo Đen Không Ngủ — nơi những bài thơ được viết như một cách để đi qua những đêm dài không ngủ."
+  current="about"
+  bodyClass="about-page"
+>
+  <article class="about-exhibit">
+    <header class="about-heading">
+      <p class="eyebrow">Tâm sự của Mèo</p>
+      <h1>Mèo Đen<br /><em>Không Ngủ.</em></h1>
+    </header>
 
-  <body>
-    <div class="cursor-glow" aria-hidden="true"></div>
-
-    <div class="site-shell">
-      <header class="site-header glow-surface">
-        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
-
-        <nav class="nav">
-          <a class="glow-link" href="/tho">Thơ</a>
-          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a class="glow-link" href="/ve-meo">Về Mèo</a>
-        </nav>
-      </header>
-
-      <main>
-        <section class="about glow-surface">
-          <p class="eyebrow">Về Mèo</p>
-          <h1 class="page-title">Về Mèo</h1>
-
-          <div class="about-content glow-surface">
-            <p>Mèo Đen Không Ngủ, một cái tên khá lạ.</p>
-            <p>Mèo không phải là một người viết thơ. Chỉ là thơ tìm đến Mèo từ những năm mình chập chững tuổi mười tám.</p>
-            <p>Mèo bắt đầu viết từ những suy nghĩ rất riêng, với tất cả những cảm xúc, những rung cảm mà khi ấy mình chưa biết phải gọi tên thế nào. Có những điều không nói được thành lời, có những nỗi buồn không biết kể cùng ai, có những khoảnh khắc tưởng như rất nhỏ nhưng lại ở lại trong lòng rất lâu.</p>
-            <p>Thế là Mèo bắt đầu viết. Không phải để trở thành một nhà thơ, cũng không phải vì nghĩ những điều mình viết sẽ được lên một kệ sách, hay nằm trên những câu quote mọi người thường thấy.</p>
-            <p>Mèo chỉ muốn giữ lại, giữ lại những gì mình đã viết ra, trong những khoảnh khắc ấy, trong những xúc cảm của chính mình.</p>
-            <p>Và cái tên Mèo Đen Không Ngủ cũng bắt đầu từ đó, từ những đêm không ngủ được, chỉ viết và viết và cất trong những quyển sổ nho nhỏ, những mẫu giấy, những dòng chữ đánh máy lưu trong note của chính mình, yên tĩnh và lặng lẽ.</p>
-            <p class="signature"> Mèo Đen Không Ngủ</p>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <p>© Mèo Đen Không Ngủ</p>
-      </footer>
+    <div class="about-content">
+      <p class="about-lead">Mèo Đen Không Ngủ, một cái tên khá lạ.</p>
+      <p>Mèo không phải là một người viết thơ. Chỉ là thơ tìm đến Mèo từ những năm mình chập chững tuổi mười tám.</p>
+      <p>Mèo bắt đầu viết từ những suy nghĩ rất riêng, với tất cả những cảm xúc, những rung cảm mà khi ấy mình chưa biết phải gọi tên thế nào. Có những điều không nói được thành lời, có những nỗi buồn không biết kể cùng ai, có những khoảnh khắc tưởng như rất nhỏ nhưng lại ở lại trong lòng rất lâu.</p>
+      <p>Thế là Mèo bắt đầu viết. Không phải để trở thành một nhà thơ, cũng không phải vì nghĩ những điều mình viết sẽ được lên một kệ sách, hay nằm trên những câu quote mọi người thường thấy.</p>
+      <p>Mèo chỉ muốn giữ lại, giữ lại những gì mình đã viết ra, trong những khoảnh khắc ấy, trong những xúc cảm của chính mình.</p>
+      <p>Và cái tên Mèo Đen Không Ngủ cũng bắt đầu từ đó, từ những đêm không ngủ được, chỉ viết và viết và cất trong những quyển sổ nho nhỏ, những mẫu giấy, những dòng chữ đánh máy lưu trong note của chính mình, yên tĩnh và lặng lẽ.</p>
+      <p class="signature">Mèo Đen Không Ngủ</p>
     </div>
-
-  <script is:inline src="/glow.js?v=glow-v3"></script>
-    <script is:inline src="/ambient.js"></script>
-  </body>
-</html>
+  </article>
+</BaseLayout>

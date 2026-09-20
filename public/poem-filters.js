@@ -1,52 +1,39 @@
 (() => {
-  const controls = document.querySelector("[data-poem-controls]");
-  const list = document.querySelector("[data-poem-list]");
   const search = document.querySelector("[data-poem-search]");
+  const cards = [...document.querySelectorAll("[data-poem-list] .archive-card")];
   const emptyState = document.querySelector("[data-empty-state]");
+  const resultCount = document.querySelector("[data-result-count]");
+  const wander = document.querySelector("[data-archive-wander]");
 
-  if (!controls || !list || !search) return;
+  if (!search || !cards.length) return;
 
-  const items = Array.from(list.querySelectorAll("[data-title]"));
-  const chips = Array.from(controls.querySelectorAll("[data-filter]"));
-  const active = { type: "all", value: "all" };
+  const normalize = (value) => value
+    .toLocaleLowerCase("vi-VN")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .trim();
 
-  const normalize = (value) => String(value || "").trim().toLowerCase();
+  const visibleCards = () => cards.filter((card) => !card.hidden);
 
-  const applyFilters = () => {
-    const keyword = normalize(search.value);
-    let visibleCount = 0;
-
-    items.forEach((item) => {
-      const title = normalize(item.dataset.title);
-      const excerpt = normalize(item.dataset.excerpt);
-      const collection = normalize(item.dataset.collection);
-      const mood = normalize(item.dataset.mood);
-
-      const matchesText = !keyword || title.includes(keyword) || excerpt.includes(keyword) || collection.includes(keyword) || mood.includes(keyword);
-      const matchesFilter =
-        active.type === "all" ||
-        (active.type === "collection" && collection === normalize(active.value)) ||
-        (active.type === "mood" && mood === normalize(active.value));
-
-      const shouldShow = matchesText && matchesFilter;
-      item.hidden = !shouldShow;
-      if (shouldShow) visibleCount += 1;
+  const update = () => {
+    const query = normalize(search.value);
+    cards.forEach((card) => {
+      card.hidden = query.length > 0 && !normalize(card.dataset.searchText || "").includes(query);
     });
 
-    if (emptyState) emptyState.hidden = visibleCount !== 0;
+    const count = visibleCards().length;
+    emptyState.hidden = count !== 0;
+    resultCount.textContent = `${count} bài thơ`;
   };
 
-  search.addEventListener("input", applyFilters);
+  search.addEventListener("input", update);
 
-  chips.forEach((chip) => {
-    chip.addEventListener("click", () => {
-      chips.forEach((item) => item.classList.remove("is-active"));
-      chip.classList.add("is-active");
-      active.type = chip.dataset.filter || "all";
-      active.value = chip.dataset.value || "all";
-      applyFilters();
-    });
+  wander?.addEventListener("click", () => {
+    const available = visibleCards();
+    const chosen = available[Math.floor(Math.random() * available.length)];
+    if (!chosen) return;
+    chosen.scrollIntoView({ behavior: "smooth", block: "center" });
+    chosen.classList.add("is-random");
+    window.setTimeout(() => window.location.assign(chosen.href), 650);
   });
-
-  applyFilters();
 })();

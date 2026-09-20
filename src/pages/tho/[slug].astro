@@ -1,5 +1,5 @@
 ---
-import "../../styles/global.css";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -19,55 +19,32 @@ const layout = poem.data.layout;
 const lineSpacing = poem.data.lineSpacing;
 ---
 
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{poem.data.title} | Mèo Đen Không Ngủ</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon-cat-moon.svg" />
-  </head>
+<BaseLayout
+  title={`${poem.data.title} | Mèo Đen Không Ngủ`}
+  description={poem.data.excerpt ?? `Đọc “${poem.data.title}” của Mèo Đen Không Ngủ.`}
+  current="poems"
+  bodyClass="poem-reader-page"
+>
+  <article class:list={["poem-page", `poem-exhibit--${layout}`]}>
+    <a class="back-link" href="/tho">← Trở về kho thơ</a>
 
-  <body>
-    <div class="cursor-glow" aria-hidden="true"></div>
+    <header class="poem-header">
+      <p class="eyebrow">{poem.data.collection ?? "Mèo Đen Không Ngủ"}</p>
+      <h1>{poem.data.title}</h1>
+      <div class="meta">
+        <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
+        {poem.data.chapter && <span> · {poem.data.chapter}</span>}
+        {poem.data.mood && <span> · {poem.data.mood}</span>}
+      </div>
+    </header>
 
-    <div class="site-shell">
-      <header class="site-header glow-surface">
-        <a class="logo glow-link" href="/">Mèo Đen Không Ngủ</a>
-
-        <nav class="nav">
-          <a class="glow-link" href="/tho">Thơ</a>
-          <a class="glow-link" href="/tap-tho/va-vao-lan-yeu-cuoi">Va Vào Lần Yêu Cuối</a>
-          <a class="glow-link" href="/ve-meo">Về Mèo</a>
-        </nav>
-      </header>
-
-      <main>
-        <article class:list={["poem-page", "glow-surface", `poem-exhibit--${layout}`]}>
-          <header class="poem-header">
-            {poem.data.collection && <p class="eyebrow">{poem.data.collection}</p>}
-
-            <h1>{poem.data.title}</h1>
-
-            <div class="meta">
-              <span>{poem.data.date.toLocaleDateString("vi-VN")}</span>
-              {poem.data.chapter && <span> · {poem.data.chapter}</span>}
-              {poem.data.mood && <span> · {poem.data.mood}</span>}
-            </div>
-          </header>
-
-          <div class:list={["poem-content", "glow-surface", `poem-spacing--${lineSpacing}`]}>
-            <Content />
-          </div>
-        </article>
-      </main>
-
-      <footer class="site-footer">
-        <p>© Mèo Đen Không Ngủ</p>
-      </footer>
+    <div class:list={["poem-content", `poem-spacing--${lineSpacing}`]}>
+      <Content />
     </div>
 
-    <script is:inline src="/glow.js?v=glow-v3"></script>
-    <script is:inline src="/ambient.js"></script>
-  </body>
-</html>
+    <footer class="poem-signoff">
+      <span>MĐKN</span>
+      <a class="quiet-link" href="/tho">Đọc một bài khác</a>
+    </footer>
+  </article>
+</BaseLayout>
